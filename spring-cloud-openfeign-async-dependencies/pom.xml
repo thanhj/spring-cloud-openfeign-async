@@ -14,6 +14,9 @@
 	<packaging>pom</packaging>
 	<name>Spring Cloud OpenFeign Async Dependencies</name>
 	<description>Spring Cloud OpenFeign Async Dependencies</description>
+	<properties>
+		<lombox.version>1.18.20</lombox.version>
+	</properties>
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
@@ -22,6 +25,12 @@
 				<version>3.0.3-SNAPSHOT</version>
 				<type>pom</type>
 				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.projectlombok</groupId>
+				<artifactId>lombok</artifactId>
+				<version>${lombox.version}</version>
+				<scope>provided</scope>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
