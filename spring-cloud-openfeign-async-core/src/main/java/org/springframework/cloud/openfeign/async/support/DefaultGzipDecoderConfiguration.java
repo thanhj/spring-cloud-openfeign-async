@@ -35,9 +35,6 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnProperty("feign.compression.response.enabled")
-// The OK HTTP client uses "transparent" compression.
-// If the accept-encoding header is present, it disables transparent compression
-@ConditionalOnMissingBean(type = "okhttp3.OkHttpClient")
 @AutoConfigureAfter(FeignAutoConfiguration.class)
 public class DefaultGzipDecoderConfiguration {
 

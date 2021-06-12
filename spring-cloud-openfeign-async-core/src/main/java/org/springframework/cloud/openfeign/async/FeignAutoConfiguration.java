@@ -21,7 +21,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.TimeUnit;
 
 import javax.annotation.PreDestroy;
 
@@ -31,8 +30,6 @@ import feign.Feign;
 import feign.RequestInterceptor;
 import feign.hc5.ApacheHttp5Client;
 import feign.httpclient.ApacheHttpClient;
-import feign.okhttp.OkHttpClient;
-import okhttp3.ConnectionPool;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.http.client.HttpClient;
@@ -53,8 +50,6 @@ import org.springframework.cloud.client.circuitbreaker.CircuitBreaker;
 import org.springframework.cloud.client.circuitbreaker.CircuitBreakerFactory;
 import org.springframework.cloud.commons.httpclient.ApacheHttpClientConnectionManagerFactory;
 import org.springframework.cloud.commons.httpclient.ApacheHttpClientFactory;
-import org.springframework.cloud.commons.httpclient.OkHttpClientConnectionPoolFactory;
-import org.springframework.cloud.commons.httpclient.OkHttpClientFactory;
 import org.springframework.cloud.openfeign.async.security.OAuth2FeignRequestInterceptor;
 import org.springframework.cloud.openfeign.async.support.DefaultGzipDecoderConfiguration;
 import org.springframework.cloud.openfeign.async.support.FeignEncoderProperties;
@@ -224,52 +219,6 @@ public class FeignAutoConfiguration {
 					}
 				}
 			}
-		}
-
-	}
-
-	@Configuration(proxyBeanMethods = false)
-	@ConditionalOnClass(OkHttpClient.class)
-	@ConditionalOnMissingBean(okhttp3.OkHttpClient.class)
-	@ConditionalOnProperty("feign.okhttp.enabled")
-	protected static class OkHttpFeignConfiguration {
-
-		private okhttp3.OkHttpClient okHttpClient;
-
-		@Bean
-		@ConditionalOnMissingBean(ConnectionPool.class)
-		public ConnectionPool httpClientConnectionPool(FeignHttpClientProperties httpClientProperties,
-				OkHttpClientConnectionPoolFactory connectionPoolFactory) {
-			Integer maxTotalConnections = httpClientProperties.getMaxConnections();
-			Long timeToLive = httpClientProperties.getTimeToLive();
-			TimeUnit ttlUnit = httpClientProperties.getTimeToLiveUnit();
-			return connectionPoolFactory.create(maxTotalConnections, timeToLive, ttlUnit);
-		}
-
-		@Bean
-		public okhttp3.OkHttpClient client(OkHttpClientFactory httpClientFactory, ConnectionPool connectionPool,
-				FeignHttpClientProperties httpClientProperties) {
-			Boolean followRedirects = httpClientProperties.isFollowRedirects();
-			Integer connectTimeout = httpClientProperties.getConnectionTimeout();
-			Boolean disableSslValidation = httpClientProperties.isDisableSslValidation();
-			this.okHttpClient = httpClientFactory.createBuilder(disableSslValidation)
-					.connectTimeout(connectTimeout, TimeUnit.MILLISECONDS).followRedirects(followRedirects)
-					.connectionPool(connectionPool).build();
-			return this.okHttpClient;
-		}
-
-		@PreDestroy
-		public void destroy() {
-			if (this.okHttpClient != null) {
-				this.okHttpClient.dispatcher().executorService().shutdown();
-				this.okHttpClient.connectionPool().evictAll();
-			}
-		}
-
-		@Bean
-		@ConditionalOnMissingBean(Client.class)
-		public Client feignClient(okhttp3.OkHttpClient client) {
-			return new OkHttpClient(client);
 		}
 
 	}

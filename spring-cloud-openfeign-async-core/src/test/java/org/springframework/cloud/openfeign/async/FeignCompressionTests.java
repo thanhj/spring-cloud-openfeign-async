@@ -50,8 +50,7 @@ public class FeignCompressionTests {
 	@Test
 	public void testInterceptors() {
 		new ApplicationContextRunner()
-				.withPropertyValues("feign.compression.response.enabled=true", "feign.compression.request.enabled=true",
-						"feign.okhttp.enabled=false")
+				.withPropertyValues("feign.compression.response.enabled=true", "feign.compression.request.enabled=true")
 				.withConfiguration(AutoConfigurations.of(FeignAutoConfiguration.class,
 						FeignContentGzipEncodingAutoConfiguration.class, FeignAcceptGzipEncodingAutoConfiguration.class,
 						HttpClientConfiguration.class, PlainConfig.class))

@@ -33,12 +33,6 @@
 			"defaultValue": "false"
 		},
 		{
-			"name": "feign.okhttp.enabled",
-			"type": "java.lang.Boolean",
-			"description": "Enables the use of the OK HTTP Client by Feign.",
-			"defaultValue": "false"
-		},
-		{
 			"name": "feign.compression.response.enabled",
 			"type": "java.lang.Boolean",
 			"description": "Enables the response from Feign to be compressed.",
