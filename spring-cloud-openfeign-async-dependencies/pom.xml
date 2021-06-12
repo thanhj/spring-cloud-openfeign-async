@@ -6,7 +6,7 @@
 	<parent>
 		<artifactId>spring-cloud-dependencies-parent</artifactId>
 		<groupId>org.springframework.cloud</groupId>
-		<version>3.0.3-SNAPSHOT</version>
+		<version>3.0.4-SNAPSHOT</version>
 		<relativePath/>
 	</parent>
 	<artifactId>spring-cloud-openfeign-async-dependencies</artifactId>
@@ -15,22 +15,18 @@
 	<name>Spring Cloud OpenFeign Async Dependencies</name>
 	<description>Spring Cloud OpenFeign Async Dependencies</description>
 	<properties>
-		<lombox.version>1.18.20</lombox.version>
+		<feign.version>10.12</feign.version>
+		<feign-form.version>3.8.0</feign-form.version>
+		<spring-security-oauth2-autoconfigure.version>2.1.2.RELEASE</spring-security-oauth2-autoconfigure.version>
 	</properties>
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
 				<groupId>org.springframework.cloud</groupId>
 				<artifactId>spring-cloud-openfeign-dependencies</artifactId>
-				<version>3.0.3-SNAPSHOT</version>
+				<version>3.0.4-SNAPSHOT</version>
 				<type>pom</type>
 				<scope>import</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.projectlombok</groupId>
-				<artifactId>lombok</artifactId>
-				<version>${lombox.version}</version>
-				<scope>provided</scope>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
