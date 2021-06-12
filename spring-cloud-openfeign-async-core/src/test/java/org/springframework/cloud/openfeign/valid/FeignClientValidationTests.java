@@ -16,8 +16,6 @@
 
 package org.springframework.cloud.openfeign.valid;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import org.junit.Test;
 
 import org.springframework.cloud.client.loadbalancer.LoadBalancerAutoConfiguration;
@@ -31,6 +29,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author Dave Syer

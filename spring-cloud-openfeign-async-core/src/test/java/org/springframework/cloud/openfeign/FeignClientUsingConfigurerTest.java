@@ -16,11 +16,14 @@
 
 package org.springframework.cloud.openfeign;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import java.lang.reflect.Field;
 import java.util.List;
 
+import feign.Capability;
+import feign.Feign;
+import feign.Logger;
+import feign.RequestInterceptor;
+import feign.micrometer.MicrometerCapability;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -35,11 +38,7 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.util.ReflectionUtils;
 
-import feign.Capability;
-import feign.Feign;
-import feign.Logger;
-import feign.RequestInterceptor;
-import feign.micrometer.MicrometerCapability;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author matt king

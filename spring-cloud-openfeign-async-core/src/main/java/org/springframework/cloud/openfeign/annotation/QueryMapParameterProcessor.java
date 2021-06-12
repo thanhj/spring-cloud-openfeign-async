@@ -19,10 +19,10 @@ package org.springframework.cloud.openfeign.annotation;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
+import feign.MethodMetadata;
+
 import org.springframework.cloud.openfeign.AnnotatedParameterProcessor;
 import org.springframework.cloud.openfeign.SpringQueryMap;
-
-import feign.MethodMetadata;
 
 /**
  * {@link SpringQueryMap} parameter processor.

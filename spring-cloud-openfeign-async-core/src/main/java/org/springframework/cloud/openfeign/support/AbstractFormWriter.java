@@ -16,19 +16,19 @@
 
 package org.springframework.cloud.openfeign.support;
 
-import static feign.form.ContentProcessor.CRLF;
-
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.function.Predicate;
-
-import org.springframework.http.MediaType;
-import org.springframework.web.multipart.MultipartFile;
 
 import feign.codec.EncodeException;
 import feign.form.multipart.AbstractWriter;
 import feign.form.multipart.Output;
 import feign.form.util.PojoUtil;
+
+import org.springframework.http.MediaType;
+import org.springframework.web.multipart.MultipartFile;
+
+import static feign.form.ContentProcessor.CRLF;
 
 /**
  * @author Darren Foong

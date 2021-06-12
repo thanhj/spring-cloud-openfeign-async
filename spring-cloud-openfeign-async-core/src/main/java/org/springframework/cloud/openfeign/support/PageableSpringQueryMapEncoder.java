@@ -21,10 +21,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import feign.querymap.BeanQueryMapEncoder;
+
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-
-import feign.querymap.BeanQueryMapEncoder;
 
 /**
  * Provides support for encoding Pageable annotated as

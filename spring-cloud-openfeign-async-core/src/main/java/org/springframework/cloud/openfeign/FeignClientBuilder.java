@@ -16,9 +16,9 @@
 
 package org.springframework.cloud.openfeign;
 
-import org.springframework.context.ApplicationContext;
-
 import feign.Feign;
+
+import org.springframework.context.ApplicationContext;
 
 /**
  * A builder for creating Feign clients without using the {@link FeignClient} annotation.

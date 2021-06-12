@@ -16,6 +16,7 @@
 
 package org.springframework.cloud.openfeign;
 
+import feign.codec.Encoder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -26,8 +27,6 @@ import org.springframework.cloud.openfeign.support.PageableSpringEncoder;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import feign.codec.Encoder;
 
 /**
  * @author Spencer Gibb

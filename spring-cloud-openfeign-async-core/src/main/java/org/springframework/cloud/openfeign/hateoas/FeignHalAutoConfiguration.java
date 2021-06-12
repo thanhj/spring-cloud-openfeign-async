@@ -16,9 +16,9 @@
 
 package org.springframework.cloud.openfeign.hateoas;
 
-import static org.springframework.hateoas.MediaTypes.HAL_JSON;
-
 import java.util.Collections;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
@@ -35,7 +35,7 @@ import org.springframework.hateoas.RepresentationModel;
 import org.springframework.hateoas.mediatype.hal.HalMediaTypeConfiguration;
 import org.springframework.hateoas.server.mvc.TypeConstrainedMappingJackson2HttpMessageConverter;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import static org.springframework.hateoas.MediaTypes.HAL_JSON;
 
 /**
  * @author Hector Espert

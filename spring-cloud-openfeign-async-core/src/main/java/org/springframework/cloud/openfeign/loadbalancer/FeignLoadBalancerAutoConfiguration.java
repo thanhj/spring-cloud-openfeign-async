@@ -16,6 +16,9 @@
 
 package org.springframework.cloud.openfeign.loadbalancer;
 
+import feign.Client;
+import feign.Feign;
+
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -29,9 +32,6 @@ import org.springframework.cloud.openfeign.FeignAutoConfiguration;
 import org.springframework.cloud.openfeign.support.FeignHttpClientProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-
-import feign.Client;
-import feign.Feign;
 
 /**
  * An autoconfiguration that instantiates {@link LoadBalancerClient}-based implementations

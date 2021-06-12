@@ -16,8 +16,6 @@
 
 package org.springframework.cloud.openfeign;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import java.lang.reflect.Field;
 
 import javax.net.ssl.SSLContextSpi;
@@ -40,6 +38,8 @@ import org.springframework.cloud.test.ClassPathExclusions;
 import org.springframework.cloud.test.ModifiedClassPathRunner;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.util.ReflectionUtils;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author Ryan Baxter

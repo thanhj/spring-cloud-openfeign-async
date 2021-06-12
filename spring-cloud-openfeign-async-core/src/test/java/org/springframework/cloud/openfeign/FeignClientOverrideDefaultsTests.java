@@ -16,22 +16,8 @@
 
 package org.springframework.cloud.openfeign;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
-
-import org.junit.jupiter.api.Test;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.cloud.openfeign.support.PageableSpringEncoder;
-import org.springframework.cloud.openfeign.support.SpringMvcContract;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.web.bind.annotation.GetMapping;
 
 import feign.Capability;
 import feign.Contract;
@@ -50,6 +36,19 @@ import feign.micrometer.MicrometerCapability;
 import feign.optionals.OptionalDecoder;
 import feign.querymap.BeanQueryMapEncoder;
 import feign.slf4j.Slf4jLogger;
+import org.junit.jupiter.api.Test;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.cloud.openfeign.support.PageableSpringEncoder;
+import org.springframework.cloud.openfeign.support.SpringMvcContract;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.web.bind.annotation.GetMapping;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author Spencer Gibb

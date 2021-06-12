@@ -16,10 +16,10 @@
 
 package org.springframework.cloud.openfeign.encoding;
 
-import org.springframework.util.Assert;
-
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
+
+import org.springframework.util.Assert;
 
 /**
  * The base request interceptor.

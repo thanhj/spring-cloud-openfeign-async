@@ -16,8 +16,6 @@
 
 package org.springframework.cloud.openfeign;
 
-import static feign.Util.checkNotNull;
-
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
@@ -26,14 +24,16 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+import feign.Feign;
+import feign.InvocationHandlerFactory;
+import feign.Target;
+
 import org.springframework.cloud.client.circuitbreaker.CircuitBreaker;
 import org.springframework.cloud.client.circuitbreaker.CircuitBreakerFactory;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 
-import feign.Feign;
-import feign.InvocationHandlerFactory;
-import feign.Target;
+import static feign.Util.checkNotNull;
 
 class FeignCircuitBreakerInvocationHandler implements InvocationHandler {
 

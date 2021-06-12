@@ -20,7 +20,7 @@ import feign.Feign;
 import feign.Target;
 
 /**
- * @author Spencer Gibb
+ * @author th
  */
 public interface Targeter {
 

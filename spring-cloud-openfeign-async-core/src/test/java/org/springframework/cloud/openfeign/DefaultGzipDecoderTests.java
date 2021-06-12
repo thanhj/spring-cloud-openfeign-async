@@ -16,8 +16,6 @@
 
 package org.springframework.cloud.openfeign;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import java.util.Objects;
 
 import org.junit.Test;
@@ -36,6 +34,8 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author Jaesik Kim

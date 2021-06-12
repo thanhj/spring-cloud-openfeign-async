@@ -16,14 +16,9 @@
 
 package org.springframework.cloud.openfeign.hateoas;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-import static org.springframework.hateoas.MediaTypes.HAL_JSON;
-
 import java.util.Collections;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -40,7 +35,11 @@ import org.springframework.hateoas.mediatype.hal.Jackson2HalModule;
 import org.springframework.hateoas.server.LinkRelationProvider;
 import org.springframework.hateoas.server.mvc.TypeConstrainedMappingJackson2HttpMessageConverter;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+import static org.springframework.hateoas.MediaTypes.HAL_JSON;
 
 /**
  * @author Hector Espert

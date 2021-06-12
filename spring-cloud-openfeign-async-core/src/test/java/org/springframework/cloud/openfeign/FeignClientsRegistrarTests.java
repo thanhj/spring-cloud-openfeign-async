@@ -16,9 +16,6 @@
 
 package org.springframework.cloud.openfeign;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatCode;
-
 import java.util.Collections;
 
 import org.junit.Test;
@@ -30,6 +27,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.mock.env.MockEnvironment;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatCode;
 
 /**
  * @author Spencer Gibb

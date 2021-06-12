@@ -16,12 +16,6 @@
 
 package org.springframework.cloud.openfeign.circuitbreaker;
 
-import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 import java.time.Duration;
 import java.util.Objects;
 import java.util.UUID;
@@ -29,6 +23,7 @@ import java.util.function.Function;
 
 import javax.servlet.http.HttpServletRequest;
 
+import feign.RequestInterceptor;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.ObjectProvider;
@@ -53,7 +48,11 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import feign.RequestInterceptor;
+import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
  * Tests for asynchronous circuit breaker.

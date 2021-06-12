@@ -16,6 +16,13 @@
 
 package org.springframework.cloud.openfeign;
 
+import feign.Contract;
+import feign.Feign;
+import feign.Logger;
+import feign.codec.Decoder;
+import feign.codec.Encoder;
+import feign.optionals.OptionalDecoder;
+import feign.slf4j.Slf4jLogger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -30,14 +37,6 @@ import org.springframework.cloud.test.ModifiedClassPathRunner;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-
-import feign.Contract;
-import feign.Feign;
-import feign.Logger;
-import feign.codec.Decoder;
-import feign.codec.Encoder;
-import feign.optionals.OptionalDecoder;
-import feign.slf4j.Slf4jLogger;
 
 /**
  * @author Spencer Gibb

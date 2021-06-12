@@ -16,12 +16,13 @@
 
 package org.springframework.cloud.openfeign;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.DEFINED_PORT;
-
 import java.lang.reflect.Field;
 import java.util.Objects;
 
+import feign.Client;
+import feign.Feign;
+import feign.Target;
+import feign.httpclient.ApacheHttpClient;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -40,10 +41,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import feign.Client;
-import feign.Feign;
-import feign.Target;
-import feign.httpclient.ApacheHttpClient;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.DEFINED_PORT;
 
 /**
  * @author Spencer Gibb

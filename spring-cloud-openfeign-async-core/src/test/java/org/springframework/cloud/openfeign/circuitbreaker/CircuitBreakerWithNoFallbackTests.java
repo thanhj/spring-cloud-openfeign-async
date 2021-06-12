@@ -16,9 +16,6 @@
 
 package org.springframework.cloud.openfeign.circuitbreaker;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-
 import java.util.function.Function;
 
 import org.apache.commons.logging.Log;
@@ -46,6 +43,9 @@ import org.springframework.util.SocketUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 /**
  * Tests for Feign calls with CircuitBreaker, without fallbacks.

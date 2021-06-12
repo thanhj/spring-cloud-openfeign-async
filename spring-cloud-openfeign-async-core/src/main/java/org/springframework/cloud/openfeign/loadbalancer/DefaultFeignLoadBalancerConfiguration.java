@@ -16,6 +16,8 @@
 
 package org.springframework.cloud.openfeign.loadbalancer;
 
+import feign.Client;
+
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -28,8 +30,6 @@ import org.springframework.cloud.loadbalancer.support.LoadBalancerClientFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
-
-import feign.Client;
 
 /**
  * Configuration instantiating a {@link LoadBalancerClient}-based {@link Client} object

@@ -16,9 +16,8 @@
 
 package org.springframework.cloud.openfeign.support;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
-
+import feign.RequestTemplate;
+import feign.codec.Encoder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -31,8 +30,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import feign.RequestTemplate;
-import feign.codec.Encoder;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
 /**
  * Tests the pagination encoding and sorting.

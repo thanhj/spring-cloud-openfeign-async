@@ -16,10 +16,6 @@
 
 package org.springframework.cloud.openfeign;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
-
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
@@ -38,6 +34,18 @@ import java.util.stream.Stream;
 
 import javax.servlet.http.HttpServletRequest;
 
+import feign.Capability;
+import feign.Feign;
+import feign.InvocationHandlerFactory;
+import feign.Request;
+import feign.RequestInterceptor;
+import feign.RequestTemplate;
+import feign.RetryableException;
+import feign.Retryer;
+import feign.codec.EncodeException;
+import feign.codec.Encoder;
+import feign.codec.ErrorDecoder;
+import feign.micrometer.MicrometerCapability;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledForJreRange;
 import org.junit.jupiter.api.condition.JRE;
@@ -63,18 +71,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import feign.Capability;
-import feign.Feign;
-import feign.InvocationHandlerFactory;
-import feign.Request;
-import feign.RequestInterceptor;
-import feign.RequestTemplate;
-import feign.RetryableException;
-import feign.Retryer;
-import feign.codec.EncodeException;
-import feign.codec.Encoder;
-import feign.codec.ErrorDecoder;
-import feign.micrometer.MicrometerCapability;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
 /**
  * @author Eko Kurniawan Khannedy

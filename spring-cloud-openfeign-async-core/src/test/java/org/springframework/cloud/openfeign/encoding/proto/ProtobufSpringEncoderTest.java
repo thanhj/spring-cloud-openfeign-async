@@ -16,11 +16,6 @@
 
 package org.springframework.cloud.openfeign.encoding.proto;
 
-import static feign.Request.Body.encoded;
-import static feign.Request.HttpMethod.POST;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.fail;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
@@ -29,6 +24,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import com.google.protobuf.InvalidProtocolBufferException;
+import feign.RequestTemplate;
+import feign.httpclient.ApacheHttpClient;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.ProtocolVersion;
@@ -50,10 +48,10 @@ import org.springframework.boot.autoconfigure.http.HttpMessageConverters;
 import org.springframework.cloud.openfeign.support.SpringEncoder;
 import org.springframework.http.converter.protobuf.ProtobufHttpMessageConverter;
 
-import com.google.protobuf.InvalidProtocolBufferException;
-
-import feign.RequestTemplate;
-import feign.httpclient.ApacheHttpClient;
+import static feign.Request.Body.encoded;
+import static feign.Request.HttpMethod.POST;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
 
 /**
  * Test {@link SpringEncoder} with {@link ProtobufHttpMessageConverter}

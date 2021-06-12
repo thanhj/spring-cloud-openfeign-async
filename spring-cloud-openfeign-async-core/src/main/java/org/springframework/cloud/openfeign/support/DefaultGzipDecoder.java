@@ -24,11 +24,11 @@ import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.zip.GZIPInputStream;
 
-import org.springframework.cloud.openfeign.encoding.HttpEncoding;
-
 import feign.FeignException;
 import feign.Response;
 import feign.codec.Decoder;
+
+import org.springframework.cloud.openfeign.encoding.HttpEncoding;
 
 /**
  * When response is compressed as gzip, this decompresses and uses {@link SpringDecoder}

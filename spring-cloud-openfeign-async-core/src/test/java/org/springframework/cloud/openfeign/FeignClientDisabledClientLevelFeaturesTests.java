@@ -16,10 +16,12 @@
 
 package org.springframework.cloud.openfeign;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import java.util.Map;
 
+import feign.Capability;
+import feign.Contract;
+import feign.RequestLine;
+import feign.micrometer.MicrometerCapability;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,10 +35,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import feign.Capability;
-import feign.Contract;
-import feign.RequestLine;
-import feign.micrometer.MicrometerCapability;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author Jonatan Ivanov

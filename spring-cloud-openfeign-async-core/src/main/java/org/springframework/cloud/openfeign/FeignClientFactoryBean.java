@@ -22,6 +22,20 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
+import feign.Capability;
+import feign.Client;
+import feign.Contract;
+import feign.ExceptionPropagationPolicy;
+import feign.Feign;
+import feign.Logger;
+import feign.QueryMapEncoder;
+import feign.Request;
+import feign.RequestInterceptor;
+import feign.Retryer;
+import feign.Target.HardCodedTarget;
+import feign.codec.Decoder;
+import feign.codec.Encoder;
+import feign.codec.ErrorDecoder;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -40,21 +54,6 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.core.annotation.AnnotationAwareOrderComparator;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
-
-import feign.Capability;
-import feign.Client;
-import feign.Contract;
-import feign.ExceptionPropagationPolicy;
-import feign.Feign;
-import feign.Logger;
-import feign.QueryMapEncoder;
-import feign.Request;
-import feign.RequestInterceptor;
-import feign.Retryer;
-import feign.Target.HardCodedTarget;
-import feign.codec.Decoder;
-import feign.codec.Encoder;
-import feign.codec.ErrorDecoder;
 
 /**
  * @author Spencer Gibb

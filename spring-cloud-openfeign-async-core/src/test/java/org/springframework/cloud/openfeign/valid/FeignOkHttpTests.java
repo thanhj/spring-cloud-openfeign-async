@@ -16,10 +16,9 @@
 
 package org.springframework.cloud.openfeign.valid;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import java.util.Objects;
 
+import feign.Client;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,7 +47,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import feign.Client;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author Spencer Gibb

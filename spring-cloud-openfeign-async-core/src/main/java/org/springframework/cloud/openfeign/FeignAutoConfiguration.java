@@ -25,6 +25,14 @@ import java.util.concurrent.TimeUnit;
 
 import javax.annotation.PreDestroy;
 
+import com.fasterxml.jackson.databind.Module;
+import feign.Client;
+import feign.Feign;
+import feign.RequestInterceptor;
+import feign.hc5.ApacheHttp5Client;
+import feign.httpclient.ApacheHttpClient;
+import feign.okhttp.OkHttpClient;
+import okhttp3.ConnectionPool;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.http.client.HttpClient;
@@ -61,16 +69,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.oauth2.client.OAuth2ClientContext;
 import org.springframework.security.oauth2.client.resource.OAuth2ProtectedResourceDetails;
-
-import com.fasterxml.jackson.databind.Module;
-
-import feign.Client;
-import feign.Feign;
-import feign.RequestInterceptor;
-import feign.hc5.ApacheHttp5Client;
-import feign.httpclient.ApacheHttpClient;
-import feign.okhttp.OkHttpClient;
-import okhttp3.ConnectionPool;
 
 /**
  * @author Spencer Gibb

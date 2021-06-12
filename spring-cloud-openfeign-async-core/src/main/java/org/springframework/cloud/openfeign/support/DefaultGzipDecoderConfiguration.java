@@ -16,6 +16,9 @@
 
 package org.springframework.cloud.openfeign.support;
 
+import feign.codec.Decoder;
+import feign.optionals.OptionalDecoder;
+
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -24,9 +27,6 @@ import org.springframework.boot.autoconfigure.http.HttpMessageConverters;
 import org.springframework.cloud.openfeign.FeignAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import feign.codec.Decoder;
-import feign.optionals.OptionalDecoder;
 
 /**
  * Configures Default Gzip Decoder.

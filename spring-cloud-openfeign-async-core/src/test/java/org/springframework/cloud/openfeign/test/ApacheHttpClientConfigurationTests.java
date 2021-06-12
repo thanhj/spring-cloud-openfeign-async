@@ -16,16 +16,12 @@
 
 package org.springframework.cloud.openfeign.test;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.mockingDetails;
-
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.concurrent.TimeUnit;
 
+import feign.Client;
+import feign.httpclient.ApacheHttpClient;
 import org.apache.http.Header;
 import org.apache.http.StatusLine;
 import org.apache.http.client.HttpClient;
@@ -57,8 +53,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.util.ReflectionUtils;
 
-import feign.Client;
-import feign.httpclient.ApacheHttpClient;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.mockingDetails;
 
 /**
  * @author Ryan Baxter

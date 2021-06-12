@@ -16,14 +16,11 @@
 
 package org.springframework.cloud.openfeign.security;
 
-import static org.hamcrest.Matchers.contains;
-import static org.hamcrest.Matchers.hasSize;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
 import java.util.Collection;
 import java.util.Map;
 
+import feign.Request.HttpMethod;
+import feign.RequestTemplate;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -35,8 +32,10 @@ import org.springframework.security.oauth2.client.resource.OAuth2AccessDeniedExc
 import org.springframework.security.oauth2.client.token.AccessTokenRequest;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 
-import feign.Request.HttpMethod;
-import feign.RequestTemplate;
+import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.hasSize;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * @author João Pedro Evangelista

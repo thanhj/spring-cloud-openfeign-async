@@ -16,8 +16,9 @@
 
 package org.springframework.cloud.openfeign;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
+import feign.Client;
+import feign.hc5.ApacheHttp5Client;
+import feign.httpclient.ApacheHttpClient;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
 import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManager;
 import org.apache.hc.client5.http.io.HttpClientConnectionManager;
@@ -31,9 +32,7 @@ import org.springframework.cloud.test.ClassPathExclusions;
 import org.springframework.cloud.test.ModifiedClassPathRunner;
 import org.springframework.context.ConfigurableApplicationContext;
 
-import feign.Client;
-import feign.hc5.ApacheHttp5Client;
-import feign.httpclient.ApacheHttpClient;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author Nguyen Ky Thanh

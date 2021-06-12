@@ -16,8 +16,8 @@
 
 package org.springframework.cloud.openfeign.valid;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
+import io.vavr.collection.HashSet;
+import io.vavr.collection.Set;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -42,8 +42,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.vavr.collection.HashSet;
-import io.vavr.collection.Set;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author Spencer Gibb

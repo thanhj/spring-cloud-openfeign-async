@@ -16,8 +16,6 @@
 
 package org.springframework.cloud.openfeign.support;
 
-import static java.util.Optional.ofNullable;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashMap;
@@ -25,6 +23,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.http.HttpHeaders;
+
+import static java.util.Optional.ofNullable;
 
 /**
  * @author Spencer Gibb

@@ -22,8 +22,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import org.springframework.boot.context.properties.ConfigurationProperties;
-
 import feign.Capability;
 import feign.Contract;
 import feign.ExceptionPropagationPolicy;
@@ -33,6 +31,8 @@ import feign.Retryer;
 import feign.codec.Decoder;
 import feign.codec.Encoder;
 import feign.codec.ErrorDecoder;
+
+import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
  * @author Eko Kurniawan Khannedy

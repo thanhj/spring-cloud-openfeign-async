@@ -16,8 +16,7 @@
 
 package org.springframework.cloud.openfeign.encoding.proto;
 
-import static feign.Request.HttpMethod.POST;
-
+import feign.RequestTemplate;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -28,7 +27,7 @@ import org.springframework.cloud.test.ClassPathExclusions;
 import org.springframework.cloud.test.ModifiedClassPathRunner;
 import org.springframework.http.converter.StringHttpMessageConverter;
 
-import feign.RequestTemplate;
+import static feign.Request.HttpMethod.POST;
 
 /**
  * Test {@link SpringEncoder} when protobuf is not in classpath

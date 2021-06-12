@@ -16,10 +16,12 @@
 
 package org.springframework.cloud.openfeign.loadbalancer;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import java.util.Map;
 
+import feign.Client;
+import feign.hc5.ApacheHttp5Client;
+import feign.httpclient.ApacheHttpClient;
+import feign.okhttp.OkHttpClient;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.boot.WebApplicationType;
@@ -30,10 +32,7 @@ import org.springframework.cloud.loadbalancer.config.BlockingLoadBalancerClientA
 import org.springframework.cloud.loadbalancer.config.LoadBalancerAutoConfiguration;
 import org.springframework.context.ConfigurableApplicationContext;
 
-import feign.Client;
-import feign.hc5.ApacheHttp5Client;
-import feign.httpclient.ApacheHttpClient;
-import feign.okhttp.OkHttpClient;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author Olga Maciaszek-Sharma

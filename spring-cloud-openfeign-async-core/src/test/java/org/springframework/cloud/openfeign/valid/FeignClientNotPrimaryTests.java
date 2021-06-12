@@ -16,11 +16,9 @@
 
 package org.springframework.cloud.openfeign.valid;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
-
 import java.util.List;
 
+import feign.Logger;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -43,7 +41,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import feign.Logger;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
 /**
  * @author Spencer Gibb

@@ -20,15 +20,15 @@ import java.util.concurrent.TimeUnit;
 
 import javax.annotation.PreDestroy;
 
+import okhttp3.ConnectionPool;
+import okhttp3.OkHttpClient;
+
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.cloud.commons.httpclient.OkHttpClientConnectionPoolFactory;
 import org.springframework.cloud.commons.httpclient.OkHttpClientFactory;
 import org.springframework.cloud.openfeign.support.FeignHttpClientProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import okhttp3.ConnectionPool;
-import okhttp3.OkHttpClient;
 
 /**
  * Defualt configuration for {@link OkHttpClient}.

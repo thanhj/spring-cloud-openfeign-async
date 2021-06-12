@@ -16,11 +16,11 @@
 
 package org.springframework.cloud.openfeign;
 
-import org.springframework.cloud.client.circuitbreaker.CircuitBreakerFactory;
-import org.springframework.util.StringUtils;
-
 import feign.Feign;
 import feign.Target;
+
+import org.springframework.cloud.client.circuitbreaker.CircuitBreakerFactory;
+import org.springframework.util.StringUtils;
 
 @SuppressWarnings("unchecked")
 class FeignCircuitBreakerTargeter implements Targeter {

@@ -16,8 +16,8 @@
 
 package org.springframework.cloud.openfeign;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
+import feign.Logger;
+import feign.slf4j.Slf4jLogger;
 import org.junit.Test;
 
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -25,8 +25,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
-import feign.Logger;
-import feign.slf4j.Slf4jLogger;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author Venil Noronha

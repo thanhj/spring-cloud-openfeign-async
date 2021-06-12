@@ -16,12 +16,15 @@
 
 package org.springframework.cloud.openfeign;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Map;
 
+import feign.Contract;
+import feign.InvocationHandlerFactory;
+import feign.RequestLine;
+import feign.Response;
+import feign.codec.ErrorDecoder;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledForJreRange;
 import org.junit.jupiter.api.condition.JRE;
@@ -37,11 +40,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import feign.Contract;
-import feign.InvocationHandlerFactory;
-import feign.RequestLine;
-import feign.Response;
-import feign.codec.ErrorDecoder;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author Michael Cramer

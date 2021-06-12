@@ -16,11 +16,11 @@
 
 package org.springframework.cloud.openfeign;
 
-import org.springframework.cloud.client.circuitbreaker.CircuitBreaker;
-import org.springframework.cloud.client.circuitbreaker.CircuitBreakerFactory;
-
 import feign.Feign;
 import feign.Target;
+
+import org.springframework.cloud.client.circuitbreaker.CircuitBreaker;
+import org.springframework.cloud.client.circuitbreaker.CircuitBreakerFactory;
 
 /**
  * Allows Feign interfaces to work with {@link CircuitBreaker}.

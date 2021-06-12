@@ -16,10 +16,9 @@
 
 package org.springframework.cloud.openfeign;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import java.util.concurrent.TimeUnit;
 
+import feign.Request;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +35,7 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.context.support.GenericWebApplicationContext;
 
-import feign.Request;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author Jasbir Singh

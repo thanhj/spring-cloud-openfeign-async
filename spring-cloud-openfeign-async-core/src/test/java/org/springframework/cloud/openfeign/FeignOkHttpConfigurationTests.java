@@ -16,12 +16,11 @@
 
 package org.springframework.cloud.openfeign;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import java.lang.reflect.Field;
 
 import javax.net.ssl.HostnameVerifier;
 
+import okhttp3.OkHttpClient;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -36,7 +35,7 @@ import org.springframework.cloud.test.ModifiedClassPathRunner;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.util.ReflectionUtils;
 
-import okhttp3.OkHttpClient;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author Ryan Baxter

@@ -16,6 +16,11 @@
 
 package org.springframework.cloud.openfeign;
 
+import java.util.Map;
+
+import org.assertj.core.util.Maps;
+import org.junit.jupiter.api.Test;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.cloud.openfeign.test.EqualsAndHashCodeAssert.assertEqualsAndHashCodeConsistency;
 import static org.springframework.cloud.openfeign.test.EqualsAndHashCodeAssert.assertEqualsConsistency;
@@ -23,11 +28,6 @@ import static org.springframework.cloud.openfeign.test.EqualsAndHashCodeAssert.a
 import static org.springframework.cloud.openfeign.test.EqualsAndHashCodeAssert.assertEqualsSymmetricity;
 import static org.springframework.cloud.openfeign.test.EqualsAndHashCodeAssert.assertEqualsTransitivity;
 import static org.springframework.cloud.openfeign.test.EqualsAndHashCodeAssert.assertHashCodeConsistency;
-
-import java.util.Map;
-
-import org.assertj.core.util.Maps;
-import org.junit.jupiter.api.Test;
 
 /**
  * @author Jonatan Ivanov

@@ -16,10 +16,21 @@
 
 package org.springframework.cloud.openfeign;
 
-import static feign.form.ContentType.MULTIPART;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import feign.Contract;
+import feign.Feign;
+import feign.Logger;
+import feign.QueryMapEncoder;
+import feign.Retryer;
+import feign.codec.Decoder;
+import feign.codec.Encoder;
+import feign.form.MultipartFormContentProcessor;
+import feign.form.spring.SpringFormEncoder;
+import feign.micrometer.MicrometerCapability;
+import feign.optionals.OptionalDecoder;
+import io.micrometer.core.instrument.MeterRegistry;
 
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.ObjectProvider;
@@ -50,18 +61,7 @@ import org.springframework.core.convert.ConversionService;
 import org.springframework.format.support.DefaultFormattingConversionService;
 import org.springframework.format.support.FormattingConversionService;
 
-import feign.Contract;
-import feign.Feign;
-import feign.Logger;
-import feign.QueryMapEncoder;
-import feign.Retryer;
-import feign.codec.Decoder;
-import feign.codec.Encoder;
-import feign.form.MultipartFormContentProcessor;
-import feign.form.spring.SpringFormEncoder;
-import feign.micrometer.MicrometerCapability;
-import feign.optionals.OptionalDecoder;
-import io.micrometer.core.instrument.MeterRegistry;
+import static feign.form.ContentType.MULTIPART;
 
 /**
  * @author Dave Syer

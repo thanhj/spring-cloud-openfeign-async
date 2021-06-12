@@ -18,6 +18,9 @@ package org.springframework.cloud.openfeign.support;
 
 import java.nio.charset.Charset;
 
+import feign.Response;
+import feign.codec.Decoder;
+import feign.codec.Encoder;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 
@@ -36,10 +39,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import feign.Response;
-import feign.codec.Decoder;
-import feign.codec.Encoder;
 
 /**
  * Abstract class for the integration tests for {@link SpringMvcContract}.

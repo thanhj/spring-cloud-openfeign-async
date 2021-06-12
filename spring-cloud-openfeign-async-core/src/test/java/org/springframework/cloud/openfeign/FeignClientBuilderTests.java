@@ -16,9 +16,6 @@
 
 package org.springframework.cloud.openfeign;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
-
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.nio.file.ClosedFileSystemException;
@@ -27,6 +24,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import feign.Feign;
+import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -37,7 +36,7 @@ import org.springframework.cloud.openfeign.testclients.TestClient;
 import org.springframework.context.ApplicationContext;
 import org.springframework.util.ReflectionUtils;
 
-import feign.Feign;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author Sven Döring
@@ -163,12 +162,19 @@ public class FeignClientBuilderTests {
 	@Test
 	public void forType_build() {
 		// given:
-		// throw an unusual exception in the FeignClientFactoryBean
-		Mockito.when(this.applicationContext.getBean(FeignContext.class)).thenThrow(new ClosedFileSystemException());
-
-		// Then
+		Mockito.when(this.applicationContext.getBean(FeignContext.class)).thenThrow(new ClosedFileSystemException()); // throw
+																														// an
+																														// unusual
+																														// exception
+																														// in
+																														// the
+																														// FeignClientFactoryBean
 		final FeignClientBuilder.Builder builder = this.feignClientBuilder.forType(TestClient.class, "TestClient");
-		assertThatThrownBy(() -> builder.build()).isInstanceOf(ClosedFileSystemException.class);
+
+		// expect: 'the build will fail right after calling build() with the mocked
+		// unusual exception'
+		this.thrown.expect(Matchers.isA(ClosedFileSystemException.class));
+		builder.build();
 	}
 
 	private interface TestFeignClient {

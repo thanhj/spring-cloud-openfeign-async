@@ -21,12 +21,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-
 import feign.RequestTemplate;
 import feign.codec.EncodeException;
 import feign.codec.Encoder;
+
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 /**
  * Provides support for encoding spring Pageable via composition.

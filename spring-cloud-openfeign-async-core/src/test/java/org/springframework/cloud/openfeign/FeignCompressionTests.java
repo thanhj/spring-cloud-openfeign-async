@@ -16,10 +16,11 @@
 
 package org.springframework.cloud.openfeign;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import java.util.Map;
 
+import feign.Client;
+import feign.RequestInterceptor;
+import feign.httpclient.ApacheHttpClient;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -36,9 +37,7 @@ import org.springframework.cloud.test.ModifiedClassPathRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import feign.Client;
-import feign.RequestInterceptor;
-import feign.httpclient.ApacheHttpClient;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author Ryan Baxter

@@ -16,10 +16,6 @@
 
 package org.springframework.cloud.openfeign.support;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.cloud.openfeign.support.FeignHttpClientProperties.Hc5Properties.DEFAULT_SOCKET_TIMEOUT;
-import static org.springframework.cloud.openfeign.support.FeignHttpClientProperties.Hc5Properties.DEFAULT_SOCKET_TIMEOUT_UNIT;
-
 import java.util.concurrent.TimeUnit;
 
 import org.junit.After;
@@ -36,6 +32,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.cloud.openfeign.support.FeignHttpClientProperties.Hc5Properties.DEFAULT_SOCKET_TIMEOUT;
+import static org.springframework.cloud.openfeign.support.FeignHttpClientProperties.Hc5Properties.DEFAULT_SOCKET_TIMEOUT_UNIT;
 
 /**
  * @author Ryan Baxter

@@ -16,10 +16,10 @@
 
 package org.springframework.cloud.openfeign;
 
-import static feign.Util.checkNotNull;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import static feign.Util.checkNotNull;
 
 /**
  * Used to control the fallback given its cause.

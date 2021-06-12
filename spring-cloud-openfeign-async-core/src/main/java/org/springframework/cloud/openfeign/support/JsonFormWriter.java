@@ -18,11 +18,11 @@ package org.springframework.cloud.openfeign.support;
 
 import java.io.IOException;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * @author Darren Foong

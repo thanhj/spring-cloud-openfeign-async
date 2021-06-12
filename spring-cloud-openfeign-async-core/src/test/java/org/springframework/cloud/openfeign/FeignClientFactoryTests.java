@@ -16,9 +16,6 @@
 
 package org.springframework.cloud.openfeign;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.web.bind.annotation.RequestMethod.GET;
-
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.ArrayList;
@@ -26,6 +23,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Map;
 
+import feign.Client;
+import feign.InvocationHandlerFactory;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledForJreRange;
 import org.junit.jupiter.api.condition.JRE;
@@ -42,8 +41,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import feign.Client;
-import feign.InvocationHandlerFactory;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
 /**
  * @author Spencer Gibb

@@ -16,8 +16,6 @@
 
 package org.springframework.cloud.openfeign.hateoas;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import org.junit.Before;
 import org.junit.Test;
 
@@ -30,6 +28,8 @@ import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
 import org.springframework.data.rest.webmvc.config.RepositoryRestMvcConfiguration;
 import org.springframework.hateoas.RepresentationModel;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author Hector Espert

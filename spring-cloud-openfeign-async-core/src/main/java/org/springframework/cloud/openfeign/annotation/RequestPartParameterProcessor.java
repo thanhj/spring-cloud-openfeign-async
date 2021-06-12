@@ -16,17 +16,17 @@
 
 package org.springframework.cloud.openfeign.annotation;
 
-import static feign.Util.checkState;
-import static feign.Util.emptyToNull;
-
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.Collection;
 
+import feign.MethodMetadata;
+
 import org.springframework.cloud.openfeign.AnnotatedParameterProcessor;
 import org.springframework.web.bind.annotation.RequestPart;
 
-import feign.MethodMetadata;
+import static feign.Util.checkState;
+import static feign.Util.emptyToNull;
 
 /**
  * {@link RequestPart} parameter processor.

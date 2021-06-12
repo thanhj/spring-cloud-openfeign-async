@@ -16,6 +16,8 @@
 
 package org.springframework.cloud.openfeign.loadbalancer;
 
+import feign.Client;
+import feign.hc5.ApacheHttp5Client;
 import org.apache.hc.client5.http.classic.HttpClient;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -32,9 +34,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-
-import feign.Client;
-import feign.hc5.ApacheHttp5Client;
 
 /**
  * Configuration instantiating a {@link LoadBalancerClient}-based {@link Client} object

@@ -22,6 +22,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
 
+import feign.Client;
+import feign.Request;
+import feign.Response;
+
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.loadbalancer.CompletionContext;
 import org.springframework.cloud.client.loadbalancer.LoadBalancerLifecycle;
@@ -30,10 +34,6 @@ import org.springframework.cloud.client.loadbalancer.ResponseData;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
-
-import feign.Client;
-import feign.Request;
-import feign.Response;
 
 /**
  * @author Olga Maciaszek-Sharma

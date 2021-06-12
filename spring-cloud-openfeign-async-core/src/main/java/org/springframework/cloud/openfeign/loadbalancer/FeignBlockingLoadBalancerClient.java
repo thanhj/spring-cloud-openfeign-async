@@ -16,14 +16,14 @@
 
 package org.springframework.cloud.openfeign.loadbalancer;
 
-import static org.springframework.cloud.openfeign.loadbalancer.LoadBalancerUtils.buildRequestData;
-import static org.springframework.cloud.openfeign.loadbalancer.LoadBalancerUtils.executeWithLoadBalancerLifecycleProcessing;
-
 import java.io.IOException;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.util.Set;
 
+import feign.Client;
+import feign.Request;
+import feign.Response;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -41,9 +41,8 @@ import org.springframework.cloud.loadbalancer.support.LoadBalancerClientFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.util.Assert;
 
-import feign.Client;
-import feign.Request;
-import feign.Response;
+import static org.springframework.cloud.openfeign.loadbalancer.LoadBalancerUtils.buildRequestData;
+import static org.springframework.cloud.openfeign.loadbalancer.LoadBalancerUtils.executeWithLoadBalancerLifecycleProcessing;
 
 /**
  * A {@link Client} implementation that uses {@link LoadBalancerClient} to select a

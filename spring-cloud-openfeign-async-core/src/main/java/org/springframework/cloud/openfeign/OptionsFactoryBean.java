@@ -19,12 +19,12 @@ package org.springframework.cloud.openfeign;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
+import feign.Request;
+
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-
-import feign.Request;
 
 /**
  * This factory bean is meant to create {@link Request.Options} instance as per the

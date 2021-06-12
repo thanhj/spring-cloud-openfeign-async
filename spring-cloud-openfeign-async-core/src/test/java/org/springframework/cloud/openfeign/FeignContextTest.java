@@ -16,10 +16,10 @@
 
 package org.springframework.cloud.openfeign;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import java.util.Collection;
 
+import feign.Logger;
+import feign.RequestInterceptor;
 import org.assertj.core.util.Lists;
 import org.junit.Test;
 
@@ -28,8 +28,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
-import feign.Logger;
-import feign.RequestInterceptor;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class FeignContextTest {
 
