@@ -14,8 +14,11 @@
  * limitations under the License.
  */
 
-package org.springframework.cloud.openfeign.async.valid.scanning;
+package org.springframework.cloud.openfeign.async.valid;
 
+import java.util.List;
+
+import feign.Logger;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -27,12 +30,11 @@ import org.springframework.cloud.client.DefaultServiceInstance;
 import org.springframework.cloud.loadbalancer.annotation.LoadBalancerClient;
 import org.springframework.cloud.loadbalancer.core.ServiceInstanceListSupplier;
 import org.springframework.cloud.loadbalancer.support.ServiceInstanceListSuppliers;
+import org.springframework.cloud.openfeign.async.AsyncFeignClient;
 import org.springframework.cloud.openfeign.async.EnableAsyncFeignClients;
-import org.springframework.cloud.openfeign.async.test.NoSecurityConfiguration;
-import org.springframework.cloud.openfeign.async.testclients.TestClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.Primary;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -43,36 +45,105 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
 /**
- * @author Ryan Baxter
+ * @author Spencer Gibb
+ * @author Jakub Narloch
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = FeignClientEnvVarTests.Application.class, webEnvironment = RANDOM_PORT,
-		value = { "spring.application.name=feignclienttest", "feign.httpclient.enabled=false",
-				"basepackage=org.springframework.cloud.openfeign.async.testclients" })
+@SpringBootTest(classes = AsyncFeignClientNotPrimaryTests.Application.class, webEnvironment = RANDOM_PORT,
+		value = { "spring.application.name=feignclientnotprimarytest",
+				"logging.level.org.springframework.cloud.openfeign.async.valid=DEBUG", "feign.httpclient.enabled=false",
+				"feign.okhttp.enabled=false" })
 @DirtiesContext
-public class FeignClientEnvVarTests {
+public class AsyncFeignClientNotPrimaryTests {
+
+	public static final String HELLO_WORLD_1 = "hello world 1";
 
 	@Autowired
 	private TestClient testClient;
 
+	@Autowired
+	private List<TestClient> testClients;
+
+	@Test
+	public void testClientType() {
+		assertThat(this.testClient).as("testClient was of wrong type").isInstanceOf(PrimaryTestClient.class);
+	}
+
+	@Test
+	public void testClientCount() {
+		assertThat(this.testClients).as("testClients was wrong").hasSize(2);
+	}
+
 	@Test
 	public void testSimpleType() {
-		String hello = this.testClient.getHello();
-		assertThat(hello).as("hello was null").isNotNull();
-		assertThat(hello).as("first hello didn't match").isEqualTo("hello world 1");
+		Hello hello = this.testClient.getHello();
+		assertThat(hello).as("hello was null").isNull();
+	}
+
+	@AsyncFeignClient(name = "localapp", primary = false)
+	protected interface TestClient {
+
+		@RequestMapping(method = RequestMethod.GET, path = "/hello")
+		Hello getHello();
+
 	}
 
 	@Configuration(proxyBeanMethods = false)
 	@EnableAutoConfiguration
 	@RestController
-	@EnableAsyncFeignClients(basePackages = { "${basepackage}" })
+	@EnableAsyncFeignClients(clients = { TestClient.class }, defaultConfiguration = TestDefaultFeignConfig.class)
 	@LoadBalancerClient(name = "localapp", configuration = LocalClientConfiguration.class)
-	@Import(NoSecurityConfiguration.class)
 	protected static class Application {
 
-		@RequestMapping(method = RequestMethod.GET, value = "/hello")
-		public String getHello() {
-			return "hello world 1";
+		@Bean
+		@Primary
+		public PrimaryTestClient primaryTestClient() {
+			return new PrimaryTestClient();
+		}
+
+		@RequestMapping(method = RequestMethod.GET, path = "/hello")
+		public Hello getHello() {
+			return new Hello(HELLO_WORLD_1);
+		}
+
+	}
+
+	protected static class PrimaryTestClient implements TestClient {
+
+		@Override
+		public Hello getHello() {
+			return null;
+		}
+
+	}
+
+	public static class Hello {
+
+		private String message;
+
+		public Hello() {
+		}
+
+		public Hello(String message) {
+			this.message = message;
+		}
+
+		public String getMessage() {
+			return this.message;
+		}
+
+		public void setMessage(String message) {
+			this.message = message;
+		}
+
+	}
+
+	@Configuration(proxyBeanMethods = false)
+	public static class TestDefaultFeignConfig {
+
+		@Bean
+		Logger.Level feignLoggerLevel() {
+			return Logger.Level.FULL;
 		}
 
 	}
@@ -86,8 +157,8 @@ public class FeignClientEnvVarTests {
 
 		@Bean
 		public ServiceInstanceListSupplier staticServiceInstanceListSupplier() {
-			return ServiceInstanceListSuppliers.from("localapp",
-					new DefaultServiceInstance("localapp-1", "localapp", "localhost", port, false));
+			return ServiceInstanceListSuppliers.from("local",
+					new DefaultServiceInstance("local-1", "local", "localhost", port, false));
 		}
 
 	}

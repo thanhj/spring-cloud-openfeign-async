@@ -32,7 +32,7 @@ import static org.springframework.cloud.openfeign.async.test.EqualsAndHashCodeAs
 /**
  * @author Jonatan Ivanov
  */
-class FeignClientPropertiesTests {
+class AsyncFeignClientPropertiesTests {
 
 	@Test
 	void shouldDefaultToValuesWhenFieldsNotSet() {

@@ -16,14 +16,14 @@
 
 package org.springframework.cloud.openfeign.async.beans;
 
-import org.springframework.cloud.openfeign.async.FeignClient;
-import org.springframework.cloud.openfeign.async.beans.BeansFeignClientTests.Hello;
+import org.springframework.cloud.openfeign.async.AsyncFeignClient;
+import org.springframework.cloud.openfeign.async.beans.BeansAsyncFeignClientTests.Hello;
 import org.springframework.context.annotation.Primary;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 @Primary
-@FeignClient("localapp")
+@AsyncFeignClient("localapp")
 public interface TestClient {
 
 	@RequestMapping(method = RequestMethod.GET, value = "/hello")

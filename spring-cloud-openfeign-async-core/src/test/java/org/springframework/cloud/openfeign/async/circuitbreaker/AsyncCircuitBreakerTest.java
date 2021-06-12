@@ -34,8 +34,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cloud.client.circuitbreaker.CircuitBreaker;
 import org.springframework.cloud.client.circuitbreaker.CircuitBreakerFactory;
 import org.springframework.cloud.client.circuitbreaker.ConfigBuilder;
+import org.springframework.cloud.openfeign.async.AsyncFeignClient;
 import org.springframework.cloud.openfeign.async.EnableAsyncFeignClients;
-import org.springframework.cloud.openfeign.async.FeignClient;
 import org.springframework.cloud.openfeign.async.test.NoSecurityConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -163,7 +163,7 @@ class AsyncCircuitBreakerTest {
 
 	}
 
-	@FeignClient(name = "async-circuit-breaker-test", url = "http://localhost:${local.server.port}")
+	@AsyncFeignClient(name = "async-circuit-breaker-test", url = "http://localhost:${local.server.port}")
 	interface TestClient {
 
 		@GetMapping("/hello")

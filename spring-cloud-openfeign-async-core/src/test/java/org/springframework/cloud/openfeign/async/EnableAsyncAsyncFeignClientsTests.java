@@ -43,7 +43,7 @@ import org.springframework.context.annotation.Import;
  */
 @RunWith(ModifiedClassPathRunner.class)
 @ClassPathExclusions({ "spring-data-commons-*.jar" })
-public class EnableAsyncFeignClientsTests {
+public class EnableAsyncAsyncFeignClientsTests {
 
 	private ConfigurableApplicationContext context;
 
@@ -51,7 +51,7 @@ public class EnableAsyncFeignClientsTests {
 	public void setUp() {
 		context = new SpringApplicationBuilder().web(WebApplicationType.NONE)
 				.properties("debug=true", "feign.httpclient.enabled=false")
-				.sources(EnableAsyncFeignClientsTests.PlainConfiguration.class).run();
+				.sources(EnableAsyncAsyncFeignClientsTests.PlainConfiguration.class).run();
 	}
 
 	@After

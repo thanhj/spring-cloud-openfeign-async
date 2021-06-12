@@ -16,10 +16,11 @@
 
 package org.springframework.cloud.openfeign.async.clientconfig;
 
-import org.springframework.cloud.openfeign.async.FeignClient;
+import org.springframework.cloud.openfeign.async.AsyncFeignClient;
 
 /**
- * Additional Feign Client configuration that are not included in {@link FeignClient}.
+ * Additional Feign Client configuration that are not included in
+ * {@link AsyncFeignClient}.
  *
  * @author Matt King
  */

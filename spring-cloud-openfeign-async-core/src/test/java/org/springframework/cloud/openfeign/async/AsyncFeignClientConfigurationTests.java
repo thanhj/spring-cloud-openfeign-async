@@ -44,7 +44,7 @@ import static org.springframework.cloud.openfeign.async.test.EqualsAndHashCodeAs
 /**
  * @author Jonatan Ivanov
  */
-class FeignClientConfigurationTests {
+class AsyncFeignClientConfigurationTests {
 
 	@Test
 	void shouldDefaultToValuesWhenFieldsNotSet() {

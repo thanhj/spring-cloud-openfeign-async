@@ -42,7 +42,7 @@ import static org.mockito.Mockito.when;
  * @author Jonatan Ivanov
  */
 @ExtendWith({ MockitoExtension.class })
-class FeignClientMetricsEnabledConditionTests {
+class AsyncFeignClientMetricsEnabledConditionTests {
 
 	@Mock
 	private ConditionContext context;

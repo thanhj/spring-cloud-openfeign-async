@@ -46,9 +46,9 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @author Michael Cramer
  * @author Jonatan Ivanov
  */
-@SpringBootTest(classes = FeignClientErrorDecoderTests.TestConfiguration.class)
+@SpringBootTest(classes = AsyncFeignClientErrorDecoderTests.TestConfiguration.class)
 @DirtiesContext
-public class FeignClientErrorDecoderTests {
+public class AsyncFeignClientErrorDecoderTests {
 
 	@Autowired
 	private FeignContext context;
@@ -103,7 +103,7 @@ public class FeignClientErrorDecoderTests {
 
 	}
 
-	@FeignClient(name = "foo", url = "http://foo", configuration = FooConfiguration.class)
+	@AsyncFeignClient(name = "foo", url = "http://foo", configuration = FooConfiguration.class)
 	interface FooClient {
 
 		@RequestLine("GET /")
@@ -130,7 +130,7 @@ public class FeignClientErrorDecoderTests {
 
 	}
 
-	@FeignClient(name = "bar", url = "http://bar", configuration = BarConfiguration.class)
+	@AsyncFeignClient(name = "bar", url = "http://bar", configuration = BarConfiguration.class)
 	interface BarClient {
 
 		@RequestMapping(value = "/", method = RequestMethod.GET)

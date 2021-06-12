@@ -16,13 +16,13 @@
 
 package org.springframework.cloud.openfeign.async.feignclientsregistrar;
 
-import org.springframework.cloud.openfeign.async.FeignClient;
+import org.springframework.cloud.openfeign.async.AsyncFeignClient;
 
 /**
  * @author Michal Domagala
  */
 
-@FeignClient("top-level")
+@AsyncFeignClient("top-level")
 public interface TopLevelClient {
 
 }

@@ -25,8 +25,8 @@ import java.lang.annotation.Target;
 import org.springframework.context.annotation.Import;
 
 /**
- * Scans for interfaces that declare they are feign clients (via {@link FeignClient}
- * <code>@FeignClient</code>). Configures component scanning directives for use with
+ * Scans for interfaces that declare they are feign clients (via {@link AsyncFeignClient}
+ * <code>@AsyncFeignClient</code>). Configures component scanning directives for use with
  * {@link org.springframework.context.annotation.Configuration}
  * <code>@Configuration</code> classes.
  *
@@ -80,9 +80,9 @@ public @interface EnableAsyncFeignClients {
 	Class<?>[] defaultConfiguration() default {};
 
 	/**
-	 * List of classes annotated with @FeignClient. If not empty, disables classpath
+	 * List of classes annotated with @AsyncFeignClient. If not empty, disables classpath
 	 * scanning.
-	 * @return list of FeignClient classes
+	 * @return list of AsyncFeignClient classes
 	 */
 	Class<?>[] clients() default {};
 

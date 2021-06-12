@@ -22,9 +22,9 @@ import org.junit.rules.ExpectedException;
 
 import org.springframework.cloud.client.loadbalancer.LoadBalancerAutoConfiguration;
 import org.springframework.cloud.commons.httpclient.HttpClientConfiguration;
+import org.springframework.cloud.openfeign.async.AsyncFeignClient;
 import org.springframework.cloud.openfeign.async.EnableAsyncFeignClients;
 import org.springframework.cloud.openfeign.async.FeignAutoConfiguration;
-import org.springframework.cloud.openfeign.async.FeignClient;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -36,7 +36,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * @author Dave Syer
  */
-public class FeignClientValidationTests {
+public class AsyncFeignClientValidationTests {
 
 	@Rule
 	public ExpectedException expected = ExpectedException.none();
@@ -71,7 +71,7 @@ public class FeignClientValidationTests {
 	@EnableAsyncFeignClients(clients = NameAndServiceIdConfiguration.Client.class)
 	protected static class NameAndServiceIdConfiguration {
 
-		@FeignClient(name = "bar")
+		@AsyncFeignClient(name = "bar")
 		interface Client {
 
 			@RequestMapping(method = RequestMethod.GET, value = "/")
@@ -87,7 +87,7 @@ public class FeignClientValidationTests {
 			DuplicatedFeignClientNamesConfiguration.BarClient.class })
 	protected static class DuplicatedFeignClientNamesConfiguration {
 
-		@FeignClient(contextId = "foo", name = "bar")
+		@AsyncFeignClient(contextId = "foo", name = "bar")
 		interface FooClient {
 
 			@RequestMapping(method = RequestMethod.GET, value = "/")
@@ -95,7 +95,7 @@ public class FeignClientValidationTests {
 
 		}
 
-		@FeignClient(name = "bar")
+		@AsyncFeignClient(name = "bar")
 		interface BarClient {
 
 			@RequestMapping(method = RequestMethod.GET, value = "/")
@@ -110,7 +110,7 @@ public class FeignClientValidationTests {
 	@EnableAsyncFeignClients(clients = BadHostnameConfiguration.Client.class)
 	protected static class BadHostnameConfiguration {
 
-		@FeignClient("foo_bar")
+		@AsyncFeignClient("foo_bar")
 		interface Client {
 
 			@RequestMapping(method = RequestMethod.GET, value = "/")

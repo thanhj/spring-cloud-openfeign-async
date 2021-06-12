@@ -14,27 +14,27 @@
  * limitations under the License.
  */
 
-package org.springframework.cloud.openfeign.async.valid;
+package org.springframework.cloud.openfeign.async.valid.scanning;
 
-import java.util.List;
-
-import feign.Logger;
+import feign.Client;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.cloud.client.DefaultServiceInstance;
-import org.springframework.cloud.loadbalancer.annotation.LoadBalancerClient;
+import org.springframework.cloud.loadbalancer.annotation.LoadBalancerClients;
 import org.springframework.cloud.loadbalancer.core.ServiceInstanceListSupplier;
 import org.springframework.cloud.loadbalancer.support.ServiceInstanceListSuppliers;
+import org.springframework.cloud.openfeign.async.AsyncFeignClient;
 import org.springframework.cloud.openfeign.async.EnableAsyncFeignClients;
-import org.springframework.cloud.openfeign.async.FeignClient;
+import org.springframework.cloud.openfeign.async.test.NoSecurityConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -46,111 +46,74 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 
 /**
  * @author Spencer Gibb
- * @author Jakub Narloch
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = FeignClientNotPrimaryTests.Application.class, webEnvironment = RANDOM_PORT,
-		value = { "spring.application.name=feignclientnotprimarytest",
-				"logging.level.org.springframework.cloud.openfeign.async.valid=DEBUG", "feign.httpclient.enabled=false",
-				"feign.okhttp.enabled=false" })
+@SpringBootTest(classes = AsyncFeignClientScanningTests.Application.class, webEnvironment = RANDOM_PORT,
+		value = { "spring.application.name=feignclienttest", "feign.httpclient.enabled=false" })
 @DirtiesContext
-public class FeignClientNotPrimaryTests {
+public class AsyncFeignClientScanningTests {
 
-	public static final String HELLO_WORLD_1 = "hello world 1";
+	@Value("${local.server.port}")
+	private int port = 0;
 
 	@Autowired
 	private TestClient testClient;
 
 	@Autowired
-	private List<TestClient> testClients;
+	private TestClientByKey testClientByKey;
 
-	@Test
-	public void testClientType() {
-		assertThat(this.testClient).as("testClient was of wrong type").isInstanceOf(PrimaryTestClient.class);
-	}
-
-	@Test
-	public void testClientCount() {
-		assertThat(this.testClients).as("testClients was wrong").hasSize(2);
-	}
+	@Autowired
+	@SuppressWarnings("unused")
+	private Client feignClient;
 
 	@Test
 	public void testSimpleType() {
-		Hello hello = this.testClient.getHello();
-		assertThat(hello).as("hello was null").isNull();
+		String hello = this.testClient.getHello();
+		assertThat(hello).as("hello was null").isNotNull();
+		assertThat(hello).as("first hello didn't match").isEqualTo("hello world 1");
 	}
 
-	@FeignClient(name = "localapp", primary = false)
+	@Test
+	public void testSimpleTypeByKey() {
+		String hello = this.testClientByKey.getHello();
+		assertThat(hello).as("hello was null").isNotNull();
+		assertThat(hello).as("first hello didn't match").isEqualTo("hello world 1");
+	}
+
+	@AsyncFeignClient("localapp123")
 	protected interface TestClient {
 
-		@RequestMapping(method = RequestMethod.GET, path = "/hello")
-		Hello getHello();
+		@RequestMapping(method = RequestMethod.GET, value = "/hello")
+		String getHello();
+
+	}
+
+	@AsyncFeignClient("${feignClient.localappName}")
+	protected interface TestClientByKey {
+
+		@RequestMapping(method = RequestMethod.GET, value = "/hello")
+		String getHello();
 
 	}
 
 	@Configuration(proxyBeanMethods = false)
 	@EnableAutoConfiguration
 	@RestController
-	@EnableAsyncFeignClients(clients = { TestClient.class }, defaultConfiguration = TestDefaultFeignConfig.class)
-	@LoadBalancerClient(name = "localapp", configuration = LocalClientConfiguration.class)
+	@EnableAsyncFeignClients // NO clients attribute. That's what this class is testing!
+	@LoadBalancerClients(defaultConfiguration = LocalClientConfiguration.class)
+	@Import(NoSecurityConfiguration.class)
 	protected static class Application {
 
-		@Bean
-		@Primary
-		public PrimaryTestClient primaryTestClient() {
-			return new PrimaryTestClient();
-		}
-
-		@RequestMapping(method = RequestMethod.GET, path = "/hello")
-		public Hello getHello() {
-			return new Hello(HELLO_WORLD_1);
-		}
-
-	}
-
-	protected static class PrimaryTestClient implements TestClient {
-
-		@Override
-		public Hello getHello() {
-			return null;
-		}
-
-	}
-
-	public static class Hello {
-
-		private String message;
-
-		public Hello() {
-		}
-
-		public Hello(String message) {
-			this.message = message;
-		}
-
-		public String getMessage() {
-			return this.message;
-		}
-
-		public void setMessage(String message) {
-			this.message = message;
-		}
-
-	}
-
-	@Configuration(proxyBeanMethods = false)
-	public static class TestDefaultFeignConfig {
-
-		@Bean
-		Logger.Level feignLoggerLevel() {
-			return Logger.Level.FULL;
+		@RequestMapping(method = RequestMethod.GET, value = "/hello")
+		public String getHello() {
+			return "hello world 1";
 		}
 
 	}
 
 	// Load balancer with fixed server list for "local" pointing to localhost
 	@Configuration(proxyBeanMethods = false)
-	public static class LocalClientConfiguration {
+	static class LocalClientConfiguration {
 
 		@LocalServerPort
 		private int port = 0;

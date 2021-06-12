@@ -21,7 +21,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.cloud.openfeign.async.FeignClient;
+import org.springframework.cloud.openfeign.async.AsyncFeignClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,8 +32,8 @@ import static org.mockito.Mockito.when;
 /**
  * @author Olga Maciaszek-Sharma
  */
-@SpringBootTest(classes = FeignClientMockBeanTests.Config.class)
-public class FeignClientMockBeanTests {
+@SpringBootTest(classes = AsyncFeignClientMockBeanTests.Config.class)
+public class AsyncFeignClientMockBeanTests {
 
 	@MockBean
 	private RandomClient randomClient;
@@ -51,7 +51,7 @@ public class FeignClientMockBeanTests {
 		assertThat(returnedMessage).isEqualTo(mockMessage);
 	}
 
-	@FeignClient("random-test")
+	@AsyncFeignClient("random-test")
 	protected interface RandomClient {
 
 		@GetMapping("/random-test")
@@ -74,7 +74,7 @@ public class FeignClientMockBeanTests {
 class TestService {
 
 	@Autowired
-	private FeignClientMockBeanTests.RandomClient randomClient;
+	private AsyncFeignClientMockBeanTests.RandomClient randomClient;
 
 	public String testMethod() {
 		return randomClient.getRandomString();

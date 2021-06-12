@@ -25,8 +25,8 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.cloud.openfeign.async.AsyncFeignClient;
 import org.springframework.cloud.openfeign.async.EnableAsyncFeignClients;
-import org.springframework.cloud.openfeign.async.FeignClient;
 import org.springframework.cloud.openfeign.async.test.NoSecurityConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -62,7 +62,7 @@ public class AbstractSpringMvcContractIntegrationTests {
 				.orElseThrow(IllegalStateException::new);
 	}
 
-	@FeignClient(name = "test", url = "http://localhost:${server.port}/",
+	@AsyncFeignClient(name = "test", url = "http://localhost:${server.port}/",
 			configuration = NoCodecsFeignConfiguration.class)
 	interface TestClient {
 

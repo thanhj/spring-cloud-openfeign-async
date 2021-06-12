@@ -30,8 +30,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import org.springframework.cloud.openfeign.async.AsyncFeignClient;
 import org.springframework.cloud.openfeign.async.EnableAsyncFeignClients;
-import org.springframework.cloud.openfeign.async.FeignClient;
 import org.springframework.cloud.openfeign.async.FeignClientBuilder;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -54,12 +54,12 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @author Aaron Whiteside
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = BeansFeignClientTests.Application.class, webEnvironment = WebEnvironment.RANDOM_PORT,
+@SpringBootTest(classes = BeansAsyncFeignClientTests.Application.class, webEnvironment = WebEnvironment.RANDOM_PORT,
 		value = { "spring.application.name=feignclienttest",
 				"logging.level.org.springframework.cloud.openfeign.async.valid=DEBUG", "feign.httpclient.enabled=false",
 				"feign.okhttp.enabled=false" })
 @DirtiesContext
-public class BeansFeignClientTests {
+public class BeansAsyncFeignClientTests {
 
 	@Value("${local.server.port}")
 	private int port = 0;
@@ -80,7 +80,7 @@ public class BeansFeignClientTests {
 
 	@Test
 	public void testAnnotations() {
-		Map<String, Object> beans = this.context.getBeansWithAnnotation(FeignClient.class);
+		Map<String, Object> beans = this.context.getBeansWithAnnotation(AsyncFeignClient.class);
 		assertThat(beans.containsKey(TestClient.class.getName())).as("Wrong clients: " + beans).isTrue();
 	}
 

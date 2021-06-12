@@ -46,13 +46,13 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 @DirtiesContext
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = FeignClientUsingConfigurerTest.Application.class, value = {
+@SpringBootTest(classes = AsyncFeignClientUsingConfigurerTest.Application.class, value = {
 		"feign.client.config.default.loggerLevel=full",
-		"feign.client.config.default.requestInterceptors[0]=org.springframework.cloud.openfeign.async.FeignClientUsingPropertiesTests.FooRequestInterceptor",
-		"feign.client.config.default.requestInterceptors[1]=org.springframework.cloud.openfeign.async.FeignClientUsingPropertiesTests.BarRequestInterceptor" })
-public class FeignClientUsingConfigurerTest {
+		"feign.client.config.default.requestInterceptors[0]=org.springframework.cloud.openfeign.async.AsyncFeignClientUsingPropertiesTests.FooRequestInterceptor",
+		"feign.client.config.default.requestInterceptors[1]=org.springframework.cloud.openfeign.async.AsyncFeignClientUsingPropertiesTests.BarRequestInterceptor" })
+public class AsyncFeignClientUsingConfigurerTest {
 
-	private static final String BEAN_NAME_PREFIX = "org.springframework.cloud.openfeign.async.FeignClientUsingConfigurerTest$";
+	private static final String BEAN_NAME_PREFIX = "org.springframework.cloud.openfeign.async.AsyncFeignClientUsingConfigurerTest$";
 
 	@Autowired
 	private ConfigurableListableBeanFactory beanFactory;
@@ -157,12 +157,12 @@ public class FeignClientUsingConfigurerTest {
 
 	}
 
-	@FeignClient("testFeignClient")
+	@AsyncFeignClient("testFeignClient")
 	interface TestFeignClient {
 
 	}
 
-	@FeignClient(name = "noInheritFeignClient", configuration = NoInheritConfiguration.class)
+	@AsyncFeignClient(name = "noInheritFeignClient", configuration = NoInheritConfiguration.class)
 	interface NoInheritFeignClient {
 
 	}

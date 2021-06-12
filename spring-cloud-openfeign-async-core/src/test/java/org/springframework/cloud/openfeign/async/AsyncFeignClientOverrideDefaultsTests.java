@@ -55,9 +55,9 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @author Jonatan Ivanov
  * @author Olga Maciaszek-Sharma
  */
-@SpringBootTest(classes = FeignClientOverrideDefaultsTests.TestConfiguration.class)
+@SpringBootTest(classes = AsyncFeignClientOverrideDefaultsTests.TestConfiguration.class)
 @DirtiesContext
-class FeignClientOverrideDefaultsTests {
+class AsyncFeignClientOverrideDefaultsTests {
 
 	@Autowired
 	private FeignContext context;
@@ -160,7 +160,7 @@ class FeignClientOverrideDefaultsTests {
 		assertThat(barCapabilities.get("noOpCapability")).isExactlyInstanceOf(NoOpCapability.class);
 	}
 
-	@FeignClient(name = "foo", url = "https://foo", configuration = FooConfiguration.class)
+	@AsyncFeignClient(name = "foo", url = "https://foo", configuration = FooConfiguration.class)
 	interface FooClient {
 
 		@RequestLine("GET /")
@@ -168,7 +168,7 @@ class FeignClientOverrideDefaultsTests {
 
 	}
 
-	@FeignClient(name = "bar", url = "https://bar", configuration = BarConfiguration.class)
+	@AsyncFeignClient(name = "bar", url = "https://bar", configuration = BarConfiguration.class)
 	interface BarClient {
 
 		@GetMapping("/")

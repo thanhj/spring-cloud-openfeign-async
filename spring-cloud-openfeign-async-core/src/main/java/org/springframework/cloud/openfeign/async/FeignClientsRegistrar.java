@@ -81,12 +81,13 @@ class FeignClientsRegistrar implements ImportBeanDefinitionRegistrar, ResourceLo
 	}
 
 	static void validateFallback(final Class clazz) {
-		Assert.isTrue(!clazz.isInterface(), "Fallback class must implement the interface annotated by @FeignClient");
+		Assert.isTrue(!clazz.isInterface(),
+				"Fallback class must implement the interface annotated by @AsyncFeignClient");
 	}
 
 	static void validateFallbackFactory(final Class clazz) {
 		Assert.isTrue(!clazz.isInterface(), "Fallback factory must produce instances "
-				+ "of fallback classes that implement the interface annotated by @FeignClient");
+				+ "of fallback classes that implement the interface annotated by @AsyncFeignClient");
 	}
 
 	static String getName(String name) {
@@ -175,7 +176,7 @@ class FeignClientsRegistrar implements ImportBeanDefinitionRegistrar, ResourceLo
 		if (clients == null || clients.length == 0) {
 			ClassPathScanningCandidateComponentProvider scanner = getScanner();
 			scanner.setResourceLoader(this.resourceLoader);
-			scanner.addIncludeFilter(new AnnotationTypeFilter(FeignClient.class));
+			scanner.addIncludeFilter(new AnnotationTypeFilter(AsyncFeignClient.class));
 			Set<String> basePackages = getBasePackages(metadata);
 			for (String basePackage : basePackages) {
 				candidateComponents.addAll(scanner.findCandidateComponents(basePackage));
@@ -192,10 +193,11 @@ class FeignClientsRegistrar implements ImportBeanDefinitionRegistrar, ResourceLo
 				// verify annotated class is an interface
 				AnnotatedBeanDefinition beanDefinition = (AnnotatedBeanDefinition) candidateComponent;
 				AnnotationMetadata annotationMetadata = beanDefinition.getMetadata();
-				Assert.isTrue(annotationMetadata.isInterface(), "@FeignClient can only be specified on an interface");
+				Assert.isTrue(annotationMetadata.isInterface(),
+						"@AsyncFeignClient can only be specified on an interface");
 
 				Map<String, Object> attributes = annotationMetadata
-						.getAnnotationAttributes(FeignClient.class.getCanonicalName());
+						.getAnnotationAttributes(AsyncFeignClient.class.getCanonicalName());
 
 				String name = getClientName(attributes);
 				registerClientConfiguration(registry, name, attributes.get("configuration"));
@@ -250,7 +252,7 @@ class FeignClientsRegistrar implements ImportBeanDefinitionRegistrar, ResourceLo
 
 		String[] qualifiers = getQualifiers(attributes);
 		if (ObjectUtils.isEmpty(qualifiers)) {
-			qualifiers = new String[] { contextId + "FeignClient" };
+			qualifiers = new String[] { contextId + "AsyncFeignClient" };
 		}
 
 		BeanDefinitionHolder holder = new BeanDefinitionHolder(beanDefinition, className, qualifiers);
@@ -262,7 +264,7 @@ class FeignClientsRegistrar implements ImportBeanDefinitionRegistrar, ResourceLo
 	private void validate(Map<String, Object> attributes) {
 		AnnotationAttributes annotation = AnnotationAttributes.fromMap(attributes);
 		// This blows up if an aliased property is overspecified
-		// FIXME annotation.getAliasedString("name", FeignClient.class, null);
+		// FIXME annotation.getAliasedString("name", AsyncFeignClient.class, null);
 		validateFallback(annotation.getClass("fallback"));
 		validateFallbackFactory(annotation.getClass("fallbackFactory"));
 	}
@@ -400,7 +402,7 @@ class FeignClientsRegistrar implements ImportBeanDefinitionRegistrar, ResourceLo
 		}
 
 		throw new IllegalStateException(
-				"Either 'name' or 'value' must be provided in @" + FeignClient.class.getSimpleName());
+				"Either 'name' or 'value' must be provided in @" + AsyncFeignClient.class.getSimpleName());
 	}
 
 	private void registerClientConfiguration(BeanDefinitionRegistry registry, Object name, Object configuration) {

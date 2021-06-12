@@ -16,7 +16,7 @@
 
 package org.springframework.cloud.openfeign.async.hateoas.app;
 
-import org.springframework.cloud.openfeign.async.FeignClient;
+import org.springframework.cloud.openfeign.async.AsyncFeignClient;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.PagedModel;
@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 /**
  * @author Hector Espert
  */
-@FeignClient("local")
+@AsyncFeignClient("local")
 public interface FeignHalClient {
 
 	@GetMapping("entity")

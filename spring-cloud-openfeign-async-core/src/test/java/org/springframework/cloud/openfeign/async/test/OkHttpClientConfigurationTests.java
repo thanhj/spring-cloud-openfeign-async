@@ -32,7 +32,7 @@ import org.springframework.cloud.commons.httpclient.DefaultOkHttpClientConnectio
 import org.springframework.cloud.commons.httpclient.DefaultOkHttpClientFactory;
 import org.springframework.cloud.commons.httpclient.OkHttpClientConnectionPoolFactory;
 import org.springframework.cloud.commons.httpclient.OkHttpClientFactory;
-import org.springframework.cloud.openfeign.async.FeignClient;
+import org.springframework.cloud.openfeign.async.AsyncFeignClient;
 import org.springframework.cloud.openfeign.async.loadbalancer.FeignBlockingLoadBalancerClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.annotation.DirtiesContext;
@@ -85,7 +85,7 @@ class OkHttpClientConfigurationTests {
 		return (T) value;
 	}
 
-	@FeignClient(name = "foo")
+	@AsyncFeignClient(name = "foo")
 	interface FooClient {
 
 	}

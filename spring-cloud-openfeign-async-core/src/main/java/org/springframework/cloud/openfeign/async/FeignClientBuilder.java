@@ -21,10 +21,11 @@ import feign.Feign;
 import org.springframework.context.ApplicationContext;
 
 /**
- * A builder for creating Feign clients without using the {@link FeignClient} annotation.
+ * A builder for creating Feign clients without using the {@link AsyncFeignClient}
+ * annotation.
  * <p>
  * This builder builds the Feign client exactly like it would be created by using the
- * {@link FeignClient} annotation.
+ * {@link AsyncFeignClient} annotation.
  *
  * @author Sven Döring
  * @author Matt King
@@ -70,7 +71,7 @@ public class FeignClientBuilder {
 			this.feignClientFactoryBean.setContextId(FeignClientsRegistrar.getName(name));
 			this.feignClientFactoryBean.setInheritParentContext(true);
 			// preset default values - these values resemble the default values on the
-			// FeignClient annotation
+			// AsyncFeignClient annotation
 			this.url("").path("").decode404(false);
 		}
 

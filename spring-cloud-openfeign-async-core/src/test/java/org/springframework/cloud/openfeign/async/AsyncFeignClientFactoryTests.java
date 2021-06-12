@@ -47,7 +47,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 /**
  * @author Spencer Gibb
  */
-public class FeignClientFactoryTests {
+public class AsyncFeignClientFactoryTests {
 
 	@Test
 	public void testChildContexts() {

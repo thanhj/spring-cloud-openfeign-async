@@ -16,13 +16,13 @@
 
 package org.springframework.cloud.openfeign.async.feignclientsregistrar.sub;
 
-import org.springframework.cloud.openfeign.async.FeignClient;
+import org.springframework.cloud.openfeign.async.AsyncFeignClient;
 
 /**
  * @author Michal Domagala
  */
 
-@FeignClient("sub-level")
+@AsyncFeignClient("sub-level")
 public interface SubLevelClient {
 
 }

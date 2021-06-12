@@ -16,22 +16,20 @@
 
 package org.springframework.cloud.openfeign.async.valid.scanning;
 
-import feign.Client;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.cloud.client.DefaultServiceInstance;
-import org.springframework.cloud.loadbalancer.annotation.LoadBalancerClients;
+import org.springframework.cloud.loadbalancer.annotation.LoadBalancerClient;
 import org.springframework.cloud.loadbalancer.core.ServiceInstanceListSupplier;
 import org.springframework.cloud.loadbalancer.support.ServiceInstanceListSuppliers;
 import org.springframework.cloud.openfeign.async.EnableAsyncFeignClients;
-import org.springframework.cloud.openfeign.async.FeignClient;
 import org.springframework.cloud.openfeign.async.test.NoSecurityConfiguration;
+import org.springframework.cloud.openfeign.async.testclients.TestClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -45,26 +43,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
 /**
- * @author Spencer Gibb
+ * @author Ryan Baxter
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = FeignClientScanningTests.Application.class, webEnvironment = RANDOM_PORT,
-		value = { "spring.application.name=feignclienttest", "feign.httpclient.enabled=false" })
+@SpringBootTest(classes = AsyncFeignClientEnvVarTests.Application.class, webEnvironment = RANDOM_PORT,
+		value = { "spring.application.name=feignclienttest", "feign.httpclient.enabled=false",
+				"basepackage=org.springframework.cloud.openfeign.async.testclients" })
 @DirtiesContext
-public class FeignClientScanningTests {
-
-	@Value("${local.server.port}")
-	private int port = 0;
+public class AsyncFeignClientEnvVarTests {
 
 	@Autowired
 	private TestClient testClient;
-
-	@Autowired
-	private TestClientByKey testClientByKey;
-
-	@Autowired
-	@SuppressWarnings("unused")
-	private Client feignClient;
 
 	@Test
 	public void testSimpleType() {
@@ -73,34 +62,11 @@ public class FeignClientScanningTests {
 		assertThat(hello).as("first hello didn't match").isEqualTo("hello world 1");
 	}
 
-	@Test
-	public void testSimpleTypeByKey() {
-		String hello = this.testClientByKey.getHello();
-		assertThat(hello).as("hello was null").isNotNull();
-		assertThat(hello).as("first hello didn't match").isEqualTo("hello world 1");
-	}
-
-	@FeignClient("localapp123")
-	protected interface TestClient {
-
-		@RequestMapping(method = RequestMethod.GET, value = "/hello")
-		String getHello();
-
-	}
-
-	@FeignClient("${feignClient.localappName}")
-	protected interface TestClientByKey {
-
-		@RequestMapping(method = RequestMethod.GET, value = "/hello")
-		String getHello();
-
-	}
-
 	@Configuration(proxyBeanMethods = false)
 	@EnableAutoConfiguration
 	@RestController
-	@EnableAsyncFeignClients // NO clients attribute. That's what this class is testing!
-	@LoadBalancerClients(defaultConfiguration = LocalClientConfiguration.class)
+	@EnableAsyncFeignClients(basePackages = { "${basepackage}" })
+	@LoadBalancerClient(name = "localapp", configuration = LocalClientConfiguration.class)
 	@Import(NoSecurityConfiguration.class)
 	protected static class Application {
 
@@ -113,15 +79,15 @@ public class FeignClientScanningTests {
 
 	// Load balancer with fixed server list for "local" pointing to localhost
 	@Configuration(proxyBeanMethods = false)
-	static class LocalClientConfiguration {
+	public static class LocalClientConfiguration {
 
 		@LocalServerPort
 		private int port = 0;
 
 		@Bean
 		public ServiceInstanceListSupplier staticServiceInstanceListSupplier() {
-			return ServiceInstanceListSuppliers.from("local",
-					new DefaultServiceInstance("local-1", "local", "localhost", port, false));
+			return ServiceInstanceListSuppliers.from("localapp",
+					new DefaultServiceInstance("localapp-1", "localapp", "localhost", port, false));
 		}
 
 	}

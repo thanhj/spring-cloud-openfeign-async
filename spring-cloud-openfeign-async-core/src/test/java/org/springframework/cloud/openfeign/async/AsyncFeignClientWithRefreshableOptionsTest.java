@@ -43,7 +43,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest
 @TestPropertySource("classpath:feign-refreshable-properties.properties")
 @DirtiesContext
-public class FeignClientWithRefreshableOptionsTest {
+public class AsyncFeignClientWithRefreshableOptionsTest {
 
 	@Autowired
 	private ApplicationContext applicationContext;
@@ -138,7 +138,7 @@ public class FeignClientWithRefreshableOptionsTest {
 			return new OptionsTestClient();
 		}
 
-		@FeignClient(name = "overrideOptionsClient", configuration = OverrideConfig.class)
+		@AsyncFeignClient(name = "overrideOptionsClient", configuration = OverrideConfig.class)
 		protected interface OverrideOptionsClient {
 
 			@GetMapping("/override")
@@ -146,7 +146,7 @@ public class FeignClientWithRefreshableOptionsTest {
 
 		}
 
-		@FeignClient(name = "refreshableClient")
+		@AsyncFeignClient(name = "refreshableClient")
 		protected interface RefreshableClient {
 
 			@GetMapping("/refreshable")
@@ -154,7 +154,7 @@ public class FeignClientWithRefreshableOptionsTest {
 
 		}
 
-		@FeignClient(name = "readTimeout")
+		@AsyncFeignClient(name = "readTimeout")
 		protected interface ReadTimeoutClient {
 
 			@GetMapping("/readTimeout")
@@ -162,7 +162,7 @@ public class FeignClientWithRefreshableOptionsTest {
 
 		}
 
-		@FeignClient(name = "connectTimeout")
+		@AsyncFeignClient(name = "connectTimeout")
 		protected interface ConnectTimeoutClient {
 
 			@GetMapping("/connectTimeout")

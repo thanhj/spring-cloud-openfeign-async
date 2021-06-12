@@ -99,7 +99,7 @@ class FeignHttpClientUrlTests {
 	}
 
 	// this tests that
-	@FeignClient(name = "localappurl", url = "http://localhost:${server.port}/")
+	@AsyncFeignClient(name = "localappurl", url = "http://localhost:${server.port}/")
 	protected interface UrlClient {
 
 		@RequestMapping(method = RequestMethod.GET, value = "/hello")
@@ -107,7 +107,7 @@ class FeignHttpClientUrlTests {
 
 	}
 
-	@FeignClient(name = "beanappurl", url = "#{SERVER_URL}path")
+	@AsyncFeignClient(name = "beanappurl", url = "#{SERVER_URL}path")
 	protected interface BeanUrlClient {
 
 		@RequestMapping(method = RequestMethod.GET, value = "/hello")
@@ -115,7 +115,7 @@ class FeignHttpClientUrlTests {
 
 	}
 
-	@FeignClient(name = "beanappurlnoprotocol", url = "#{SERVER_URL_NO_PROTOCOL}path")
+	@AsyncFeignClient(name = "beanappurlnoprotocol", url = "#{SERVER_URL_NO_PROTOCOL}path")
 	protected interface BeanUrlClientNoProtocol {
 
 		@RequestMapping(method = RequestMethod.GET, value = "/hello")

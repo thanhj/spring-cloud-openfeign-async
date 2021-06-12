@@ -31,8 +31,8 @@ import org.springframework.cloud.loadbalancer.annotation.LoadBalancerClient;
 import org.springframework.cloud.loadbalancer.annotation.LoadBalancerClients;
 import org.springframework.cloud.loadbalancer.core.ServiceInstanceListSupplier;
 import org.springframework.cloud.loadbalancer.support.ServiceInstanceListSuppliers;
+import org.springframework.cloud.openfeign.async.AsyncFeignClient;
 import org.springframework.cloud.openfeign.async.EnableAsyncFeignClients;
-import org.springframework.cloud.openfeign.async.FeignClient;
 import org.springframework.cloud.openfeign.async.loadbalancer.FeignBlockingLoadBalancerClient;
 import org.springframework.cloud.openfeign.async.test.NoSecurityConfiguration;
 import org.springframework.context.annotation.Bean;
@@ -100,7 +100,7 @@ class FeignHttpClientTests {
 		assertThat(new User("John Smith")).as("Users were different").isEqualTo(user);
 	}
 
-	@FeignClient("localapp")
+	@AsyncFeignClient("localapp")
 	protected interface TestClient extends BaseTestClient {
 
 	}
@@ -122,7 +122,7 @@ class FeignHttpClientTests {
 
 	}
 
-	@FeignClient("localapp1")
+	@AsyncFeignClient("localapp1")
 	protected interface UserClient extends UserService {
 
 	}

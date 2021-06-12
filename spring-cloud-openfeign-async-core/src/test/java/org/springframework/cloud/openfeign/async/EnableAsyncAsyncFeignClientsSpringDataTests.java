@@ -32,9 +32,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  * @author Spencer Gibb
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = EnableAsyncFeignClientsSpringDataTests.PlainConfiguration.class)
+@SpringBootTest(classes = EnableAsyncAsyncFeignClientsSpringDataTests.PlainConfiguration.class)
 @DirtiesContext
-public class EnableAsyncFeignClientsSpringDataTests {
+public class EnableAsyncAsyncFeignClientsSpringDataTests {
 
 	@Autowired
 	private FeignContext feignContext;

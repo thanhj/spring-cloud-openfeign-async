@@ -39,7 +39,7 @@ import org.springframework.core.annotation.AliasFor;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Inherited
-public @interface FeignClient {
+public @interface AsyncFeignClient {
 
 	/**
 	 * The name of the service with optional protocol prefix. Synonym for {@link #name()
@@ -72,7 +72,7 @@ public @interface FeignClient {
 	 * latter, unless the array returned by {@link #qualifiers()} is empty or only
 	 * contains <code>null</code> or whitespace values, in which case we'll fall back
 	 * first to {@link #qualifier()} and, if that's also not present, to the default =
-	 * <code>contextId + "FeignClient"</code>.
+	 * <code>contextId + "AsyncFeignClient"</code>.
 	 */
 	@Deprecated
 	String qualifier() default "";
@@ -84,7 +84,7 @@ public @interface FeignClient {
 	 * latter, unless the array returned by {@link #qualifiers()} is empty or only
 	 * contains <code>null</code> or whitespace values, in which case we'll fall back
 	 * first to {@link #qualifier()} and, if that's also not present, to the default =
-	 * <code>contextId + "FeignClient"</code>.
+	 * <code>contextId + "AsyncFeignClient"</code>.
 	 */
 	String[] qualifiers() default {};
 
@@ -118,7 +118,8 @@ public @interface FeignClient {
 	/**
 	 * Define a fallback factory for the specified Feign client interface. The fallback
 	 * factory must produce instances of fallback classes that implement the interface
-	 * annotated by {@link FeignClient}. The fallback factory must be a valid spring bean.
+	 * annotated by {@link AsyncFeignClient}. The fallback factory must be a valid spring
+	 * bean.
 	 *
 	 * @see FallbackFactory for details.
 	 * @return fallback factory for the specified Feign client interface

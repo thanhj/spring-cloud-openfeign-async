@@ -18,7 +18,7 @@ package org.springframework.cloud.openfeign.async.encoding.app.client;
 
 import java.util.List;
 
-import org.springframework.cloud.openfeign.async.FeignClient;
+import org.springframework.cloud.openfeign.async.AsyncFeignClient;
 import org.springframework.cloud.openfeign.async.SpringQueryMap;
 import org.springframework.cloud.openfeign.async.encoding.app.domain.Invoice;
 import org.springframework.data.domain.Page;
@@ -34,7 +34,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * @author Jakub Narloch
  * @author Hyeonmin Park
  */
-@FeignClient("local")
+@AsyncFeignClient("local")
 public interface InvoiceClient {
 
 	@RequestMapping(value = "invoicesPaged", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)

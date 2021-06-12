@@ -34,9 +34,9 @@ import org.springframework.cloud.client.circuitbreaker.CircuitBreaker;
 import org.springframework.cloud.client.circuitbreaker.CircuitBreakerFactory;
 import org.springframework.cloud.client.circuitbreaker.ConfigBuilder;
 import org.springframework.cloud.client.circuitbreaker.NoFallbackAvailableException;
+import org.springframework.cloud.openfeign.async.AsyncFeignClient;
 import org.springframework.cloud.openfeign.async.EnableAsyncFeignClients;
 import org.springframework.cloud.openfeign.async.FallbackFactory;
-import org.springframework.cloud.openfeign.async.FeignClient;
 import org.springframework.cloud.openfeign.async.test.NoSecurityConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -112,7 +112,7 @@ public class CircuitBreakerTests {
 		assertThat(testClientWithFactory.getException()).isEqualTo("Fixed response");
 	}
 
-	@FeignClient(name = "test", url = "http://localhost:${server.port}/", fallback = Fallback.class)
+	@AsyncFeignClient(name = "test", url = "http://localhost:${server.port}/", fallback = Fallback.class)
 	protected interface TestClient {
 
 		@RequestMapping(method = RequestMethod.GET, value = "/hello")
@@ -138,7 +138,7 @@ public class CircuitBreakerTests {
 
 	}
 
-	@FeignClient(name = "testClientWithFactory", url = "http://localhost:${server.port}/",
+	@AsyncFeignClient(name = "testClientWithFactory", url = "http://localhost:${server.port}/",
 			fallbackFactory = TestFallbackFactory.class)
 	protected interface TestClientWithFactory {
 

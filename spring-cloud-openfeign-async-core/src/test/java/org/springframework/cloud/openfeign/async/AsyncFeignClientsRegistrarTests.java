@@ -36,7 +36,7 @@ import static org.assertj.core.api.Assertions.assertThatCode;
  * @author Gang Li
  * @author Michal Domagala
  */
-public class FeignClientsRegistrarTests {
+public class AsyncFeignClientsRegistrarTests {
 
 	@Test(expected = IllegalStateException.class)
 	public void badNameHttpPrefix() {
@@ -102,7 +102,7 @@ public class FeignClientsRegistrarTests {
 				.doesNotThrowAnyException();
 	}
 
-	@FeignClient(name = "fallbackTestClient", url = "http://localhost:8080/", fallback = FallbackClient.class)
+	@AsyncFeignClient(name = "fallbackTestClient", url = "http://localhost:8080/", fallback = FallbackClient.class)
 	protected interface FallbackClient {
 
 		@RequestMapping(method = RequestMethod.GET, value = "/hello")
@@ -110,7 +110,7 @@ public class FeignClientsRegistrarTests {
 
 	}
 
-	@FeignClient(name = "fallbackFactoryTestClient", url = "http://localhost:8081/",
+	@AsyncFeignClient(name = "fallbackFactoryTestClient", url = "http://localhost:8081/",
 			fallbackFactory = FallbackFactoryClient.class)
 	protected interface FallbackFactoryClient {
 
@@ -121,14 +121,14 @@ public class FeignClientsRegistrarTests {
 
 	@Configuration(proxyBeanMethods = false)
 	@EnableAutoConfiguration
-	@EnableAsyncFeignClients(clients = { FeignClientsRegistrarTests.FallbackClient.class })
+	@EnableAsyncFeignClients(clients = { AsyncFeignClientsRegistrarTests.FallbackClient.class })
 	protected static class FallbackTestConfig {
 
 	}
 
 	@Configuration(proxyBeanMethods = false)
 	@EnableAutoConfiguration
-	@EnableAsyncFeignClients(clients = { FeignClientsRegistrarTests.FallbackFactoryClient.class })
+	@EnableAsyncFeignClients(clients = { AsyncFeignClientsRegistrarTests.FallbackFactoryClient.class })
 	protected static class FallbackFactoryTestConfig {
 
 	}

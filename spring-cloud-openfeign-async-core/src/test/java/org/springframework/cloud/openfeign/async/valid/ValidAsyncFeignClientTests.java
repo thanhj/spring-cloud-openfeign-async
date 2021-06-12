@@ -54,8 +54,8 @@ import org.springframework.cloud.loadbalancer.annotation.LoadBalancerClient;
 import org.springframework.cloud.loadbalancer.annotation.LoadBalancerClients;
 import org.springframework.cloud.loadbalancer.core.ServiceInstanceListSupplier;
 import org.springframework.cloud.loadbalancer.support.ServiceInstanceListSuppliers;
+import org.springframework.cloud.openfeign.async.AsyncFeignClient;
 import org.springframework.cloud.openfeign.async.EnableAsyncFeignClients;
-import org.springframework.cloud.openfeign.async.FeignClient;
 import org.springframework.cloud.openfeign.async.FeignFormatterRegistrar;
 import org.springframework.cloud.openfeign.async.loadbalancer.FeignBlockingLoadBalancerClient;
 import org.springframework.cloud.openfeign.async.support.AbstractFormWriter;
@@ -94,13 +94,13 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
  * @author Darren Foong
  * @author Olga Maciaszek-Sharma
  */
-@SpringBootTest(classes = ValidFeignClientTests.Application.class, webEnvironment = WebEnvironment.RANDOM_PORT,
+@SpringBootTest(classes = ValidAsyncFeignClientTests.Application.class, webEnvironment = WebEnvironment.RANDOM_PORT,
 		value = { "spring.application.name=feignclienttest",
 				"logging.level.org.springframework.cloud.openfeign.async.valid=DEBUG", "feign.httpclient.enabled=false",
 				"feign.okhttp.enabled=false", "feign.circuitbreaker.enabled=true",
 				"spring.cloud.loadbalancer.retry.enabled=false" })
 @DirtiesContext
-class ValidFeignClientTests {
+class ValidAsyncFeignClientTests {
 
 	public static final String HELLO_WORLD_1 = "hello world 1";
 
@@ -120,7 +120,7 @@ class ValidFeignClientTests {
 	private DecodingTestClient decodingTestClient;
 
 	@Autowired
-	@Qualifier("localapp2FeignClient")
+	@Qualifier("localapp2AsyncFeignClient")
 	private DecodingTestClient namedFeignClient;
 
 	@Autowired
@@ -379,7 +379,7 @@ class ValidFeignClientTests {
 
 	}
 
-	@FeignClient(name = "localapp8")
+	@AsyncFeignClient(name = "localapp8")
 	protected interface MultipartClient {
 
 		@RequestMapping(method = RequestMethod.POST, path = "/singlePart",
@@ -432,7 +432,7 @@ class ValidFeignClientTests {
 
 	}
 
-	@FeignClient(name = "localapp", configuration = TestClientConfig.class)
+	@AsyncFeignClient(name = "localapp", configuration = TestClientConfig.class)
 	protected interface TestClient {
 
 		@RequestMapping(method = RequestMethod.GET, path = "/hello")
@@ -488,7 +488,7 @@ class ValidFeignClientTests {
 
 	}
 
-	@FeignClient(name = "localapp1")
+	@AsyncFeignClient(name = "localapp1")
 	protected interface TestClientServiceId {
 
 		@RequestMapping(method = RequestMethod.GET, path = "/hello")
@@ -496,7 +496,7 @@ class ValidFeignClientTests {
 
 	}
 
-	@FeignClient(name = "localapp2", decode404 = true)
+	@AsyncFeignClient(name = "localapp2", decode404 = true)
 	protected interface DecodingTestClient {
 
 		@RequestMapping(method = RequestMethod.GET, path = "/notFound")

@@ -32,8 +32,8 @@ import org.springframework.cloud.client.circuitbreaker.CircuitBreaker;
 import org.springframework.cloud.client.circuitbreaker.CircuitBreakerFactory;
 import org.springframework.cloud.client.circuitbreaker.ConfigBuilder;
 import org.springframework.cloud.client.circuitbreaker.NoFallbackAvailableException;
+import org.springframework.cloud.openfeign.async.AsyncFeignClient;
 import org.springframework.cloud.openfeign.async.EnableAsyncFeignClients;
-import org.springframework.cloud.openfeign.async.FeignClient;
 import org.springframework.cloud.openfeign.async.test.NoSecurityConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -94,7 +94,7 @@ public class CircuitBreakerWithNoFallbackTests {
 		assertThatThrownBy(() -> testClient.getException()).isInstanceOf(NoFallbackAvailableException.class);
 	}
 
-	@FeignClient(name = "test", url = "http://localhost:${server.port}/")
+	@AsyncFeignClient(name = "test", url = "http://localhost:${server.port}/")
 	protected interface CircuitBreakerTestClient {
 
 		@RequestMapping(method = RequestMethod.GET, value = "/hello")

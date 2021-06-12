@@ -42,7 +42,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @author Sven Döring
  * @author Sam Kruglov
  */
-public class FeignClientBuilderTests {
+public class AsyncFeignClientBuilderTests {
 
 	@Rule
 	public ExpectedException thrown = ExpectedException.none();
@@ -52,7 +52,7 @@ public class FeignClientBuilderTests {
 	private ApplicationContext applicationContext;
 
 	private static Object getDefaultValueFromFeignClientAnnotation(final String methodName) {
-		final Method method = ReflectionUtils.findMethod(FeignClient.class, methodName);
+		final Method method = ReflectionUtils.findMethod(AsyncFeignClient.class, methodName);
 		return method.getDefaultValue();
 	}
 
@@ -84,14 +84,15 @@ public class FeignClientBuilderTests {
 	@Test
 	public void safetyCheckForNewFieldsOnTheFeignClientAnnotation() {
 		final List<String> methodNames = new ArrayList();
-		for (final Method method : FeignClient.class.getMethods()) {
+		for (final Method method : AsyncFeignClient.class.getMethods()) {
 			methodNames.add(method.getName());
 		}
 		methodNames.removeAll(Arrays.asList("annotationType", "value", "serviceId", "qualifier", "qualifiers",
 				"configuration", "primary", "equals", "hashCode", "toString"));
 		Collections.sort(methodNames);
 		// If this safety check fails the Builder has to be updated.
-		// (1) Either a field was removed from the FeignClient annotation and so it has to
+		// (1) Either a field was removed from the AsyncFeignClient annotation and so it
+		// has to
 		// be removed
 		// on this builder class.
 		// (2) Or a new field was added and the builder class has to be extended with this

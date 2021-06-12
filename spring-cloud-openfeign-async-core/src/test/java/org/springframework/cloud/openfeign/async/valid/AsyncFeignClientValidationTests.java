@@ -20,9 +20,9 @@ import org.junit.Test;
 
 import org.springframework.cloud.client.loadbalancer.LoadBalancerAutoConfiguration;
 import org.springframework.cloud.commons.httpclient.HttpClientConfiguration;
+import org.springframework.cloud.openfeign.async.AsyncFeignClient;
 import org.springframework.cloud.openfeign.async.EnableAsyncFeignClients;
 import org.springframework.cloud.openfeign.async.FeignAutoConfiguration;
-import org.springframework.cloud.openfeign.async.FeignClient;
 import org.springframework.cloud.openfeign.async.loadbalancer.FeignLoadBalancerAutoConfiguration;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Configuration;
@@ -35,7 +35,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * @author Dave Syer
  */
-public class FeignClientValidationTests {
+public class AsyncFeignClientValidationTests {
 
 	@Test
 	public void validNotLoadBalanced() {
@@ -67,7 +67,7 @@ public class FeignClientValidationTests {
 	@EnableAsyncFeignClients(clients = GoodUrlConfiguration.Client.class)
 	protected static class GoodUrlConfiguration {
 
-		@FeignClient(name = "example", url = "https://example.com")
+		@AsyncFeignClient(name = "example", url = "https://example.com")
 		interface Client {
 
 			@RequestMapping(method = RequestMethod.GET, value = "/")
@@ -83,7 +83,7 @@ public class FeignClientValidationTests {
 	@EnableAsyncFeignClients(clients = PlaceholderUrlConfiguration.Client.class)
 	protected static class PlaceholderUrlConfiguration {
 
-		@FeignClient(name = "example", url = "${feignClient.url:https://example.com}")
+		@AsyncFeignClient(name = "example", url = "${feignClient.url:https://example.com}")
 		interface Client {
 
 			@RequestMapping(method = RequestMethod.GET, value = "/")
@@ -99,7 +99,7 @@ public class FeignClientValidationTests {
 	@EnableAsyncFeignClients(clients = GoodServiceIdConfiguration.Client.class)
 	protected static class GoodServiceIdConfiguration {
 
-		@FeignClient("foo")
+		@AsyncFeignClient("foo")
 		interface Client {
 
 			@RequestMapping(method = RequestMethod.GET, value = "/")

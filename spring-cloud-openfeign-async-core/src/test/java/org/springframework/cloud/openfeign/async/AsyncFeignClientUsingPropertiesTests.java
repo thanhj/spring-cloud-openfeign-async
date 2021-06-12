@@ -82,10 +82,10 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
  * @author Jonatan Ivanov
  */
 @SuppressWarnings("FieldMayBeFinal")
-@SpringBootTest(classes = FeignClientUsingPropertiesTests.Application.class, webEnvironment = RANDOM_PORT)
+@SpringBootTest(classes = AsyncFeignClientUsingPropertiesTests.Application.class, webEnvironment = RANDOM_PORT)
 @TestPropertySource("classpath:feign-properties.properties")
 @DirtiesContext
-public class FeignClientUsingPropertiesTests {
+public class AsyncFeignClientUsingPropertiesTests {
 
 	@Autowired
 	FeignContext context;
@@ -108,7 +108,7 @@ public class FeignClientUsingPropertiesTests {
 
 	private FeignClientFactoryBean defaultHeadersAndQueryMultipleParamsFeignClientFactoryBean;
 
-	public FeignClientUsingPropertiesTests() {
+	public AsyncFeignClientUsingPropertiesTests() {
 		fooFactoryBean = new FeignClientFactoryBean();
 		fooFactoryBean.setContextId("foo");
 		fooFactoryBean.setType(FeignClientFactoryBean.class);

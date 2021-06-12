@@ -41,9 +41,9 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @author Jonatan Ivanov
  */
 @DirtiesContext
-@ActiveProfiles("no-metrics")
-@SpringBootTest(classes = FeignClientDisabledFeaturesTests.TestConfiguration.class)
-class FeignClientDisabledFeaturesTests {
+@ActiveProfiles("no-foo-metrics")
+@SpringBootTest(classes = AsyncFeignClientDisabledClientLevelFeaturesTests.TestConfiguration.class)
+class AsyncFeignClientDisabledClientLevelFeaturesTests {
 
 	@Autowired
 	private FeignContext context;
@@ -61,17 +61,18 @@ class FeignClientDisabledFeaturesTests {
 	}
 
 	@Test
-	void capabilitiesShouldNotBeAvailable() {
+	void capabilitiesShouldNotBeAvailableWhenDisabled() {
 		assertThat(context.getInstance("foo", MicrometerCapability.class)).isNull();
 		assertThat(context.getInstances("foo", Capability.class)).isEmpty();
 
-		assertThat(context.getInstance("bar", MicrometerCapability.class)).isNull();
+		assertThat(context.getInstance("bar", MicrometerCapability.class)).isNotNull();
 		Map<String, Capability> barCapabilities = context.getInstances("bar", Capability.class);
-		assertThat(barCapabilities).hasSize(1);
+		assertThat(barCapabilities).hasSize(2);
+		assertThat(barCapabilities.get("micrometerCapability")).isExactlyInstanceOf(MicrometerCapability.class);
 		assertThat(barCapabilities.get("noOpCapability")).isExactlyInstanceOf(NoOpCapability.class);
 	}
 
-	@FeignClient(name = "foo", url = "https://foo", configuration = FooConfiguration.class)
+	@AsyncFeignClient(name = "foo", url = "https://foo", configuration = FooConfiguration.class)
 	interface FooClient {
 
 		@RequestLine("GET /")
@@ -79,7 +80,7 @@ class FeignClientDisabledFeaturesTests {
 
 	}
 
-	@FeignClient(name = "bar", url = "https://bar", configuration = BarConfiguration.class)
+	@AsyncFeignClient(name = "bar", url = "https://bar", configuration = BarConfiguration.class)
 	interface BarClient {
 
 		@RequestMapping(value = "/", method = RequestMethod.GET)
