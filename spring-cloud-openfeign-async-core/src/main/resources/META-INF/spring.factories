@@ -1,6 +1,6 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-org.springframework.cloud.openfeign.hateoas.FeignHalAutoConfiguration,\
-org.springframework.cloud.openfeign.FeignAutoConfiguration,\
-org.springframework.cloud.openfeign.encoding.FeignAcceptGzipEncodingAutoConfiguration,\
-org.springframework.cloud.openfeign.encoding.FeignContentGzipEncodingAutoConfiguration,\
-org.springframework.cloud.openfeign.loadbalancer.FeignLoadBalancerAutoConfiguration
+org.springframework.cloud.openfeign.async.hateoas.FeignHalAutoConfiguration,\
+org.springframework.cloud.openfeign.async.FeignAutoConfiguration,\
+org.springframework.cloud.openfeign.async.encoding.FeignAcceptGzipEncodingAutoConfiguration,\
+org.springframework.cloud.openfeign.async.encoding.FeignContentGzipEncodingAutoConfiguration,\
+org.springframework.cloud.openfeign.async.loadbalancer.FeignLoadBalancerAutoConfiguration
