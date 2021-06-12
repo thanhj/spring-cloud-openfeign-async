@@ -129,7 +129,7 @@ public class FeignClientWithRefreshableOptionsTest {
 	@Configuration
 	@EnableAutoConfiguration
 	@EnableConfigurationProperties(FeignClientProperties.class)
-	@EnableFeignClients(clients = { Application.OverrideOptionsClient.class, Application.RefreshableClient.class,
+	@EnableAsyncFeignClients(clients = { Application.OverrideOptionsClient.class, Application.RefreshableClient.class,
 			Application.ReadTimeoutClient.class, Application.ConnectTimeoutClient.class })
 	protected static class Application {
 

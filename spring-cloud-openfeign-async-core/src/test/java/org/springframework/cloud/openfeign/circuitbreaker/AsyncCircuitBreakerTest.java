@@ -34,7 +34,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cloud.client.circuitbreaker.CircuitBreaker;
 import org.springframework.cloud.client.circuitbreaker.CircuitBreakerFactory;
 import org.springframework.cloud.client.circuitbreaker.ConfigBuilder;
-import org.springframework.cloud.openfeign.EnableFeignClients;
+import org.springframework.cloud.openfeign.EnableAsyncFeignClients;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.cloud.openfeign.test.NoSecurityConfiguration;
 import org.springframework.context.annotation.Bean;
@@ -88,7 +88,7 @@ class AsyncCircuitBreakerTest {
 
 	@EnableAutoConfiguration
 	@Configuration(proxyBeanMethods = false)
-	@EnableFeignClients(clients = { TestClient.class })
+	@EnableAsyncFeignClients(clients = { TestClient.class })
 	@Import({ NoSecurityConfiguration.class, TestController.class })
 	static class Application {
 

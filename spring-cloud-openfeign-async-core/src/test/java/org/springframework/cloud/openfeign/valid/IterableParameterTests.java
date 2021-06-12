@@ -30,7 +30,7 @@ import org.springframework.cloud.client.DefaultServiceInstance;
 import org.springframework.cloud.loadbalancer.annotation.LoadBalancerClient;
 import org.springframework.cloud.loadbalancer.core.ServiceInstanceListSupplier;
 import org.springframework.cloud.loadbalancer.support.ServiceInstanceListSuppliers;
-import org.springframework.cloud.openfeign.EnableFeignClients;
+import org.springframework.cloud.openfeign.EnableAsyncFeignClients;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.cloud.openfeign.test.NoSecurityConfiguration;
 import org.springframework.context.annotation.Bean;
@@ -76,7 +76,7 @@ public class IterableParameterTests {
 	@Configuration(proxyBeanMethods = false)
 	@EnableAutoConfiguration
 	@RestController
-	@EnableFeignClients(clients = TestClient.class)
+	@EnableAsyncFeignClients(clients = TestClient.class)
 	@LoadBalancerClient(name = "localapp", configuration = LocalRibbonClientConfiguration.class)
 	@Import(NoSecurityConfiguration.class)
 	protected static class Application {

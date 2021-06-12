@@ -90,7 +90,7 @@ class FeignClientDisabledFeaturesTests {
 	@Configuration(proxyBeanMethods = false)
 	@EnableAutoConfiguration
 	@EnableConfigurationProperties(FeignClientProperties.class)
-	@EnableFeignClients(clients = { FooClient.class, BarClient.class })
+	@EnableAsyncFeignClients(clients = { FooClient.class, BarClient.class })
 	protected static class TestConfiguration {
 
 	}

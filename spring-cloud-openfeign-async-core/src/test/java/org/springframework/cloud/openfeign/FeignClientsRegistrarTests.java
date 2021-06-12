@@ -121,19 +121,19 @@ public class FeignClientsRegistrarTests {
 
 	@Configuration(proxyBeanMethods = false)
 	@EnableAutoConfiguration
-	@EnableFeignClients(clients = { FeignClientsRegistrarTests.FallbackClient.class })
+	@EnableAsyncFeignClients(clients = { FeignClientsRegistrarTests.FallbackClient.class })
 	protected static class FallbackTestConfig {
 
 	}
 
 	@Configuration(proxyBeanMethods = false)
 	@EnableAutoConfiguration
-	@EnableFeignClients(clients = { FeignClientsRegistrarTests.FallbackFactoryClient.class })
+	@EnableAsyncFeignClients(clients = { FeignClientsRegistrarTests.FallbackFactoryClient.class })
 	protected static class FallbackFactoryTestConfig {
 
 	}
 
-	@EnableFeignClients(clients = { org.springframework.cloud.openfeign.feignclientsregistrar.TopLevelClient.class,
+	@EnableAsyncFeignClients(clients = { org.springframework.cloud.openfeign.feignclientsregistrar.TopLevelClient.class,
 			org.springframework.cloud.openfeign.feignclientsregistrar.sub.SubLevelClient.class })
 	protected static class TopLevelSubLevelTestConfig {
 

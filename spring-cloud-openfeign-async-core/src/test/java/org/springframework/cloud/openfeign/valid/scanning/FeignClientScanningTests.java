@@ -29,7 +29,7 @@ import org.springframework.cloud.client.DefaultServiceInstance;
 import org.springframework.cloud.loadbalancer.annotation.LoadBalancerClients;
 import org.springframework.cloud.loadbalancer.core.ServiceInstanceListSupplier;
 import org.springframework.cloud.loadbalancer.support.ServiceInstanceListSuppliers;
-import org.springframework.cloud.openfeign.EnableFeignClients;
+import org.springframework.cloud.openfeign.EnableAsyncFeignClients;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.cloud.openfeign.test.NoSecurityConfiguration;
 import org.springframework.context.annotation.Bean;
@@ -99,7 +99,7 @@ public class FeignClientScanningTests {
 	@Configuration(proxyBeanMethods = false)
 	@EnableAutoConfiguration
 	@RestController
-	@EnableFeignClients // NO clients attribute. That's what this class is testing!
+	@EnableAsyncFeignClients // NO clients attribute. That's what this class is testing!
 	@LoadBalancerClients(defaultConfiguration = LocalClientConfiguration.class)
 	@Import(NoSecurityConfiguration.class)
 	protected static class Application {

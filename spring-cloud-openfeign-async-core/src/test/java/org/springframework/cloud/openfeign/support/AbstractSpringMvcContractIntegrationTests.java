@@ -25,7 +25,7 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.cloud.openfeign.EnableFeignClients;
+import org.springframework.cloud.openfeign.EnableAsyncFeignClients;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.cloud.openfeign.test.NoSecurityConfiguration;
 import org.springframework.context.annotation.Bean;
@@ -75,7 +75,7 @@ public class AbstractSpringMvcContractIntegrationTests {
 	}
 
 	@Configuration(proxyBeanMethods = false)
-	@EnableFeignClients(clients = TestClient.class)
+	@EnableAsyncFeignClients(clients = TestClient.class)
 	@EnableAutoConfiguration
 	@RestController
 	@Import(NoSecurityConfiguration.class)

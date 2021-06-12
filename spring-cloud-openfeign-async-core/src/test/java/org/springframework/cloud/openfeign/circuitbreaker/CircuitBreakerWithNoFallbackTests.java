@@ -32,7 +32,7 @@ import org.springframework.cloud.client.circuitbreaker.CircuitBreaker;
 import org.springframework.cloud.client.circuitbreaker.CircuitBreakerFactory;
 import org.springframework.cloud.client.circuitbreaker.ConfigBuilder;
 import org.springframework.cloud.client.circuitbreaker.NoFallbackAvailableException;
-import org.springframework.cloud.openfeign.EnableFeignClients;
+import org.springframework.cloud.openfeign.EnableAsyncFeignClients;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.cloud.openfeign.test.NoSecurityConfiguration;
 import org.springframework.context.annotation.Bean;
@@ -108,7 +108,7 @@ public class CircuitBreakerWithNoFallbackTests {
 	@Configuration(proxyBeanMethods = false)
 	@EnableAutoConfiguration
 	@RestController
-	@EnableFeignClients(clients = { CircuitBreakerTestClient.class })
+	@EnableAsyncFeignClients(clients = { CircuitBreakerTestClient.class })
 	@Import(NoSecurityConfiguration.class)
 	protected static class Application implements CircuitBreakerTestClient {
 

@@ -120,7 +120,7 @@ class FeignClientsRegistrarIntegrationTests {
 	@Configuration(proxyBeanMethods = false)
 	@EnableAutoConfiguration
 	@Import(NoSecurityConfiguration.class)
-	@EnableFeignClients(clients = { QualifiersClient.class, QualifierClient.class, NoQualifiersClient.class,
+	@EnableAsyncFeignClients(clients = { QualifiersClient.class, QualifierClient.class, NoQualifiersClient.class,
 			EmptyQualifiersClient.class, WhitespaceQualifiersClient.class, EmptyQualifiersNoQualifierClient.class,
 			WhitespaceQualifiersNoQualifierClient.class })
 	protected static class QualifiersTestConfig {

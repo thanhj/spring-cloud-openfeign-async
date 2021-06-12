@@ -31,7 +31,7 @@ import org.springframework.cloud.loadbalancer.annotation.LoadBalancerClient;
 import org.springframework.cloud.loadbalancer.annotation.LoadBalancerClients;
 import org.springframework.cloud.loadbalancer.core.ServiceInstanceListSupplier;
 import org.springframework.cloud.loadbalancer.support.ServiceInstanceListSuppliers;
-import org.springframework.cloud.openfeign.EnableFeignClients;
+import org.springframework.cloud.openfeign.EnableAsyncFeignClients;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.cloud.openfeign.loadbalancer.FeignBlockingLoadBalancerClient;
 import org.springframework.cloud.openfeign.test.NoSecurityConfiguration;
@@ -130,7 +130,7 @@ class FeignHttpClientTests {
 	@Configuration(proxyBeanMethods = false)
 	@EnableAutoConfiguration
 	@RestController
-	@EnableFeignClients(clients = { TestClient.class, UserClient.class })
+	@EnableAsyncFeignClients(clients = { TestClient.class, UserClient.class })
 	@LoadBalancerClients({ @LoadBalancerClient(name = "localapp", configuration = LocalClientConfiguration.class),
 			@LoadBalancerClient(name = "localapp1", configuration = LocalClientConfiguration.class) })
 	@Import(NoSecurityConfiguration.class)

@@ -45,7 +45,7 @@ import org.springframework.cloud.commons.httpclient.ApacheHttpClientConnectionMa
 import org.springframework.cloud.commons.httpclient.ApacheHttpClientFactory;
 import org.springframework.cloud.commons.httpclient.DefaultApacheHttpClientConnectionManagerFactory;
 import org.springframework.cloud.commons.httpclient.DefaultApacheHttpClientFactory;
-import org.springframework.cloud.openfeign.EnableFeignClients;
+import org.springframework.cloud.openfeign.EnableAsyncFeignClients;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.cloud.openfeign.loadbalancer.FeignBlockingLoadBalancerClient;
 import org.springframework.context.annotation.Bean;
@@ -105,7 +105,7 @@ class ApacheHttpClientConfigurationTests {
 
 	@SpringBootConfiguration
 	@EnableAutoConfiguration
-	@EnableFeignClients(clients = { ApacheHttpClientConfigurationTestApp.FooClient.class })
+	@EnableAsyncFeignClients(clients = { ApacheHttpClientConfigurationTestApp.FooClient.class })
 	static class ApacheHttpClientConfigurationTestApp {
 
 		@FeignClient(name = "foo")

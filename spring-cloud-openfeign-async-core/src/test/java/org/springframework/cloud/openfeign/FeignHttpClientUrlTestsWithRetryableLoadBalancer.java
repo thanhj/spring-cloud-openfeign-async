@@ -128,7 +128,7 @@ class FeignHttpClientUrlTestsWithRetryableLoadBalancer {
 	@Configuration(proxyBeanMethods = false)
 	@EnableAutoConfiguration
 	@RestController
-	@EnableFeignClients(clients = { UrlClient.class, BeanUrlClient.class, BeanUrlClientNoProtocol.class })
+	@EnableAsyncFeignClients(clients = { UrlClient.class, BeanUrlClient.class, BeanUrlClientNoProtocol.class })
 	@Import(NoSecurityConfiguration.class)
 	protected static class TestConfig {
 

@@ -23,7 +23,7 @@ import org.springframework.cloud.client.DefaultServiceInstance;
 import org.springframework.cloud.loadbalancer.annotation.LoadBalancerClient;
 import org.springframework.cloud.loadbalancer.core.ServiceInstanceListSupplier;
 import org.springframework.cloud.loadbalancer.support.ServiceInstanceListSuppliers;
-import org.springframework.cloud.openfeign.EnableFeignClients;
+import org.springframework.cloud.openfeign.EnableAsyncFeignClients;
 import org.springframework.cloud.openfeign.test.NoSecurityConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
@@ -33,7 +33,7 @@ import org.springframework.context.annotation.Import;
  *
  * @author Hector Espert
  */
-@EnableFeignClients(clients = FeignHalClient.class)
+@EnableAsyncFeignClients(clients = FeignHalClient.class)
 @SpringBootApplication(scanBasePackages = "org.springframework.cloud.openfeign.hateoas.app",
 		exclude = RepositoryRestMvcAutoConfiguration.class)
 @LoadBalancerClient(name = "local", configuration = LocalHalClientConfiguration.class)

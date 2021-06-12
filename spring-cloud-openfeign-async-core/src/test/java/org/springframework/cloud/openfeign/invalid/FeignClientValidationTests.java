@@ -22,7 +22,7 @@ import org.junit.rules.ExpectedException;
 
 import org.springframework.cloud.client.loadbalancer.LoadBalancerAutoConfiguration;
 import org.springframework.cloud.commons.httpclient.HttpClientConfiguration;
-import org.springframework.cloud.openfeign.EnableFeignClients;
+import org.springframework.cloud.openfeign.EnableAsyncFeignClients;
 import org.springframework.cloud.openfeign.FeignAutoConfiguration;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -68,7 +68,7 @@ public class FeignClientValidationTests {
 
 	@Configuration(proxyBeanMethods = false)
 	@Import({ FeignAutoConfiguration.class, HttpClientConfiguration.class })
-	@EnableFeignClients(clients = NameAndServiceIdConfiguration.Client.class)
+	@EnableAsyncFeignClients(clients = NameAndServiceIdConfiguration.Client.class)
 	protected static class NameAndServiceIdConfiguration {
 
 		@FeignClient(name = "bar")
@@ -83,7 +83,7 @@ public class FeignClientValidationTests {
 
 	@Configuration(proxyBeanMethods = false)
 	@Import({ FeignAutoConfiguration.class, HttpClientConfiguration.class })
-	@EnableFeignClients(clients = { DuplicatedFeignClientNamesConfiguration.FooClient.class,
+	@EnableAsyncFeignClients(clients = { DuplicatedFeignClientNamesConfiguration.FooClient.class,
 			DuplicatedFeignClientNamesConfiguration.BarClient.class })
 	protected static class DuplicatedFeignClientNamesConfiguration {
 
@@ -107,7 +107,7 @@ public class FeignClientValidationTests {
 
 	@Configuration(proxyBeanMethods = false)
 	@Import(FeignAutoConfiguration.class)
-	@EnableFeignClients(clients = BadHostnameConfiguration.Client.class)
+	@EnableAsyncFeignClients(clients = BadHostnameConfiguration.Client.class)
 	protected static class BadHostnameConfiguration {
 
 		@FeignClient("foo_bar")

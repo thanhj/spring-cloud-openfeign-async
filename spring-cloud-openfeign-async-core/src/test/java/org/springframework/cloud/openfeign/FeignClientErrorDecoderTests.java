@@ -97,7 +97,7 @@ public class FeignClientErrorDecoderTests {
 	}
 
 	@Configuration(proxyBeanMethods = false)
-	@EnableFeignClients(clients = { FooClient.class, BarClient.class })
+	@EnableAsyncFeignClients(clients = { FooClient.class, BarClient.class })
 	@EnableAutoConfiguration
 	protected static class TestConfiguration {
 

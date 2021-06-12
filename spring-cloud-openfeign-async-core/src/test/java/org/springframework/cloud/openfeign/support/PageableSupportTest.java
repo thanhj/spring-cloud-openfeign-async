@@ -27,7 +27,7 @@ import org.springframework.cloud.loadbalancer.annotation.LoadBalancerClient;
 import org.springframework.cloud.loadbalancer.core.ServiceInstanceListSupplier;
 import org.springframework.cloud.loadbalancer.support.ServiceInstanceListSuppliers;
 import org.springframework.cloud.openfeign.CollectionFormat;
-import org.springframework.cloud.openfeign.EnableFeignClients;
+import org.springframework.cloud.openfeign.EnableAsyncFeignClients;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.cloud.openfeign.test.NoSecurityConfiguration;
 import org.springframework.context.annotation.Bean;
@@ -71,7 +71,7 @@ public class PageableSupportTest {
 	@Configuration(proxyBeanMethods = false)
 	@EnableAutoConfiguration
 	@RestController
-	@EnableFeignClients(clients = PageableFeignClient.class)
+	@EnableAsyncFeignClients(clients = PageableFeignClient.class)
 	@Import(NoSecurityConfiguration.class)
 	@LoadBalancerClient(name = "pageable", configuration = LocalClientConfiguration.class)
 	protected static class Config {

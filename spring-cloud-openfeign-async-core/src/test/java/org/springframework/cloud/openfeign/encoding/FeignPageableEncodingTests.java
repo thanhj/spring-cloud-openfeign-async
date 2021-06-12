@@ -31,7 +31,7 @@ import org.springframework.cloud.client.DefaultServiceInstance;
 import org.springframework.cloud.loadbalancer.annotation.LoadBalancerClient;
 import org.springframework.cloud.loadbalancer.core.ServiceInstanceListSupplier;
 import org.springframework.cloud.loadbalancer.support.ServiceInstanceListSuppliers;
-import org.springframework.cloud.openfeign.EnableFeignClients;
+import org.springframework.cloud.openfeign.EnableAsyncFeignClients;
 import org.springframework.cloud.openfeign.encoding.app.client.InvoiceClient;
 import org.springframework.cloud.openfeign.encoding.app.domain.Invoice;
 import org.springframework.cloud.openfeign.test.NoSecurityConfiguration;
@@ -267,7 +267,7 @@ public class FeignPageableEncodingTests {
 		}
 	}
 
-	@EnableFeignClients(clients = InvoiceClient.class)
+	@EnableAsyncFeignClients(clients = InvoiceClient.class)
 	@LoadBalancerClient(name = "local", configuration = LocalClientConfiguration.class)
 	@SpringBootApplication(scanBasePackages = "org.springframework.cloud.openfeign.encoding.app",
 			exclude = { RepositoryRestMvcAutoConfiguration.class })

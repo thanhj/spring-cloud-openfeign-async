@@ -115,7 +115,7 @@ public class FeignClientUsingConfigurerTest {
 
 	@EnableAutoConfiguration
 	@Configuration(proxyBeanMethods = false)
-	@EnableFeignClients(clients = { TestFeignClient.class, NoInheritFeignClient.class })
+	@EnableAsyncFeignClients(clients = { TestFeignClient.class, NoInheritFeignClient.class })
 	protected static class Application {
 
 		@Bean

@@ -20,7 +20,7 @@ import org.junit.Test;
 
 import org.springframework.cloud.client.loadbalancer.LoadBalancerAutoConfiguration;
 import org.springframework.cloud.commons.httpclient.HttpClientConfiguration;
-import org.springframework.cloud.openfeign.EnableFeignClients;
+import org.springframework.cloud.openfeign.EnableAsyncFeignClients;
 import org.springframework.cloud.openfeign.FeignAutoConfiguration;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.cloud.openfeign.loadbalancer.FeignLoadBalancerAutoConfiguration;
@@ -64,7 +64,7 @@ public class FeignClientValidationTests {
 
 	@Configuration(proxyBeanMethods = false)
 	@Import({ FeignAutoConfiguration.class, HttpClientConfiguration.class })
-	@EnableFeignClients(clients = GoodUrlConfiguration.Client.class)
+	@EnableAsyncFeignClients(clients = GoodUrlConfiguration.Client.class)
 	protected static class GoodUrlConfiguration {
 
 		@FeignClient(name = "example", url = "https://example.com")
@@ -80,7 +80,7 @@ public class FeignClientValidationTests {
 
 	@Configuration(proxyBeanMethods = false)
 	@Import({ FeignAutoConfiguration.class, HttpClientConfiguration.class })
-	@EnableFeignClients(clients = PlaceholderUrlConfiguration.Client.class)
+	@EnableAsyncFeignClients(clients = PlaceholderUrlConfiguration.Client.class)
 	protected static class PlaceholderUrlConfiguration {
 
 		@FeignClient(name = "example", url = "${feignClient.url:https://example.com}")
@@ -96,7 +96,7 @@ public class FeignClientValidationTests {
 
 	@Configuration(proxyBeanMethods = false)
 	@Import({ FeignAutoConfiguration.class, HttpClientConfiguration.class })
-	@EnableFeignClients(clients = GoodServiceIdConfiguration.Client.class)
+	@EnableAsyncFeignClients(clients = GoodServiceIdConfiguration.Client.class)
 	protected static class GoodServiceIdConfiguration {
 
 		@FeignClient("foo")

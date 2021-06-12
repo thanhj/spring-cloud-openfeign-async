@@ -39,7 +39,7 @@ import org.springframework.context.annotation.Import;
 @Target(ElementType.TYPE)
 @Documented
 @Import(FeignClientsRegistrar.class)
-public @interface EnableFeignClients {
+public @interface EnableAsyncFeignClients {
 
 	/**
 	 * Alias for the {@link #basePackages()} attribute. Allows for more concise annotation
