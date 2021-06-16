@@ -49,8 +49,8 @@ class AsyncFeignClientsRegistrarIntegrationTests {
 	}
 
 	@Test
-	void shouldUseQualifierIfQualifiersArrayNotPresent() {
-		assertThat(context.getBean("qualifier4")).isNotNull();
+	void shouldUseDefaultQualifierIfQualifiersArrayNotPresent() {
+		assertThat(context.getBean("emptyQualifiersAsyncFeignClient")).isNotNull();
 	}
 
 	@Test
@@ -59,36 +59,17 @@ class AsyncFeignClientsRegistrarIntegrationTests {
 	}
 
 	@Test
-	void shouldUseQualifierWhenEmptyQualifiers() {
-		assertThat(context.getBean("test1")).isNotNull();
-		assertThatExceptionOfType(NoSuchBeanDefinitionException.class)
-				.isThrownBy(() -> context.getBean("emptyQualifiersAsyncFeignClient"));
-	}
-
-	@Test
-	void shouldUseQualifierWhenWhitespaceQualifiers() {
-		assertThat(context.getBean("test2")).isNotNull();
-		assertThatExceptionOfType(NoSuchBeanDefinitionException.class)
-				.isThrownBy(() -> context.getBean("whitespaceQualifiersAsyncFeignClient"));
+	void shouldUseDefaultQualifierWhenWhitespaceQualifiers() {
+		assertThat(context.getBean("whitespaceQualifiersAsyncFeignClient")).isNotNull();
 	}
 
 	@Test
 	void shouldUseDefaultQualifierWhenEmptyQualifiers() {
-		assertThat(context.getBean("emptyQualifiersNoQualifierAsyncFeignClient")).isNotNull();
+		assertThat(context.getBean("emptyQualifiersAsyncFeignClient")).isNotNull();
 	}
 
-	@Test
-	void shouldUseDefaultQualifierWhenWhitespaceQualifiers() {
-		assertThat(context.getBean("whitespaceQualifiersNoQualifierAsyncFeignClient")).isNotNull();
-	}
-
-	@AsyncFeignClient(name = "qualifiersClient", qualifiers = { "qualifier1", "qualifier2" }, qualifier = "qualifier3")
+	@AsyncFeignClient(name = "qualifiersClient", qualifiers = { "qualifier1", "qualifier2" })
 	protected interface QualifiersClient {
-
-	}
-
-	@AsyncFeignClient(name = "qualifierClient", qualifier = "qualifier4")
-	protected interface QualifierClient {
 
 	}
 
@@ -97,32 +78,21 @@ class AsyncFeignClientsRegistrarIntegrationTests {
 
 	}
 
-	@AsyncFeignClient(name = "emptyQualifiers", qualifier = "test1", qualifiers = {})
+	@AsyncFeignClient(name = "emptyQualifiers", qualifiers = {})
 	protected interface EmptyQualifiersClient {
 
 	}
 
-	@AsyncFeignClient(name = "whitespaceQualifiers", qualifier = "test2", qualifiers = { " " })
+	@AsyncFeignClient(name = "whitespaceQualifiers", qualifiers = { " " })
 	protected interface WhitespaceQualifiersClient {
-
-	}
-
-	@AsyncFeignClient(name = "emptyQualifiersNoQualifier", qualifiers = {})
-	protected interface EmptyQualifiersNoQualifierClient {
-
-	}
-
-	@AsyncFeignClient(name = "whitespaceQualifiersNoQualifier", qualifiers = { " " })
-	protected interface WhitespaceQualifiersNoQualifierClient {
 
 	}
 
 	@Configuration(proxyBeanMethods = false)
 	@EnableAutoConfiguration
 	@Import(NoSecurityConfiguration.class)
-	@EnableAsyncFeignClients(clients = { QualifiersClient.class, QualifierClient.class, NoQualifiersClient.class,
-			EmptyQualifiersClient.class, WhitespaceQualifiersClient.class, EmptyQualifiersNoQualifierClient.class,
-			WhitespaceQualifiersNoQualifierClient.class })
+	@EnableAsyncFeignClients(clients = { QualifiersClient.class, NoQualifiersClient.class,
+			EmptyQualifiersClient.class, WhitespaceQualifiersClient.class})
 	protected static class QualifiersTestConfig {
 
 	}

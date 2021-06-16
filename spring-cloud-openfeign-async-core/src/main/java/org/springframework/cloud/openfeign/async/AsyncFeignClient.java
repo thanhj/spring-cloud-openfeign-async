@@ -65,26 +65,8 @@ public @interface AsyncFeignClient {
 	String name() default "";
 
 	/**
-	 * @return the <code>@Qualifier</code> value for the feign client.
-	 * @deprecated in favour of {@link #qualifiers()}.
-	 *
-	 * If both {@link #qualifier()} and {@link #qualifiers()} are present, we will use the
-	 * latter, unless the array returned by {@link #qualifiers()} is empty or only
-	 * contains <code>null</code> or whitespace values, in which case we'll fall back
-	 * first to {@link #qualifier()} and, if that's also not present, to the default =
-	 * <code>contextId + "AsyncFeignClient"</code>.
-	 */
-	@Deprecated
-	String qualifier() default "";
-
-	/**
 	 * @return the <code>@Qualifiers</code> value for the feign client.
-	 *
-	 * If both {@link #qualifier()} and {@link #qualifiers()} are present, we will use the
-	 * latter, unless the array returned by {@link #qualifiers()} is empty or only
-	 * contains <code>null</code> or whitespace values, in which case we'll fall back
-	 * first to {@link #qualifier()} and, if that's also not present, to the default =
-	 * <code>contextId + "AsyncFeignClient"</code>.
+	 * Default = <code>contextId + "AsyncFeignClient"</code>.
 	 */
 	String[] qualifiers() default {};
 

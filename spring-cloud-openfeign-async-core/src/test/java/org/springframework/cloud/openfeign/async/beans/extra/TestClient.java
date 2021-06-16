@@ -21,7 +21,7 @@ import org.springframework.cloud.openfeign.async.beans.BeansAsyncFeignClientTest
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-@AsyncFeignClient(value = "otherapp", qualifier = "uniquequalifier")
+@AsyncFeignClient(value = "otherapp", qualifiers = "uniquequalifier")
 public interface TestClient {
 
 	@RequestMapping(method = RequestMethod.GET, value = "/hello")
