@@ -32,7 +32,6 @@ import org.springframework.cloud.openfeign.async.encoding.FeignAcceptGzipEncodin
 import org.springframework.cloud.openfeign.async.encoding.FeignAcceptGzipEncodingInterceptor;
 import org.springframework.cloud.openfeign.async.encoding.FeignContentGzipEncodingAutoConfiguration;
 import org.springframework.cloud.openfeign.async.encoding.FeignContentGzipEncodingInterceptor;
-import org.springframework.cloud.test.ClassPathExclusions;
 import org.springframework.cloud.test.ModifiedClassPathRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -44,7 +43,6 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @author Biju Kunjummen
  */
 @RunWith(ModifiedClassPathRunner.class)
-@ClassPathExclusions({ "ribbon-loadbalancer-{version:\\d.*}.jar" })
 public class FeignCompressionTests {
 
 	@Test

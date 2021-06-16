@@ -60,7 +60,6 @@ public class FeignHttpClient5ConfigurationTests {
 	}
 
 	@RunWith(ModifiedClassPathRunner.class)
-	@ClassPathExclusions("ribbon-loadbalancer-{version:\\d.*}.jar")
 	public static class WithoutLoadBalancerInClasspath {
 
 		@Test
@@ -109,8 +108,8 @@ public class FeignHttpClient5ConfigurationTests {
 	}
 
 	@RunWith(ModifiedClassPathRunner.class)
-	@ClassPathExclusions({ "ribbon-loadbalancer-{version:\\d.*}.jar", "feign-hc5-{version:\\d.*}.jar",
-			"httpclient5-{version:\\d.*}.jar", "httpcore5-{version:\\d.*}.jar", "httpcore5-h2-{version:\\d.*}.jar" })
+	@ClassPathExclusions({ "feign-hc5-{version:\\d.*}.jar", "httpclient5-{version:\\d.*}.jar",
+			"httpcore5-{version:\\d.*}.jar", "httpcore5-h2-{version:\\d.*}.jar" })
 	public static class WithoutLoadBalancerAndHc5InClasspath {
 
 		@Test

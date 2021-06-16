@@ -77,7 +77,7 @@ public class IterableParameterTests {
 	@EnableAutoConfiguration
 	@RestController
 	@EnableAsyncFeignClients(clients = TestClient.class)
-	@LoadBalancerClient(name = "localapp", configuration = LocalRibbonClientConfiguration.class)
+	@LoadBalancerClient(name = "localapp", configuration = LocalLoadBalancerClientConfiguration.class)
 	@Import(NoSecurityConfiguration.class)
 	protected static class Application {
 
@@ -89,7 +89,7 @@ public class IterableParameterTests {
 	}
 
 	// Load balancer with fixed server list for "local" pointing to localhost
-	public static class LocalRibbonClientConfiguration {
+	public static class LocalLoadBalancerClientConfiguration {
 
 		@LocalServerPort
 		private int port = 0;
