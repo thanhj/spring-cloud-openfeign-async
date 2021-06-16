@@ -31,7 +31,6 @@ import feign.Logger;
 import feign.QueryMapEncoder;
 import feign.Request;
 import feign.RequestInterceptor;
-import feign.Retryer;
 import feign.Target.HardCodedTarget;
 import feign.codec.Decoder;
 import feign.codec.Encoder;
@@ -48,7 +47,6 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.cloud.openfeign.async.clientconfig.FeignClientConfigurer;
 import org.springframework.cloud.openfeign.async.loadbalancer.FeignBlockingLoadBalancerClient;
-import org.springframework.cloud.openfeign.async.loadbalancer.RetryableFeignBlockingLoadBalancerClient;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.core.annotation.AnnotationAwareOrderComparator;
@@ -56,17 +54,7 @@ import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
 /**
- * @author Spencer Gibb
- * @author Venil Noronha
- * @author Eko Kurniawan Khannedy
- * @author Gregor Zurowski
- * @author Matt King
- * @author Olga Maciaszek-Sharma
- * @author Ilia Ilinykh
- * @author Marcin Grzejszczak
- * @author Jonatan Ivanov
- * @author Sam Kruglov
- * @author Jasbir Singh
+ * @author thanh.nguyen-ky
  */
 public class FeignClientFactoryBean
 		implements FactoryBean<Object>, InitializingBean, ApplicationContextAware, BeanFactoryAware {
@@ -175,10 +163,6 @@ public class FeignClientFactoryBean
 		if (level != null) {
 			builder.logLevel(level);
 		}
-		Retryer retryer = getInheritedAwareOptional(context, Retryer.class);
-		if (retryer != null) {
-			builder.retryer(retryer);
-		}
 		ErrorDecoder errorDecoder = getInheritedAwareOptional(context, ErrorDecoder.class);
 		if (errorDecoder != null) {
 			builder.errorDecoder(errorDecoder);
@@ -246,11 +230,6 @@ public class FeignClientFactoryBean
 
 			builder.options(new Request.Options(connectTimeoutMillis, TimeUnit.MILLISECONDS, readTimeoutMillis,
 					TimeUnit.MILLISECONDS, followRedirects));
-		}
-
-		if (config.getRetryer() != null) {
-			Retryer retryer = getOrInstantiate(config.getRetryer());
-			builder.retryer(retryer);
 		}
 
 		if (config.getErrorDecoder() != null) {
@@ -407,11 +386,6 @@ public class FeignClientFactoryBean
 				// not load balancing because we have a url,
 				// but Spring Cloud LoadBalancer is on the classpath, so unwrap
 				client = ((FeignBlockingLoadBalancerClient) client).getDelegate();
-			}
-			if (client instanceof RetryableFeignBlockingLoadBalancerClient) {
-				// not load balancing because we have a url,
-				// but Spring Cloud LoadBalancer is on the classpath, so unwrap
-				client = ((RetryableFeignBlockingLoadBalancerClient) client).getDelegate();
 			}
 			builder.client(client);
 		}

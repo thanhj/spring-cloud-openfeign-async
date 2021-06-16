@@ -27,7 +27,6 @@ import feign.Contract;
 import feign.ExceptionPropagationPolicy;
 import feign.Logger;
 import feign.RequestInterceptor;
-import feign.Retryer;
 import feign.codec.Decoder;
 import feign.codec.Encoder;
 import feign.codec.ErrorDecoder;
@@ -117,8 +116,6 @@ public class FeignClientProperties {
 
 		private Integer readTimeout;
 
-		private Class<Retryer> retryer;
-
 		private Class<ErrorDecoder> errorDecoder;
 
 		private List<Class<RequestInterceptor>> requestInterceptors;
@@ -165,14 +162,6 @@ public class FeignClientProperties {
 
 		public void setReadTimeout(Integer readTimeout) {
 			this.readTimeout = readTimeout;
-		}
-
-		public Class<Retryer> getRetryer() {
-			return retryer;
-		}
-
-		public void setRetryer(Class<Retryer> retryer) {
-			this.retryer = retryer;
 		}
 
 		public Class<ErrorDecoder> getErrorDecoder() {
@@ -281,8 +270,7 @@ public class FeignClientProperties {
 			}
 			FeignClientConfiguration that = (FeignClientConfiguration) o;
 			return loggerLevel == that.loggerLevel && Objects.equals(connectTimeout, that.connectTimeout)
-					&& Objects.equals(readTimeout, that.readTimeout) && Objects.equals(retryer, that.retryer)
-					&& Objects.equals(errorDecoder, that.errorDecoder)
+					&& Objects.equals(readTimeout, that.readTimeout) && Objects.equals(errorDecoder, that.errorDecoder)
 					&& Objects.equals(requestInterceptors, that.requestInterceptors)
 					&& Objects.equals(decode404, that.decode404) && Objects.equals(encoder, that.encoder)
 					&& Objects.equals(decoder, that.decoder) && Objects.equals(contract, that.contract)
@@ -295,8 +283,8 @@ public class FeignClientProperties {
 
 		@Override
 		public int hashCode() {
-			return Objects.hash(loggerLevel, connectTimeout, readTimeout, retryer, errorDecoder, requestInterceptors,
-					decode404, encoder, decoder, contract, exceptionPropagationPolicy, defaultQueryParameters,
+			return Objects.hash(loggerLevel, connectTimeout, readTimeout, errorDecoder, requestInterceptors, decode404,
+					encoder, decoder, contract, exceptionPropagationPolicy, defaultQueryParameters,
 					defaultRequestHeaders, capabilities, metrics, followRedirects);
 		}
 

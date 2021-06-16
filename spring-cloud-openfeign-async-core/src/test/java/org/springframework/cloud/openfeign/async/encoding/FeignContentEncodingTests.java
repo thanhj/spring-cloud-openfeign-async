@@ -49,7 +49,7 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
  * @author Jakub Narloch
  */
 @SpringBootTest(classes = FeignContentEncodingTests.Application.class, webEnvironment = RANDOM_PORT,
-		value = { "feign.compression.request.enabled=true", "ribbon.OkToRetryOnAllOperations=false" })
+		value = { "feign.compression.request.enabled=true" })
 @RunWith(SpringJUnit4ClassRunner.class)
 public class FeignContentEncodingTests {
 

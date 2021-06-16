@@ -89,9 +89,6 @@ public class OAuth2FeignRequestInterceptorTests {
 
 		oAuth2FeignRequestInterceptor.apply(requestTemplate);
 
-		// First idempotent call failed, retry mechanism kicks in, and token has expired
-		// in the meantime
-
 		OAuth2AccessToken expiredAccessToken = mock(OAuth2AccessToken.class);
 		when(expiredAccessToken.isExpired()).thenReturn(true);
 		when(oAuth2ClientContext.getAccessToken()).thenReturn(expiredAccessToken);

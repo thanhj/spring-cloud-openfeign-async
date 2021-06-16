@@ -25,7 +25,6 @@ import feign.Contract;
 import feign.ExceptionPropagationPolicy;
 import feign.Logger;
 import feign.RequestInterceptor;
-import feign.Retryer;
 import feign.codec.Decoder;
 import feign.codec.Encoder;
 import feign.codec.ErrorDecoder;
@@ -53,7 +52,6 @@ class AsyncFeignClientConfigurationTests {
 		assertThat(config.getLoggerLevel()).isNull();
 		assertThat(config.getConnectTimeout()).isNull();
 		assertThat(config.getReadTimeout()).isNull();
-		assertThat(config.getRetryer()).isNull();
 		assertThat(config.getErrorDecoder()).isNull();
 		assertThat(config.getRequestInterceptors()).isNull();
 		assertThat(config.getDefaultRequestHeaders()).isNull();
@@ -73,7 +71,6 @@ class AsyncFeignClientConfigurationTests {
 		config.setLoggerLevel(Logger.Level.FULL);
 		config.setConnectTimeout(21);
 		config.setReadTimeout(42);
-		config.setRetryer(Retryer.class);
 		config.setErrorDecoder(ErrorDecoder.class);
 		List<Class<RequestInterceptor>> requestInterceptors = Lists.list(RequestInterceptor.class);
 		config.setRequestInterceptors(requestInterceptors);
@@ -94,7 +91,6 @@ class AsyncFeignClientConfigurationTests {
 		assertThat(config.getLoggerLevel()).isSameAs(Logger.Level.FULL);
 		assertThat(config.getConnectTimeout()).isEqualTo(21);
 		assertThat(config.getReadTimeout()).isEqualTo(42);
-		assertThat(config.getRetryer()).isSameAs(Retryer.class);
 		assertThat(config.getErrorDecoder()).isSameAs(ErrorDecoder.class);
 		assertThat(config.getRequestInterceptors()).isSameAs(requestInterceptors);
 		assertThat(config.getDefaultRequestHeaders()).isSameAs(defaultRequestHeaders);

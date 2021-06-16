@@ -41,7 +41,6 @@ import feign.Request;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
 import feign.RetryableException;
-import feign.Retryer;
 import feign.codec.EncodeException;
 import feign.codec.Encoder;
 import feign.codec.ErrorDecoder;
@@ -166,7 +165,7 @@ public class AsyncFeignClientUsingPropertiesTests {
 	}
 
 	@Test
-	public void testUnwrap() throws Exception {
+	public void testUnwrap() {
 		assertThatThrownBy(() -> unwrapClient().unwrap()).isInstanceOf(SocketTimeoutException.class);
 	}
 
@@ -379,20 +378,6 @@ public class AsyncFeignClientUsingPropertiesTests {
 		@Override
 		public void apply(RequestTemplate template) {
 			template.header("Bar", "Bar");
-		}
-
-	}
-
-	public static class NoRetryer implements Retryer {
-
-		@Override
-		public void continueOrPropagate(RetryableException e) {
-			throw e;
-		}
-
-		@Override
-		public Retryer clone() {
-			return this;
 		}
 
 	}

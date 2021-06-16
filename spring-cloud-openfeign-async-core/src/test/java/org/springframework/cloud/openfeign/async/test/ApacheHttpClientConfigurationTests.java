@@ -63,7 +63,7 @@ import static org.mockito.Mockito.mockingDetails;
  * @author Ryan Baxter
  * @author Olga Maciaszek-Sharma
  */
-@SpringBootTest(properties = { "spring.cloud.loadbalancer.retry.enabled=false" })
+@SpringBootTest
 @DirtiesContext
 class ApacheHttpClientConfigurationTests {
 

@@ -23,7 +23,6 @@ import feign.Contract;
 import feign.Feign;
 import feign.Logger;
 import feign.QueryMapEncoder;
-import feign.Retryer;
 import feign.codec.Decoder;
 import feign.codec.Encoder;
 import feign.form.MultipartFormContentProcessor;
@@ -146,12 +145,6 @@ public class FeignClientsConfiguration {
 	}
 
 	@Bean
-	@ConditionalOnMissingBean
-	public Retryer feignRetryer() {
-		return Retryer.NEVER_RETRY;
-	}
-
-	@Bean
 	@ConditionalOnMissingBean(FeignLoggerFactory.class)
 	public FeignLoggerFactory feignLoggerFactory() {
 		return new DefaultFeignLoggerFactory(this.logger);
@@ -194,8 +187,8 @@ public class FeignClientsConfiguration {
 		@Bean
 		@Scope("prototype")
 		@ConditionalOnMissingBean
-		public Feign.Builder feignBuilder(Retryer retryer) {
-			return Feign.builder().retryer(retryer);
+		public Feign.Builder feignBuilder() {
+			return Feign.builder();
 		}
 
 	}
@@ -208,8 +201,8 @@ public class FeignClientsConfiguration {
 		@Bean
 		@Scope("prototype")
 		@ConditionalOnMissingBean({ Feign.Builder.class, CircuitBreakerFactory.class })
-		public Feign.Builder defaultFeignBuilder(Retryer retryer) {
-			return Feign.builder().retryer(retryer);
+		public Feign.Builder defaultFeignBuilder() {
+			return Feign.builder();
 		}
 
 		@Bean

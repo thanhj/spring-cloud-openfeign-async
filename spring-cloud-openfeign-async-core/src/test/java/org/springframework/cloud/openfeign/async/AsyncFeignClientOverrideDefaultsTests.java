@@ -27,7 +27,6 @@ import feign.QueryMapEncoder;
 import feign.Request;
 import feign.RequestInterceptor;
 import feign.RequestLine;
-import feign.Retryer;
 import feign.auth.BasicAuthRequestInterceptor;
 import feign.codec.Decoder;
 import feign.codec.Encoder;
@@ -102,12 +101,6 @@ class AsyncFeignClientOverrideDefaultsTests {
 	void overrideLoggerLevel() {
 		assertThat(context.getInstance("foo", Logger.Level.class)).isNull();
 		assertThat(context.getInstance("bar", Logger.Level.class)).isEqualTo(Logger.Level.HEADERS);
-	}
-
-	@Test
-	void overrideRetryer() {
-		assertThat(context.getInstance("foo", Retryer.class)).isEqualTo(Retryer.NEVER_RETRY);
-		Retryer.Default.class.cast(context.getInstance("bar", Retryer.class));
 	}
 
 	@Test
@@ -228,11 +221,6 @@ class AsyncFeignClientOverrideDefaultsTests {
 		@Bean
 		Logger.Level feignLevel() {
 			return Logger.Level.HEADERS;
-		}
-
-		@Bean
-		Retryer feignRetryer() {
-			return new Retryer.Default();
 		}
 
 		@Bean
