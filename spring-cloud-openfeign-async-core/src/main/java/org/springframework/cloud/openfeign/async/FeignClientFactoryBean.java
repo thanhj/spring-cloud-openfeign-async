@@ -105,6 +105,8 @@ public class FeignClientFactoryBean
 
 	private final List<FeignBuilderCustomizer> additionalCustomizers = new ArrayList<>();
 
+	private final List<AsyncFeignBuilderCustomizer> additionalAsyncCustomizers = new ArrayList<>();
+
 	@Override
 	public void afterPropertiesSet() {
 		Assert.hasText(contextId, "Context id must be set");
@@ -144,7 +146,7 @@ public class FeignClientFactoryBean
 		// @formatter:on
 
 		configureFeign(context, builder);
-		// TODO: applyBuildCustomizers(context, builder);
+		applyBuildCustomizers(context, builder);
 
 		return builder;
 	}
@@ -158,6 +160,17 @@ public class FeignClientFactoryBean
 					.forEach(feignBuilderCustomizer -> feignBuilderCustomizer.customize(builder));
 		}
 		additionalCustomizers.forEach(customizer -> customizer.customize(builder));
+	}
+
+	private void applyBuildCustomizers(FeignContext context, AsyncBuilder builder) {
+		Map<String, AsyncFeignBuilderCustomizer> customizerMap = context.getInstances(contextId,
+				AsyncFeignBuilderCustomizer.class);
+
+		if (customizerMap != null) {
+			customizerMap.values().stream().sorted(AnnotationAwareOrderComparator.INSTANCE)
+					.forEach(feignBuilderCustomizer -> feignBuilderCustomizer.customize(builder));
+		}
+		additionalAsyncCustomizers.forEach(customizer -> customizer.customize(builder));
 	}
 
 	protected void configureFeign(FeignContext context, Feign.Builder builder) {
@@ -599,6 +612,10 @@ public class FeignClientFactoryBean
 
 	public void addCustomizer(FeignBuilderCustomizer customizer) {
 		additionalCustomizers.add(customizer);
+	}
+
+	public void addAsyncCustomizer(AsyncFeignBuilderCustomizer customizer) {
+		additionalAsyncCustomizers.add(customizer);
 	}
 
 	@Override

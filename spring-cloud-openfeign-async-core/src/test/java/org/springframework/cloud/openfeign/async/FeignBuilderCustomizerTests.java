@@ -18,6 +18,7 @@ package org.springframework.cloud.openfeign.async;
 
 import java.lang.reflect.Field;
 
+import feign.AsyncFeign.AsyncBuilder;
 import feign.Feign;
 import feign.Logger;
 import org.junit.Test;
@@ -52,12 +53,20 @@ public class FeignBuilderCustomizerTests {
 		context.close();
 	}
 
-	private void assertFeignBuilderField(Feign.Builder builder, String fieldName, Object expectedValue) {
-		Field builderField = ReflectionUtils.findField(Feign.Builder.class, fieldName);
-		ReflectionUtils.makeAccessible(builderField);
+	@Test
+	public void testAsyncBuilderCustomizer() {
+		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(
+				FeignBuilderCustomizerTests.SampleAsyncConfiguration2.class);
 
-		Object value = ReflectionUtils.getField(builderField, builder);
-		assertThat(value).as("Expected value for the field '" + fieldName + "':").isEqualTo(expectedValue);
+		FeignClientFactoryBean clientFactoryBean = context.getBean(FeignClientFactoryBean.class);
+		FeignContext feignContext = context.getBean(FeignContext.class);
+
+		AsyncBuilder asyncBuilder = clientFactoryBean.asyncFeign(feignContext);
+		Feign.Builder builder = getNestedBuilder(asyncBuilder);
+		assertFeignBuilderField(builder, "logLevel", Logger.Level.HEADERS);
+		assertAsyncFeignBuilderField(asyncBuilder, "decode404", true);
+
+		context.close();
 	}
 
 	@Test
@@ -71,6 +80,22 @@ public class FeignBuilderCustomizerTests {
 		Feign.Builder builder = clientFactoryBean.feign(feignContext);
 		assertFeignBuilderField(builder, "logLevel", Logger.Level.FULL);
 		assertFeignBuilderField(builder, "decode404", true);
+
+		context.close();
+	}
+
+	@Test
+	public void testBuildAsyncCustomizerOrdered() {
+		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(
+				FeignBuilderCustomizerTests.SampleAsyncConfiguration3.class);
+
+		FeignClientFactoryBean clientFactoryBean = context.getBean(FeignClientFactoryBean.class);
+		FeignContext feignContext = context.getBean(FeignContext.class);
+
+		AsyncBuilder asyncBuilder = clientFactoryBean.asyncFeign(feignContext);
+		Feign.Builder nestedBuilder = getNestedBuilder(asyncBuilder);
+		assertFeignBuilderField(nestedBuilder, "logLevel", Logger.Level.FULL);
+		assertAsyncFeignBuilderField(asyncBuilder, "decode404", true);
 
 		context.close();
 	}
@@ -93,13 +118,59 @@ public class FeignBuilderCustomizerTests {
 		context.close();
 	}
 
+	@Test
+	public void testBuildAsyncCustomizerOrderedWithAdditional() {
+		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(
+				FeignBuilderCustomizerTests.SampleAsyncConfiguration3.class);
+
+		FeignClientFactoryBean clientFactoryBean = context.getBean(FeignClientFactoryBean.class);
+		clientFactoryBean.addAsyncCustomizer(builder -> builder.logLevel(Logger.Level.BASIC));
+		clientFactoryBean.addAsyncCustomizer(AsyncBuilder::doNotCloseAfterDecode);
+		FeignContext feignContext = context.getBean(FeignContext.class);
+
+		AsyncBuilder asyncBuilder = clientFactoryBean.asyncFeign(feignContext);
+		Feign.Builder nestedBuilder = getNestedBuilder(asyncBuilder);
+		assertFeignBuilderField(nestedBuilder, "logLevel", Logger.Level.BASIC);
+		assertAsyncFeignBuilderField(asyncBuilder, "decode404", true);
+		assertAsyncFeignBuilderField(asyncBuilder, "closeAfterDecode", false);
+
+		context.close();
+	}
+
+	private void assertFeignBuilderField(Feign.Builder builder, String fieldName, Object expectedValue) {
+		Field builderField = ReflectionUtils.findField(Feign.Builder.class, fieldName);
+		ReflectionUtils.makeAccessible(builderField);
+
+		Object value = ReflectionUtils.getField(builderField, builder);
+		assertThat(value).as("Expected value for the field '" + fieldName + "':").isEqualTo(expectedValue);
+	}
+
+	private void assertAsyncFeignBuilderField(AsyncBuilder builder, String fieldName, Object expectedValue) {
+		Field builderField = ReflectionUtils.findField(AsyncBuilder.class, fieldName);
+		ReflectionUtils.makeAccessible(builderField);
+
+		Object value = ReflectionUtils.getField(builderField, builder);
+		assertThat(value).as("Expected value for the field '" + fieldName + "':").isEqualTo(expectedValue);
+	}
+
+	private Feign.Builder getNestedBuilder(AsyncBuilder asyncBuilder) {
+		Field builderField = ReflectionUtils.findField(AsyncBuilder.class, "builder");
+		ReflectionUtils.makeAccessible(builderField);
+		return (Feign.Builder) ReflectionUtils.getField(builderField, asyncBuilder);
+	}
+
 	private static FeignClientFactoryBean defaultFeignClientFactoryBean() {
+		return defaultFeignClientFactoryBean(false);
+	}
+
+	private static FeignClientFactoryBean defaultFeignClientFactoryBean(boolean asynchronous) {
 		FeignClientFactoryBean feignClientFactoryBean = new FeignClientFactoryBean();
 		feignClientFactoryBean.setContextId("test");
 		feignClientFactoryBean.setName("test");
 		feignClientFactoryBean.setType(AsyncFeignClientFactoryTests.TestType.class);
 		feignClientFactoryBean.setPath("");
 		feignClientFactoryBean.setUrl("http://some.absolute.url");
+		feignClientFactoryBean.setAsynchronous(asynchronous);
 		return feignClientFactoryBean;
 	}
 
@@ -136,6 +207,38 @@ public class FeignBuilderCustomizerTests {
 
 	@Configuration(proxyBeanMethods = false)
 	@Import(FeignClientsConfiguration.class)
+	protected static class SampleAsyncConfiguration2 {
+
+		@Bean
+		FeignContext feignContext() {
+			return new FeignContext();
+		}
+
+		@Bean
+		FeignClientProperties feignClientProperties() {
+			return new FeignClientProperties();
+		}
+
+		@Bean
+		@Order(1)
+		AsyncFeignBuilderCustomizer asyncFeignBuilderCustomizer() {
+			return builder -> builder.logLevel(Logger.Level.HEADERS);
+		}
+
+		@Bean
+		AsyncFeignBuilderCustomizer asyncFeignBuilderCustomizer2() {
+			return AsyncBuilder::decode404;
+		}
+
+		@Bean
+		FeignClientFactoryBean feignClientFactoryBean() {
+			return defaultFeignClientFactoryBean(true);
+		}
+
+	}
+
+	@Configuration(proxyBeanMethods = false)
+	@Import(FeignClientsConfiguration.class)
 	protected static class SampleConfiguration3 {
 
 		@Bean
@@ -163,6 +266,44 @@ public class FeignBuilderCustomizerTests {
 		@Bean
 		FeignBuilderCustomizer feignBuilderCustomizer2() {
 			return Feign.Builder::decode404;
+		}
+
+		@Bean
+		FeignClientFactoryBean feignClientFactoryBean() {
+			return defaultFeignClientFactoryBean();
+		}
+
+	}
+
+	@Configuration(proxyBeanMethods = false)
+	@Import(FeignClientsConfiguration.class)
+	protected static class SampleAsyncConfiguration3 {
+
+		@Bean
+		FeignContext feignContext() {
+			return new FeignContext();
+		}
+
+		@Bean
+		FeignClientProperties feignClientProperties() {
+			return new FeignClientProperties();
+		}
+
+		@Bean
+		@Order(1)
+		AsyncFeignBuilderCustomizer asyncFeignBuilderCustomizer() {
+			return builder -> builder.logLevel(Logger.Level.HEADERS);
+		}
+
+		@Bean
+		@Order(2)
+		AsyncFeignBuilderCustomizer asyncFeignBuilderCustomizer1() {
+			return builder -> builder.logLevel(Logger.Level.FULL);
+		}
+
+		@Bean
+		AsyncFeignBuilderCustomizer asyncFeignBuilderCustomizer2() {
+			return AsyncBuilder::decode404;
 		}
 
 		@Bean

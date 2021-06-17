@@ -16,6 +16,7 @@
 
 package org.springframework.cloud.openfeign.async;
 
+import feign.AsyncFeign;
 import feign.Feign;
 
 import org.springframework.context.ApplicationContext;
@@ -89,6 +90,18 @@ public class FeignClientBuilder {
 		 */
 		public Builder<T> customize(final FeignBuilderCustomizer customizer) {
 			this.feignClientFactoryBean.addCustomizer(customizer);
+			return this;
+		}
+
+		/**
+		 * Applies a {@link AsyncFeignBuilderCustomizer} to the underlying
+		 * {@link AsyncFeign.AsyncBuilder}. May be called multiple times.
+		 * @param customizer applied in the same order as supplied here after applying
+		 * customizers found in the context.
+		 * @return the {@link Builder} with the customizer added
+		 */
+		public Builder<T> customize(final AsyncFeignBuilderCustomizer customizer) {
+			this.feignClientFactoryBean.addAsyncCustomizer(customizer);
 			return this;
 		}
 
