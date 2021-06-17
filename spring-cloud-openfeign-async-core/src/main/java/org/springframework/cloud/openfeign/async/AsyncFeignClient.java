@@ -65,8 +65,8 @@ public @interface AsyncFeignClient {
 	String name() default "";
 
 	/**
-	 * @return the <code>@Qualifiers</code> value for the feign client.
-	 * Default = <code>contextId + "AsyncFeignClient"</code>.
+	 * @return the <code>@Qualifiers</code> value for the feign client. Default =
+	 * <code>contextId + "AsyncFeignClient"</code>.
 	 */
 	String[] qualifiers() default {};
 
