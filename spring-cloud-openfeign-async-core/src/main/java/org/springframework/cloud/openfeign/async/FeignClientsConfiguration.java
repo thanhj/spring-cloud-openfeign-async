@@ -19,6 +19,8 @@ package org.springframework.cloud.openfeign.async;
 import java.util.ArrayList;
 import java.util.List;
 
+import feign.AsyncFeign;
+import feign.AsyncFeign.AsyncBuilder;
 import feign.Contract;
 import feign.Feign;
 import feign.Logger;
@@ -34,6 +36,7 @@ import io.micrometer.core.instrument.MeterRegistry;
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -61,6 +64,7 @@ import org.springframework.format.support.DefaultFormattingConversionService;
 import org.springframework.format.support.FormattingConversionService;
 
 import static feign.form.ContentType.MULTIPART;
+import static org.springframework.beans.factory.config.ConfigurableBeanFactory.SCOPE_PROTOTYPE;
 
 /**
  * @author Dave Syer
@@ -157,6 +161,13 @@ public class FeignClientsConfiguration {
 		};
 	}
 
+	@Bean
+	@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+	@ConditionalOnMissingBean
+	public AsyncBuilder asyncFeignBuilder() {
+		return AsyncFeign.asyncBuilder();
+	}
+
 	private Encoder springEncoder(ObjectProvider<AbstractFormWriter> formWriterProvider,
 			FeignEncoderProperties encoderProperties) {
 		AbstractFormWriter formWriter = formWriterProvider.getIfAvailable();
@@ -185,7 +196,7 @@ public class FeignClientsConfiguration {
 	protected static class DefaultFeignBuilderConfiguration {
 
 		@Bean
-		@Scope("prototype")
+		@Scope(SCOPE_PROTOTYPE)
 		@ConditionalOnMissingBean
 		public Feign.Builder feignBuilder() {
 			return Feign.builder();
@@ -199,14 +210,14 @@ public class FeignClientsConfiguration {
 	protected static class CircuitBreakerPresentFeignBuilderConfiguration {
 
 		@Bean
-		@Scope("prototype")
+		@Scope(SCOPE_PROTOTYPE)
 		@ConditionalOnMissingBean({ Feign.Builder.class, CircuitBreakerFactory.class })
 		public Feign.Builder defaultFeignBuilder() {
 			return Feign.builder();
 		}
 
 		@Bean
-		@Scope("prototype")
+		@Scope(SCOPE_PROTOTYPE)
 		@ConditionalOnMissingBean
 		@ConditionalOnBean(CircuitBreakerFactory.class)
 		public Feign.Builder circuitBreakerFeignBuilder() {

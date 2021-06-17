@@ -212,12 +212,14 @@ class FeignClientsRegistrar implements ImportBeanDefinitionRegistrar, ResourceLo
 				? (ConfigurableBeanFactory) registry : null;
 		String contextId = getContextId(beanFactory, attributes);
 		String name = getName(attributes);
+		boolean asynchronous = (Boolean) attributes.get("asynchronous");
 		FeignClientFactoryBean factoryBean = new FeignClientFactoryBean();
 		factoryBean.setBeanFactory(beanFactory);
 		factoryBean.setName(name);
 		factoryBean.setContextId(contextId);
 		factoryBean.setType(clazz);
 		factoryBean.setRefreshableClient(isClientRefreshEnabled());
+		factoryBean.setAsynchronous(asynchronous);
 		BeanDefinitionBuilder definition = BeanDefinitionBuilder.genericBeanDefinition(clazz, () -> {
 			factoryBean.setUrl(getUrl(beanFactory, attributes));
 			factoryBean.setPath(getPath(beanFactory, attributes));

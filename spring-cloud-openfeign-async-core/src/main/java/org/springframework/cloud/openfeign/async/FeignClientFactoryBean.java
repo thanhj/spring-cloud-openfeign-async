@@ -22,6 +22,9 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
+import feign.AsyncClient;
+import feign.AsyncFeign;
+import feign.AsyncFeign.AsyncBuilder;
 import feign.Capability;
 import feign.Client;
 import feign.Contract;
@@ -35,10 +38,7 @@ import feign.Target.HardCodedTarget;
 import feign.codec.Decoder;
 import feign.codec.Encoder;
 import feign.codec.ErrorDecoder;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -60,10 +60,7 @@ import org.springframework.util.StringUtils;
 /**
  * @author thanh.nguyen-ky
  */
-@Getter
-@Setter
-@ToString
-@EqualsAndHashCode
+@Data
 public class FeignClientFactoryBean
 		implements FactoryBean<Object>, InitializingBean, ApplicationContextAware, BeanFactoryAware {
 
@@ -133,6 +130,25 @@ public class FeignClientFactoryBean
 		return builder;
 	}
 
+	protected AsyncBuilder asyncFeign(FeignContext context) {
+		FeignLoggerFactory loggerFactory = get(context, FeignLoggerFactory.class);
+		Logger logger = loggerFactory.create(type);
+
+		// @formatter:off
+		AsyncBuilder builder = get(context, AsyncBuilder.class)
+			// required values
+			.logger(logger)
+			.encoder(get(context, Encoder.class))
+			.decoder(get(context, Decoder.class))
+			.contract(get(context, Contract.class));
+		// @formatter:on
+
+		configureFeign(context, builder);
+		// TODO: applyBuildCustomizers(context, builder);
+
+		return builder;
+	}
+
 	private void applyBuildCustomizers(FeignContext context, Feign.Builder builder) {
 		Map<String, FeignBuilderCustomizer> customizerMap = context.getInstances(contextId,
 				FeignBuilderCustomizer.class);
@@ -145,6 +161,30 @@ public class FeignClientFactoryBean
 	}
 
 	protected void configureFeign(FeignContext context, Feign.Builder builder) {
+		FeignClientProperties properties = beanFactory != null ? beanFactory.getBean(FeignClientProperties.class)
+				: applicationContext.getBean(FeignClientProperties.class);
+
+		FeignClientConfigurer feignClientConfigurer = getOptional(context, FeignClientConfigurer.class);
+		setInheritParentContext(feignClientConfigurer.inheritParentConfiguration());
+
+		if (properties != null && inheritParentContext) {
+			if (properties.isDefaultToProperties()) {
+				configureUsingConfiguration(context, builder);
+				configureUsingProperties(properties.getConfig().get(properties.getDefaultConfig()), builder);
+				configureUsingProperties(properties.getConfig().get(contextId), builder);
+			}
+			else {
+				configureUsingProperties(properties.getConfig().get(properties.getDefaultConfig()), builder);
+				configureUsingProperties(properties.getConfig().get(contextId), builder);
+				configureUsingConfiguration(context, builder);
+			}
+		}
+		else {
+			configureUsingConfiguration(context, builder);
+		}
+	}
+
+	protected void configureFeign(FeignContext context, AsyncBuilder builder) {
 		FeignClientProperties properties = beanFactory != null ? beanFactory.getBean(FeignClientProperties.class)
 				: applicationContext.getBean(FeignClientProperties.class);
 
@@ -222,6 +262,49 @@ public class FeignClientFactoryBean
 		}
 	}
 
+	protected void configureUsingConfiguration(FeignContext context, AsyncBuilder builder) {
+		Logger.Level level = getInheritedAwareOptional(context, Logger.Level.class);
+		if (level != null) {
+			builder.logLevel(level);
+		}
+		ErrorDecoder errorDecoder = getInheritedAwareOptional(context, ErrorDecoder.class);
+		if (errorDecoder != null) {
+			builder.errorDecoder(errorDecoder);
+		}
+		else {
+			FeignErrorDecoderFactory errorDecoderFactory = getOptional(context, FeignErrorDecoderFactory.class);
+			if (errorDecoderFactory != null) {
+				ErrorDecoder factoryErrorDecoder = errorDecoderFactory.create(type);
+				builder.errorDecoder(factoryErrorDecoder);
+			}
+		}
+		Request.Options options = getInheritedAwareOptional(context, Request.Options.class);
+		if (options == null) {
+			options = getOptionsByName(context, contextId);
+		}
+
+		if (options != null) {
+			builder.options(options);
+			readTimeoutMillis = options.readTimeoutMillis();
+			connectTimeoutMillis = options.connectTimeoutMillis();
+			followRedirects = options.isFollowRedirects();
+		}
+		Map<String, RequestInterceptor> requestInterceptors = getInheritedAwareInstances(context,
+				RequestInterceptor.class);
+		if (requestInterceptors != null) {
+			List<RequestInterceptor> interceptors = new ArrayList<>(requestInterceptors.values());
+			AnnotationAwareOrderComparator.sort(interceptors);
+			builder.requestInterceptors(interceptors);
+		}
+		QueryMapEncoder queryMapEncoder = getInheritedAwareOptional(context, QueryMapEncoder.class);
+		if (queryMapEncoder != null) {
+			builder.queryMapEncoder(queryMapEncoder);
+		}
+		if (decode404) {
+			builder.decode404();
+		}
+	}
+
 	protected void configureUsingProperties(FeignClientProperties.FeignClientConfiguration config,
 			Feign.Builder builder) {
 		if (config == null) {
@@ -287,6 +370,66 @@ public class FeignClientFactoryBean
 
 		if (config.getCapabilities() != null) {
 			config.getCapabilities().stream().map(this::getOrInstantiate).forEach(builder::addCapability);
+		}
+	}
+
+	protected void configureUsingProperties(FeignClientProperties.FeignClientConfiguration config,
+			AsyncBuilder builder) {
+		if (config == null) {
+			return;
+		}
+
+		if (config.getLoggerLevel() != null) {
+			builder.logLevel(config.getLoggerLevel());
+		}
+
+		if (!refreshableClient) {
+			connectTimeoutMillis = config.getConnectTimeout() != null ? config.getConnectTimeout()
+					: connectTimeoutMillis;
+			readTimeoutMillis = config.getReadTimeout() != null ? config.getReadTimeout() : readTimeoutMillis;
+			followRedirects = config.isFollowRedirects() != null ? config.isFollowRedirects() : followRedirects;
+
+			builder.options(new Request.Options(connectTimeoutMillis, TimeUnit.MILLISECONDS, readTimeoutMillis,
+					TimeUnit.MILLISECONDS, followRedirects));
+		}
+
+		if (config.getErrorDecoder() != null) {
+			ErrorDecoder errorDecoder = getOrInstantiate(config.getErrorDecoder());
+			builder.errorDecoder(errorDecoder);
+		}
+
+		if (config.getRequestInterceptors() != null && !config.getRequestInterceptors().isEmpty()) {
+			// this will add request interceptor to builder, not replace existing
+			for (Class<RequestInterceptor> bean : config.getRequestInterceptors()) {
+				RequestInterceptor interceptor = getOrInstantiate(bean);
+				builder.requestInterceptor(interceptor);
+			}
+		}
+
+		if (config.getDecode404() != null) {
+			if (config.getDecode404()) {
+				builder.decode404();
+			}
+		}
+
+		if (Objects.nonNull(config.getEncoder())) {
+			builder.encoder(getOrInstantiate(config.getEncoder()));
+		}
+
+		if (Objects.nonNull(config.getDefaultRequestHeaders())) {
+			builder.requestInterceptor(requestTemplate -> requestTemplate.headers(config.getDefaultRequestHeaders()));
+		}
+
+		if (Objects.nonNull(config.getDefaultQueryParameters())) {
+			builder.requestInterceptor(requestTemplate -> requestTemplate.queries(config.getDefaultQueryParameters()));
+		}
+
+		if (Objects.nonNull(config.getDecoder())) {
+			builder.decoder(getOrInstantiate(config.getDecoder()));
+		}
+
+		if (Objects.nonNull(config.getContract())) {
+			builder.contract(getOrInstantiate(config.getContract()));
 		}
 	}
 
@@ -357,6 +500,9 @@ public class FeignClientFactoryBean
 
 	@Override
 	public Object getObject() {
+		if (asynchronous) {
+			return getAsyncTarget();
+		}
 		return getTarget();
 	}
 
@@ -400,6 +546,31 @@ public class FeignClientFactoryBean
 			builder.client(client);
 		}
 		Targeter targeter = get(context, Targeter.class);
+		return (T) targeter.target(this, builder, context, new HardCodedTarget<>(type, name, url));
+	}
+
+	/**
+	 * @param <T> the target type of the Feign client
+	 * @return an {@link AsyncFeign} client created with the specified data and the
+	 * context information
+	 */
+	<T> T getAsyncTarget() {
+		FeignContext context = beanFactory != null ? beanFactory.getBean(FeignContext.class)
+				: applicationContext.getBean(FeignContext.class);
+		AsyncBuilder builder = asyncFeign(context);
+
+		if (!StringUtils.hasText(url)) {
+			url = name;
+		}
+		if (StringUtils.hasText(url) && !url.startsWith("http")) {
+			url = "http://" + url;
+		}
+		String url = this.url + cleanPath();
+		AsyncClient client = getOptional(context, AsyncClient.class);
+		if (client != null) {
+			builder.client(client);
+		}
+		AsyncTargeter targeter = get(context, AsyncTargeter.class);
 		return (T) targeter.target(this, builder, context, new HardCodedTarget<>(type, name, url));
 	}
 

@@ -125,7 +125,7 @@ public class AsyncFeignClientBuilderTests {
 	public void forType_allFieldsSetOnBuilder() {
 		// when:
 		final FeignClientBuilder.Builder builder = this.feignClientBuilder.forType(TestFeignClient.class, "TestClient")
-				.decode404(true).url("Url/").path("/Path").contextId("TestContext").asynchronous(true);
+				.decode404(true).url("Url/").path("/Path").contextId("TestContext");
 
 		// then:
 		assertFactoryBeanField(builder, "applicationContext", this.applicationContext);
@@ -137,7 +137,6 @@ public class AsyncFeignClientBuilderTests {
 		assertFactoryBeanField(builder, "url", "http://Url/");
 		assertFactoryBeanField(builder, "path", "/Path");
 		assertFactoryBeanField(builder, "decode404", true);
-		assertFactoryBeanField(builder, "asynchronous", true);
 
 	}
 
@@ -146,8 +145,7 @@ public class AsyncFeignClientBuilderTests {
 		// when:
 		final FeignClientBuilder.Builder builder = this.feignClientBuilder
 				.forType(TestFeignClient.class, new FeignClientFactoryBean(), "TestClient").decode404(true)
-				.path("Path/").url("Url/").contextId("TestContext").asynchronous(true)
-				.customize(Feign.Builder::doNotCloseAfterDecode);
+				.path("Path/").url("Url/").contextId("TestContext").customize(Feign.Builder::doNotCloseAfterDecode);
 
 		// then:
 		assertFactoryBeanField(builder, "applicationContext", this.applicationContext);
@@ -159,7 +157,6 @@ public class AsyncFeignClientBuilderTests {
 		assertFactoryBeanField(builder, "url", "http://Url/");
 		assertFactoryBeanField(builder, "path", "/Path");
 		assertFactoryBeanField(builder, "decode404", true);
-		assertFactoryBeanField(builder, "asynchronous", true);
 		List<FeignBuilderCustomizer> additionalCustomizers = getFactoryBeanField(builder, "additionalCustomizers");
 		assertThat(additionalCustomizers).hasSize(1);
 	}

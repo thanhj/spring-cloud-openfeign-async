@@ -28,6 +28,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.CompletionException;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -138,9 +139,21 @@ public class AsyncFeignClientUsingPropertiesTests {
 		return fooFactoryBean.feign(context).target(FooClient.class, "http://localhost:" + port);
 	}
 
+	public FooAsyncClient fooAsyncClient() {
+		fooFactoryBean.setApplicationContext(applicationContext);
+		return (FooAsyncClient) fooFactoryBean.asyncFeign(context).target(FooAsyncClient.class,
+				"http://localhost:" + port);
+	}
+
 	public BarClient barClient() {
 		barFactoryBean.setApplicationContext(applicationContext);
 		return barFactoryBean.feign(context).target(BarClient.class, "http://localhost:" + port);
+	}
+
+	public BarAsyncClient barAsyncClient() {
+		barFactoryBean.setApplicationContext(applicationContext);
+		return (BarAsyncClient) barFactoryBean.asyncFeign(context).target(BarAsyncClient.class,
+				"http://localhost:" + port);
 	}
 
 	public UnwrapClient unwrapClient() {
@@ -148,9 +161,21 @@ public class AsyncFeignClientUsingPropertiesTests {
 		return unwrapFactoryBean.feign(context).target(UnwrapClient.class, "http://localhost:" + port);
 	}
 
+	public UnwrapAsyncClient unwrapAsyncClient() {
+		unwrapFactoryBean.setApplicationContext(applicationContext);
+		return (UnwrapAsyncClient) unwrapFactoryBean.asyncFeign(context).target(UnwrapAsyncClient.class,
+				"http://localhost:" + port);
+	}
+
 	public FormClient formClient() {
 		formFactoryBean.setApplicationContext(applicationContext);
 		return formFactoryBean.feign(context).target(FormClient.class, "http://localhost:" + port);
+	}
+
+	public FormAsyncClient formAsyncClient() {
+		formFactoryBean.setApplicationContext(applicationContext);
+		return (FormAsyncClient) formFactoryBean.asyncFeign(context).target(FormAsyncClient.class,
+				"http://localhost:" + port);
 	}
 
 	@Test
@@ -160,13 +185,29 @@ public class AsyncFeignClientUsingPropertiesTests {
 	}
 
 	@Test
+	public void testFooAsync() {
+		String response = fooAsyncClient().foo();
+		assertThat(response).isEqualTo("OK");
+	}
+
+	@Test
 	public void testBar() {
 		assertThatThrownBy(() -> barClient().bar()).isInstanceOf(RetryableException.class);
 	}
 
 	@Test
+	public void testBarAsync() {
+		assertThatThrownBy(() -> barAsyncClient().bar()).isInstanceOf(CompletionException.class);
+	}
+
+	@Test
 	public void testUnwrap() {
 		assertThatThrownBy(() -> unwrapClient().unwrap()).isInstanceOf(SocketTimeoutException.class);
+	}
+
+	@Test
+	public void testUnwrapAsync() {
+		assertThatThrownBy(() -> unwrapAsyncClient().unwrap()).isInstanceOf(CompletionException.class);
 	}
 
 	@Test
@@ -177,8 +218,21 @@ public class AsyncFeignClientUsingPropertiesTests {
 	}
 
 	@Test
+	public void testAsyncForm() {
+		Map<String, String> request = Collections.singletonMap("form", "Data");
+		String response = formAsyncClient().form(request);
+		assertThat(response).isEqualTo("Data");
+	}
+
+	@Test
 	public void testSingleValue() {
 		List<String> response = singleValueClient().singleValue();
+		assertThat(response).isEqualTo(Arrays.asList("header", "parameter"));
+	}
+
+	@Test
+	public void testSingleValueAsync() {
+		List<String> response = singleValueAsyncClient().singleValue();
 		assertThat(response).isEqualTo(Arrays.asList("header", "parameter"));
 	}
 
@@ -188,16 +242,34 @@ public class AsyncFeignClientUsingPropertiesTests {
 		assertThat(response).isEqualTo(Arrays.asList("header1", "header2", "parameter1", "parameter2"));
 	}
 
+	@Test
+	public void testMultipleValueAsync() {
+		List<String> response = multipleValueAsyncClient().multipleValue();
+		assertThat(response).isEqualTo(Arrays.asList("header1", "header2", "parameter1", "parameter2"));
+	}
+
 	public SingleValueClient singleValueClient() {
 		this.defaultHeadersAndQuerySingleParamsFeignClientFactoryBean.setApplicationContext(this.applicationContext);
 		return this.defaultHeadersAndQuerySingleParamsFeignClientFactoryBean.feign(this.context)
 				.target(SingleValueClient.class, "http://localhost:" + this.port);
 	}
 
+	public SingleValueAsyncClient singleValueAsyncClient() {
+		this.defaultHeadersAndQuerySingleParamsFeignClientFactoryBean.setApplicationContext(this.applicationContext);
+		return (SingleValueAsyncClient) this.defaultHeadersAndQuerySingleParamsFeignClientFactoryBean
+				.asyncFeign(this.context).target(SingleValueAsyncClient.class, "http://localhost:" + this.port);
+	}
+
 	public MultipleValueClient multipleValueClient() {
 		this.defaultHeadersAndQueryMultipleParamsFeignClientFactoryBean.setApplicationContext(this.applicationContext);
 		return this.defaultHeadersAndQueryMultipleParamsFeignClientFactoryBean.feign(this.context)
 				.target(MultipleValueClient.class, "http://localhost:" + this.port);
+	}
+
+	public MultipleValueAsyncClient multipleValueAsyncClient() {
+		this.defaultHeadersAndQueryMultipleParamsFeignClientFactoryBean.setApplicationContext(this.applicationContext);
+		return (MultipleValueAsyncClient) this.defaultHeadersAndQueryMultipleParamsFeignClientFactoryBean
+				.asyncFeign(this.context).target(MultipleValueAsyncClient.class, "http://localhost:" + this.port);
 	}
 
 	@Test
@@ -218,6 +290,22 @@ public class AsyncFeignClientUsingPropertiesTests {
 	}
 
 	@Test
+	public void readTimeoutAsyncShouldWorkWhenConnectTimeoutNotSet() {
+		FeignClientFactoryBean readTimeoutFactoryBean = new FeignClientFactoryBean();
+		readTimeoutFactoryBean.setContextId("readTimeout");
+		readTimeoutFactoryBean.setType(FeignClientFactoryBean.class);
+		readTimeoutFactoryBean.setApplicationContext(applicationContext);
+
+		TimeoutAsyncClient client = (TimeoutAsyncClient) readTimeoutFactoryBean.asyncFeign(context)
+				.target(TimeoutAsyncClient.class, "http://localhost:" + port);
+
+		Request.Options options = getAsyncRequestOptions((Proxy) client);
+
+		assertThat(options.readTimeoutMillis()).isEqualTo(1000);
+		assertThat(options.connectTimeoutMillis()).isEqualTo(5000);
+	}
+
+	@Test
 	@DisabledForJreRange(min = JRE.JAVA_16)
 	public void connectTimeoutShouldWorkWhenReadTimeoutNotSet() {
 		FeignClientFactoryBean readTimeoutFactoryBean = new FeignClientFactoryBean();
@@ -229,6 +317,22 @@ public class AsyncFeignClientUsingPropertiesTests {
 				"http://localhost:" + port);
 
 		Request.Options options = getRequestOptions((Proxy) client);
+
+		assertThat(options.connectTimeoutMillis()).isEqualTo(1000);
+		assertThat(options.readTimeoutMillis()).isEqualTo(5000);
+	}
+
+	@Test
+	public void connectTimeoutAsyncShouldWorkWhenReadTimeoutNotSet() {
+		FeignClientFactoryBean readTimeoutFactoryBean = new FeignClientFactoryBean();
+		readTimeoutFactoryBean.setContextId("connectTimeout");
+		readTimeoutFactoryBean.setType(FeignClientFactoryBean.class);
+		readTimeoutFactoryBean.setApplicationContext(applicationContext);
+
+		TimeoutAsyncClient client = (TimeoutAsyncClient) readTimeoutFactoryBean.asyncFeign(context)
+				.target(TimeoutAsyncClient.class, "http://localhost:" + port);
+
+		Request.Options options = getAsyncRequestOptions((Proxy) client);
 
 		assertThat(options.connectTimeoutMillis()).isEqualTo(1000);
 		assertThat(options.readTimeoutMillis()).isEqualTo(5000);
@@ -262,9 +366,34 @@ public class AsyncFeignClientUsingPropertiesTests {
 		assertThat(options.isFollowRedirects()).isFalse();
 	}
 
+	@Test
+	public void shouldSetFollowRedirectsAsync() {
+		FeignClientFactoryBean testFactoryBean = new FeignClientFactoryBean();
+		testFactoryBean.setContextId("test");
+		testFactoryBean.setType(FeignClientFactoryBean.class);
+		testFactoryBean.setApplicationContext(applicationContext);
+
+		TimeoutAsyncClient client = (TimeoutAsyncClient) testFactoryBean.asyncFeign(context)
+				.target(TimeoutAsyncClient.class, "http://localhost:" + port);
+
+		Request.Options options = getAsyncRequestOptions((Proxy) client);
+
+		assertThat(options.isFollowRedirects()).isFalse();
+	}
+
 	private Request.Options getRequestOptions(Proxy client) {
 		Object invocationHandlerLambda = ReflectionTestUtils.getField(client, "h");
 		Object invocationHandler = ReflectionTestUtils.getField(invocationHandlerLambda, "arg$2");
+		Map<Method, InvocationHandlerFactory.MethodHandler> dispatch = (Map<Method, InvocationHandlerFactory.MethodHandler>) ReflectionTestUtils
+				.getField(Objects.requireNonNull(invocationHandler), "dispatch");
+		Method key = new ArrayList<>(dispatch.keySet()).get(0);
+		return (Request.Options) ReflectionTestUtils.getField(dispatch.get(key), "options");
+	}
+
+	private Request.Options getAsyncRequestOptions(Proxy client) {
+		Object asyncInvocationHandler = ReflectionTestUtils.getField(client, "h");
+		Object instance = ReflectionTestUtils.getField(asyncInvocationHandler, "instance");
+		Object invocationHandler = ReflectionTestUtils.getField(instance, "h");
 		Map<Method, InvocationHandlerFactory.MethodHandler> dispatch = (Map<Method, InvocationHandlerFactory.MethodHandler>) ReflectionTestUtils
 				.getField(Objects.requireNonNull(invocationHandler), "dispatch");
 		Method key = new ArrayList<>(dispatch.keySet()).get(0);
@@ -278,6 +407,13 @@ public class AsyncFeignClientUsingPropertiesTests {
 
 	}
 
+	protected interface FooAsyncClient {
+
+		@GetMapping(path = "/foo")
+		String foo();
+
+	}
+
 	protected interface BarClient {
 
 		@GetMapping(path = "/bar")
@@ -285,7 +421,21 @@ public class AsyncFeignClientUsingPropertiesTests {
 
 	}
 
+	protected interface BarAsyncClient {
+
+		@GetMapping(path = "/bar")
+		String bar();
+
+	}
+
 	protected interface UnwrapClient {
+
+		@GetMapping(path = "/bar") // intentionally /bar
+		String unwrap() throws IOException;
+
+	}
+
+	protected interface UnwrapAsyncClient {
 
 		@GetMapping(path = "/bar") // intentionally /bar
 		String unwrap() throws IOException;
@@ -300,7 +450,22 @@ public class AsyncFeignClientUsingPropertiesTests {
 
 	}
 
+	protected interface FormAsyncClient {
+
+		@RequestMapping(value = "/form", method = RequestMethod.POST,
+				consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+		String form(Map<String, String> form);
+
+	}
+
 	protected interface SingleValueClient {
+
+		@GetMapping(path = "/singleValue")
+		List<String> singleValue();
+
+	}
+
+	protected interface SingleValueAsyncClient {
 
 		@GetMapping(path = "/singleValue")
 		List<String> singleValue();
@@ -314,7 +479,21 @@ public class AsyncFeignClientUsingPropertiesTests {
 
 	}
 
+	protected interface MultipleValueAsyncClient {
+
+		@GetMapping(path = "/multipleValue")
+		List<String> multipleValue();
+
+	}
+
 	protected interface TimeoutClient {
+
+		@GetMapping("/timeouts")
+		String timeouts();
+
+	}
+
+	protected interface TimeoutAsyncClient {
 
 		@GetMapping("/timeouts")
 		String timeouts();
