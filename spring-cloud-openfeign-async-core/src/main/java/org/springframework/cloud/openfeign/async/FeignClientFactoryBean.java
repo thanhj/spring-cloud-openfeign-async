@@ -35,6 +35,10 @@ import feign.Target.HardCodedTarget;
 import feign.codec.Decoder;
 import feign.codec.Encoder;
 import feign.codec.ErrorDecoder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -56,6 +60,10 @@ import org.springframework.util.StringUtils;
 /**
  * @author thanh.nguyen-ky
  */
+@Getter
+@Setter
+@ToString
+@EqualsAndHashCode
 public class FeignClientFactoryBean
 		implements FactoryBean<Object>, InitializingBean, ApplicationContextAware, BeanFactoryAware {
 
@@ -95,6 +103,8 @@ public class FeignClientFactoryBean
 	private boolean followRedirects = new Request.Options().isFollowRedirects();
 
 	private boolean refreshableClient = false;
+
+	private boolean asynchronous = false;
 
 	private final List<FeignBuilderCustomizer> additionalCustomizers = new ArrayList<>();
 
@@ -416,138 +426,14 @@ public class FeignClientFactoryBean
 		return true;
 	}
 
-	public Class<?> getType() {
-		return type;
-	}
-
-	public void setType(Class<?> type) {
-		this.type = type;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getContextId() {
-		return contextId;
-	}
-
-	public void setContextId(String contextId) {
-		this.contextId = contextId;
-	}
-
-	public String getUrl() {
-		return url;
-	}
-
-	public void setUrl(String url) {
-		this.url = url;
-	}
-
-	public String getPath() {
-		return path;
-	}
-
-	public void setPath(String path) {
-		this.path = path;
-	}
-
-	public boolean isDecode404() {
-		return decode404;
-	}
-
-	public void setDecode404(boolean decode404) {
-		this.decode404 = decode404;
-	}
-
-	public boolean isInheritParentContext() {
-		return inheritParentContext;
-	}
-
-	public void setInheritParentContext(boolean inheritParentContext) {
-		this.inheritParentContext = inheritParentContext;
-	}
-
 	public void addCustomizer(FeignBuilderCustomizer customizer) {
 		additionalCustomizers.add(customizer);
-	}
-
-	public ApplicationContext getApplicationContext() {
-		return applicationContext;
 	}
 
 	@Override
 	public void setApplicationContext(ApplicationContext context) throws BeansException {
 		applicationContext = context;
 		beanFactory = context;
-	}
-
-	public Class<?> getFallback() {
-		return fallback;
-	}
-
-	public void setFallback(Class<?> fallback) {
-		this.fallback = fallback;
-	}
-
-	public Class<?> getFallbackFactory() {
-		return fallbackFactory;
-	}
-
-	public void setFallbackFactory(Class<?> fallbackFactory) {
-		this.fallbackFactory = fallbackFactory;
-	}
-
-	public void setRefreshableClient(boolean refreshableClient) {
-		this.refreshableClient = refreshableClient;
-	}
-
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) {
-			return true;
-		}
-		if (o == null || getClass() != o.getClass()) {
-			return false;
-		}
-		FeignClientFactoryBean that = (FeignClientFactoryBean) o;
-		return Objects.equals(applicationContext, that.applicationContext)
-				&& Objects.equals(beanFactory, that.beanFactory) && decode404 == that.decode404
-				&& inheritParentContext == that.inheritParentContext && Objects.equals(fallback, that.fallback)
-				&& Objects.equals(fallbackFactory, that.fallbackFactory) && Objects.equals(name, that.name)
-				&& Objects.equals(path, that.path) && Objects.equals(type, that.type) && Objects.equals(url, that.url)
-				&& Objects.equals(connectTimeoutMillis, that.connectTimeoutMillis)
-				&& Objects.equals(readTimeoutMillis, that.readTimeoutMillis)
-				&& Objects.equals(followRedirects, that.followRedirects)
-				&& Objects.equals(refreshableClient, that.refreshableClient);
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(applicationContext, beanFactory, decode404, inheritParentContext, fallback, fallbackFactory,
-				name, path, type, url, readTimeoutMillis, connectTimeoutMillis, followRedirects, refreshableClient);
-	}
-
-	@Override
-	public String toString() {
-		return new StringBuilder("FeignClientFactoryBean{").append("type=").append(type).append(", ").append("name='")
-				.append(name).append("', ").append("url='").append(url).append("', ").append("path='").append(path)
-				.append("', ").append("decode404=").append(decode404).append(", ").append("inheritParentContext=")
-				.append(inheritParentContext).append(", ").append("applicationContext=").append(applicationContext)
-				.append(", ").append("beanFactory=").append(beanFactory).append(", ").append("fallback=")
-				.append(fallback).append(", ").append("fallbackFactory=").append(fallbackFactory).append("}")
-				.append("connectTimeoutMillis=").append(connectTimeoutMillis).append("}").append("readTimeoutMillis=")
-				.append(readTimeoutMillis).append("}").append("followRedirects=").append(followRedirects)
-				.append("refreshableClient=").append(refreshableClient).append("}").toString();
-	}
-
-	@Override
-	public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
-		this.beanFactory = beanFactory;
 	}
 
 }

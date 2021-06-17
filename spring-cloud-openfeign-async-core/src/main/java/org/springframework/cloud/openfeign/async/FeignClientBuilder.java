@@ -107,6 +107,11 @@ public class FeignClientBuilder {
 			return this;
 		}
 
+		public Builder<T> asynchronous(final boolean asynchronous) {
+			this.feignClientFactoryBean.setAsynchronous(asynchronous);
+			return this;
+		}
+
 		public Builder<T> inheritParentContext(final boolean inheritParentContext) {
 			this.feignClientFactoryBean.setInheritParentContext(inheritParentContext);
 			return this;

@@ -97,8 +97,8 @@ public class AsyncFeignClientBuilderTests {
 		// on this builder class.
 		// (2) Or a new field was added and the builder class has to be extended with this
 		// new field.
-		assertThat(methodNames).containsExactly("contextId", "decode404", "fallback", "fallbackFactory", "name", "path",
-				"url");
+		assertThat(methodNames).containsExactly("asynchronous", "contextId", "decode404", "fallback", "fallbackFactory",
+				"name", "path", "url");
 	}
 
 	@Test
@@ -118,13 +118,14 @@ public class AsyncFeignClientBuilderTests {
 		assertFactoryBeanField(builder, "decode404", getDefaultValueFromFeignClientAnnotation("decode404"));
 		assertFactoryBeanField(builder, "fallback", getDefaultValueFromFeignClientAnnotation("fallback"));
 		assertFactoryBeanField(builder, "fallbackFactory", getDefaultValueFromFeignClientAnnotation("fallbackFactory"));
+		assertFactoryBeanField(builder, "asynchronous", getDefaultValueFromFeignClientAnnotation("asynchronous"));
 	}
 
 	@Test
 	public void forType_allFieldsSetOnBuilder() {
 		// when:
 		final FeignClientBuilder.Builder builder = this.feignClientBuilder.forType(TestFeignClient.class, "TestClient")
-				.decode404(true).url("Url/").path("/Path").contextId("TestContext");
+				.decode404(true).url("Url/").path("/Path").contextId("TestContext").asynchronous(true);
 
 		// then:
 		assertFactoryBeanField(builder, "applicationContext", this.applicationContext);
@@ -136,6 +137,7 @@ public class AsyncFeignClientBuilderTests {
 		assertFactoryBeanField(builder, "url", "http://Url/");
 		assertFactoryBeanField(builder, "path", "/Path");
 		assertFactoryBeanField(builder, "decode404", true);
+		assertFactoryBeanField(builder, "asynchronous", true);
 
 	}
 
@@ -144,7 +146,8 @@ public class AsyncFeignClientBuilderTests {
 		// when:
 		final FeignClientBuilder.Builder builder = this.feignClientBuilder
 				.forType(TestFeignClient.class, new FeignClientFactoryBean(), "TestClient").decode404(true)
-				.path("Path/").url("Url/").contextId("TestContext").customize(Feign.Builder::doNotCloseAfterDecode);
+				.path("Path/").url("Url/").contextId("TestContext").asynchronous(true)
+				.customize(Feign.Builder::doNotCloseAfterDecode);
 
 		// then:
 		assertFactoryBeanField(builder, "applicationContext", this.applicationContext);
@@ -156,6 +159,7 @@ public class AsyncFeignClientBuilderTests {
 		assertFactoryBeanField(builder, "url", "http://Url/");
 		assertFactoryBeanField(builder, "path", "/Path");
 		assertFactoryBeanField(builder, "decode404", true);
+		assertFactoryBeanField(builder, "asynchronous", true);
 		List<FeignBuilderCustomizer> additionalCustomizers = getFactoryBeanField(builder, "additionalCustomizers");
 		assertThat(additionalCustomizers).hasSize(1);
 	}
@@ -164,12 +168,12 @@ public class AsyncFeignClientBuilderTests {
 	public void forType_build() {
 		// given:
 		Mockito.when(this.applicationContext.getBean(FeignContext.class)).thenThrow(new ClosedFileSystemException()); // throw
-																														// an
-																														// unusual
-																														// exception
-																														// in
-																														// the
-																														// FeignClientFactoryBean
+		// an
+		// unusual
+		// exception
+		// in
+		// the
+		// FeignClientFactoryBean
 		final FeignClientBuilder.Builder builder = this.feignClientBuilder.forType(TestClient.class, "TestClient");
 
 		// expect: 'the build will fail right after calling build() with the mocked
