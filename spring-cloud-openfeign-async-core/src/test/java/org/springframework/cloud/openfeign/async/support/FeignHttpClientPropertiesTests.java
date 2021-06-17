@@ -36,8 +36,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.cloud.openfeign.async.support.FeignHttpClientProperties.AsyncHc5Properties.DEFAULT_RESPONSE_TIMEOUT;
 import static org.springframework.cloud.openfeign.async.support.FeignHttpClientProperties.AsyncHc5Properties.DEFAULT_RESPONSE_TIMEOUT_UNIT;
-import static org.springframework.cloud.openfeign.async.support.FeignHttpClientProperties.Hc5Properties.DEFAULT_SOCKET_TIMEOUT;
-import static org.springframework.cloud.openfeign.async.support.FeignHttpClientProperties.Hc5Properties.DEFAULT_SOCKET_TIMEOUT_UNIT;
 
 /**
  * @author Ryan Baxter
@@ -68,10 +66,6 @@ public class FeignHttpClientPropertiesTests {
 		assertThat(getProperties().isDisableSslValidation())
 				.isEqualTo(FeignHttpClientProperties.DEFAULT_DISABLE_SSL_VALIDATION);
 		assertThat(getProperties().isFollowRedirects()).isEqualTo(FeignHttpClientProperties.DEFAULT_FOLLOW_REDIRECTS);
-		assertThat(getProperties().getHc5().getPoolConcurrencyPolicy()).isEqualTo(PoolConcurrencyPolicy.STRICT);
-		assertThat(getProperties().getHc5().getPoolReusePolicy()).isEqualTo(PoolReusePolicy.FIFO);
-		assertThat(getProperties().getHc5().getSocketTimeout()).isEqualTo(DEFAULT_SOCKET_TIMEOUT);
-		assertThat(getProperties().getHc5().getSocketTimeoutUnit()).isEqualTo(DEFAULT_SOCKET_TIMEOUT_UNIT);
 		assertThat(getProperties().getAsyncHc5().getPoolConcurrencyPolicy()).isEqualTo(PoolConcurrencyPolicy.STRICT);
 		assertThat(getProperties().getAsyncHc5().getPoolReusePolicy()).isEqualTo(PoolReusePolicy.FIFO);
 		assertThat(getProperties().getAsyncHc5().getResponseTimeout()).isEqualTo(DEFAULT_RESPONSE_TIMEOUT);
@@ -84,8 +78,6 @@ public class FeignHttpClientPropertiesTests {
 				"feign.httpclient.maxConnectionsPerRoute=2", "feign.httpclient.timeToLive=2",
 				"feign.httpclient.disableSslValidation=true", "feign.httpclient.followRedirects=false",
 				"feign.httpclient.disableSslValidation=true", "feign.httpclient.followRedirects=false",
-				"feign.httpclient.hc5.poolConcurrencyPolicy=lax", "feign.httpclient.hc5.poolReusePolicy=lifo",
-				"feign.httpclient.hc5.socketTimeout=200", "feign.httpclient.hc5.socketTimeoutUnit=milliseconds",
 				"feign.httpclient.asyncHc5.poolConcurrencyPolicy=lax", "feign.httpclient.asyncHc5.poolReusePolicy=lifo",
 				"feign.httpclient.asyncHc5.responseTimeout=60", "feign.httpclient.asyncHc5.responseTimeoutUnit=seconds")
 				.applyTo(this.context);
@@ -96,10 +88,6 @@ public class FeignHttpClientPropertiesTests {
 		assertThat(getProperties().getTimeToLive()).isEqualTo(2L);
 		assertThat(getProperties().isDisableSslValidation()).isTrue();
 		assertThat(getProperties().isFollowRedirects()).isFalse();
-		assertThat(getProperties().getHc5().getPoolConcurrencyPolicy()).isEqualTo(PoolConcurrencyPolicy.LAX);
-		assertThat(getProperties().getHc5().getPoolReusePolicy()).isEqualTo(PoolReusePolicy.LIFO);
-		assertThat(getProperties().getHc5().getSocketTimeout()).isEqualTo(200);
-		assertThat(getProperties().getHc5().getSocketTimeoutUnit()).isEqualTo(TimeUnit.MILLISECONDS);
 
 		assertThat(getProperties().getAsyncHc5().getPoolConcurrencyPolicy()).isEqualTo(PoolConcurrencyPolicy.LAX);
 		assertThat(getProperties().getAsyncHc5().getPoolReusePolicy()).isEqualTo(PoolReusePolicy.LIFO);

@@ -84,11 +84,6 @@ public class FeignHttpClientProperties {
 	private int connectionTimerRepeat = DEFAULT_CONNECTION_TIMER_REPEAT;
 
 	/**
-	 * Apache HttpClient5 additional properties.
-	 */
-	private Hc5Properties hc5 = new Hc5Properties();
-
-	/**
 	 * Apache Async HttpClient5 additional properties.
 	 */
 	private AsyncHc5Properties asyncHc5 = new AsyncHc5Properties();
@@ -157,96 +152,12 @@ public class FeignHttpClientProperties {
 		this.connectionTimeout = connectionTimeout;
 	}
 
-	public Hc5Properties getHc5() {
-		return hc5;
-	}
-
-	public void setHc5(Hc5Properties hc5) {
-		this.hc5 = hc5;
-	}
-
 	public AsyncHc5Properties getAsyncHc5() {
 		return asyncHc5;
 	}
 
 	public void setAsyncHc5(AsyncHc5Properties asyncHc5) {
 		this.asyncHc5 = asyncHc5;
-	}
-
-	public static class Hc5Properties {
-
-		/**
-		 * Default value for pool concurrency policy.
-		 */
-		public static final PoolConcurrencyPolicy DEFAULT_POOL_CONCURRENCY_POLICY = PoolConcurrencyPolicy.STRICT;
-
-		/**
-		 * Default value for pool reuse policy.
-		 */
-		public static final PoolReusePolicy DEFAULT_POOL_REUSE_POLICY = PoolReusePolicy.FIFO;
-
-		/**
-		 * Default value for socket timeout.
-		 */
-		public static final int DEFAULT_SOCKET_TIMEOUT = 5;
-
-		/**
-		 * Default value for socket timeout unit.
-		 */
-		public static final TimeUnit DEFAULT_SOCKET_TIMEOUT_UNIT = TimeUnit.SECONDS;
-
-		/**
-		 * Pool concurrency policies.
-		 */
-		private PoolConcurrencyPolicy poolConcurrencyPolicy = DEFAULT_POOL_CONCURRENCY_POLICY;
-
-		/**
-		 * Pool connection re-use policies.
-		 */
-		private PoolReusePolicy poolReusePolicy = DEFAULT_POOL_REUSE_POLICY;
-
-		/**
-		 * Default value for socket timeout.
-		 */
-		private int socketTimeout = DEFAULT_SOCKET_TIMEOUT;
-
-		/**
-		 * Default value for socket timeout unit.
-		 */
-		private TimeUnit socketTimeoutUnit = DEFAULT_SOCKET_TIMEOUT_UNIT;
-
-		public PoolConcurrencyPolicy getPoolConcurrencyPolicy() {
-			return this.poolConcurrencyPolicy;
-		}
-
-		public void setPoolConcurrencyPolicy(PoolConcurrencyPolicy poolConcurrencyPolicy) {
-			this.poolConcurrencyPolicy = poolConcurrencyPolicy;
-		}
-
-		public PoolReusePolicy getPoolReusePolicy() {
-			return poolReusePolicy;
-		}
-
-		public void setPoolReusePolicy(PoolReusePolicy poolReusePolicy) {
-			this.poolReusePolicy = poolReusePolicy;
-		}
-
-		public TimeUnit getSocketTimeoutUnit() {
-			return socketTimeoutUnit;
-		}
-
-		public void setSocketTimeoutUnit(TimeUnit socketTimeoutUnit) {
-			this.socketTimeoutUnit = socketTimeoutUnit;
-		}
-
-		public int getSocketTimeout() {
-			return socketTimeout;
-		}
-
-		public void setSocketTimeout(int socketTimeout) {
-			this.socketTimeout = socketTimeout;
-		}
-
 	}
 
 	public static class AsyncHc5Properties {

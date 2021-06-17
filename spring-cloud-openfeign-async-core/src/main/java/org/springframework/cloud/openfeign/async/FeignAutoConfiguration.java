@@ -28,7 +28,6 @@ import com.fasterxml.jackson.databind.Module;
 import feign.Client;
 import feign.Feign;
 import feign.RequestInterceptor;
-import feign.hc5.ApacheHttp5Client;
 import feign.httpclient.ApacheHttpClient;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -159,7 +158,6 @@ public class FeignAutoConfiguration {
 	@ConditionalOnClass(ApacheHttpClient.class)
 	@ConditionalOnMissingBean(CloseableHttpClient.class)
 	@ConditionalOnProperty(value = "feign.httpclient.enabled", matchIfMissing = true)
-	@Conditional(HttpClient5DisabledConditions.class)
 	protected static class HttpClientFeignConfiguration {
 
 		private final Timer connectionManagerTimer = new Timer(
@@ -219,21 +217,6 @@ public class FeignAutoConfiguration {
 					}
 				}
 			}
-		}
-
-	}
-
-	@Configuration(proxyBeanMethods = false)
-	@ConditionalOnClass(ApacheHttp5Client.class)
-	@ConditionalOnMissingBean(org.apache.hc.client5.http.impl.classic.CloseableHttpClient.class)
-	@ConditionalOnProperty(value = "feign.httpclient.hc5.enabled", havingValue = "true")
-	@Import(org.springframework.cloud.openfeign.async.clientconfig.HttpClient5FeignConfiguration.class)
-	protected static class HttpClient5FeignConfiguration {
-
-		@Bean
-		@ConditionalOnMissingBean(Client.class)
-		public Client feignClient(org.apache.hc.client5.http.impl.classic.CloseableHttpClient httpClient5) {
-			return new ApacheHttp5Client(httpClient5);
 		}
 
 	}

@@ -19,7 +19,6 @@ package org.springframework.cloud.openfeign.async.loadbalancer;
 import java.util.Map;
 
 import feign.Client;
-import feign.hc5.ApacheHttp5Client;
 import feign.httpclient.ApacheHttpClient;
 import org.junit.jupiter.api.Test;
 
@@ -51,22 +50,6 @@ class FeignLoadBalancerAutoConfigurationTests {
 		ConfigurableApplicationContext context = initContext();
 		assertThatOneBeanPresent(context, BlockingLoadBalancerClient.class);
 		assertLoadBalanced(context, ApacheHttpClient.class);
-	}
-
-	@Test
-	void shouldInstantiateHttpFeignClient5WhenEnabled() {
-		ConfigurableApplicationContext context = initContext("feign.httpclient.enabled=false",
-				"feign.httpclient.hc5.enabled=true");
-		assertThatOneBeanPresent(context, BlockingLoadBalancerClient.class);
-		assertLoadBalanced(context, ApacheHttp5Client.class);
-	}
-
-	@Test
-	void shouldInstantiateHttpFeignClient5WhenBothHttpClientAndHttpClient5Enabled() {
-		ConfigurableApplicationContext context = initContext("feign.httpclient.enabled=true",
-				"feign.httpclient.hc5.enabled=true");
-		assertThatOneBeanPresent(context, BlockingLoadBalancerClient.class);
-		assertLoadBalanced(context, ApacheHttp5Client.class);
 	}
 
 	private ConfigurableApplicationContext initContext(String... properties) {
